@@ -1,0 +1,26 @@
+# Dependencies and generated output
+node_modules/
+dist/
+release/
+tmp/
+src-tauri/target/
+public/preset-previews/*.png
+
+# Local/editor noise
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+*.bak
+
+# Workspace folders that are not part of GIF_P
+.reference/
+anima-prompt-drawer/
+JM repair/
+repair_ai_video_artifacts/
+video_artifact_samples/
+新建文件夹/
+
+# Non-GIF_P generated collateral in this workspace
+docs/JM_video_artifact_repair_explanation.pptx
+scripts/create-jm-repair-ppt.mjs
