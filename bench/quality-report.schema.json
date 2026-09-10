@@ -1,0 +1,982 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gifp.local/schema/quality-report-v9.json",
+  "title": "GIFP Quality Lab report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "run_id",
+    "generated_at_unix_ms",
+    "manifest_path",
+    "manifest_sha256",
+    "git_commit",
+    "git_dirty",
+    "host",
+    "toolchain",
+    "manifest",
+    "sources",
+    "successful_runs",
+    "failed_runs",
+    "target_reinvestment_calibration",
+    "target_hard_cap_acceptance",
+    "best_quality_acceptance",
+    "performance_baseline",
+    "runs"
+  ],
+  "properties": {
+    "schema_version": { "const": 9 },
+    "run_id": { "type": "string", "minLength": 1 },
+    "generated_at_unix_ms": { "type": "integer", "minimum": 0 },
+    "manifest_path": { "type": "string", "minLength": 1 },
+    "manifest_sha256": { "$ref": "#/$defs/sha256" },
+    "git_commit": {
+      "oneOf": [
+        { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+        { "type": "null" }
+      ]
+    },
+    "git_dirty": { "type": ["boolean", "null"] },
+    "host": { "$ref": "#/$defs/host" },
+    "toolchain": { "$ref": "#/$defs/toolchain" },
+    "manifest": { "type": "object" },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/source" }
+    },
+    "successful_runs": { "type": "integer", "minimum": 0 },
+    "failed_runs": { "type": "integer", "minimum": 0 },
+    "target_reinvestment_calibration": {
+      "$ref": "#/$defs/targetReinvestmentCalibration"
+    },
+    "target_hard_cap_acceptance": {
+      "$ref": "#/$defs/hardCapAcceptance"
+    },
+    "best_quality_acceptance": {
+      "$ref": "#/$defs/bestQualityAcceptance"
+    },
+    "performance_baseline": {
+      "$ref": "#/$defs/performanceBaseline"
+    },
+    "runs": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/run" }
+    },
+    "artifact_bundle": { "$ref": "#/$defs/artifactBundle" }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "artifactBundle": {
+      "description": "Immutable report-bundle reference present on the atomically published commit-point report. The report.json inside the bundle omits this field to avoid a circular hash dependency.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "run_id",
+        "root_path",
+        "manifest_path",
+        "manifest_sha256",
+        "artifacts"
+      ],
+      "properties": {
+        "schema_version": { "const": 1 },
+        "run_id": { "type": "string", "minLength": 1 },
+        "root_path": { "type": "string", "minLength": 1 },
+        "manifest_path": { "type": "string", "minLength": 1 },
+        "manifest_sha256": { "$ref": "#/$defs/sha256" },
+        "artifacts": {
+          "type": "array",
+          "minItems": 3,
+          "items": { "$ref": "#/$defs/artifactBundleEntry" }
+        }
+      }
+    },
+    "artifactBundleEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["role", "relative_path", "sha256", "size_bytes"],
+      "properties": {
+        "role": { "type": "string", "minLength": 1 },
+        "relative_path": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?![A-Za-z]:)(?![/\\\\])(?!.*(?:^|[/\\\\])\\.\\.(?:[/\\\\]|$)).+$"
+        },
+        "sha256": { "$ref": "#/$defs/sha256" },
+        "size_bytes": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "nullableString": { "type": ["string", "null"] },
+    "nullableFiniteNumber": {
+      "oneOf": [
+        { "type": "number" },
+        { "type": "null" }
+      ]
+    },
+    "nullableRate": {
+      "oneOf": [
+        { "type": "number", "minimum": 0, "maximum": 1 },
+        { "type": "null" }
+      ]
+    },
+    "nullableNonnegativeInteger": {
+      "oneOf": [
+        { "type": "integer", "minimum": 0 },
+        { "type": "null" }
+      ]
+    },
+    "host": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "os",
+        "os_version",
+        "kernel_version",
+        "arch",
+        "logical_parallelism",
+        "physical_core_count",
+        "cpu_brand",
+        "total_memory_bytes"
+      ],
+      "properties": {
+        "os": { "type": "string", "minLength": 1 },
+        "os_version": { "$ref": "#/$defs/nullableString" },
+        "kernel_version": { "$ref": "#/$defs/nullableString" },
+        "arch": { "type": "string", "minLength": 1 },
+        "logical_parallelism": { "type": "integer", "minimum": 1 },
+        "physical_core_count": {
+          "oneOf": [
+            { "type": "integer", "minimum": 1 },
+            { "type": "null" }
+          ]
+        },
+        "cpu_brand": { "$ref": "#/$defs/nullableString" },
+        "total_memory_bytes": {
+          "oneOf": [
+            { "type": "integer", "minimum": 0 },
+            { "type": "null" }
+          ]
+        }
+      }
+    },
+    "toolchain": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "gifp_version",
+        "build_profile",
+        "ffmpeg_path",
+        "ffmpeg_version",
+        "ffmpeg_sha256",
+        "ffprobe_path",
+        "ffprobe_version",
+        "ffprobe_sha256",
+        "reviewed_runtime_manifest_path",
+        "reviewed_runtime_manifest_sha256",
+        "canonical_generator_identity_passed"
+      ],
+      "properties": {
+        "gifp_version": { "type": "string", "minLength": 1 },
+        "build_profile": { "enum": ["debug", "release"] },
+        "ffmpeg_path": { "type": "string", "minLength": 1 },
+        "ffmpeg_version": { "$ref": "#/$defs/nullableString" },
+        "ffmpeg_sha256": { "$ref": "#/$defs/sha256" },
+        "ffprobe_path": { "type": "string", "minLength": 1 },
+        "ffprobe_version": { "$ref": "#/$defs/nullableString" },
+        "ffprobe_sha256": { "$ref": "#/$defs/sha256" },
+        "reviewed_runtime_manifest_path": { "type": "string", "minLength": 1 },
+        "reviewed_runtime_manifest_sha256": {
+          "oneOf": [
+            { "$ref": "#/$defs/sha256" },
+            { "type": "null" }
+          ]
+        },
+        "canonical_generator_identity_passed": { "type": "boolean" }
+      }
+    },
+    "targetReinvestmentCalibration": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "calibration_id",
+        "baseline_spatial_safety_factor",
+        "overall",
+        "categories"
+      ],
+      "properties": {
+        "calibration_id": { "type": "string", "minLength": 1 },
+        "baseline_spatial_safety_factor": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 1
+        },
+        "overall": { "$ref": "#/$defs/targetReinvestmentCalibrationSlice" },
+        "categories": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/targetReinvestmentCalibrationSlice" }
+        }
+      }
+    },
+    "targetReinvestmentCalibrationSlice": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "category",
+        "target_profile_run_count",
+        "sample_count",
+        "sample_rate",
+        "initial_under_target_count",
+        "initial_under_target_rate",
+        "correction_attempt_count",
+        "correction_success_count",
+        "correction_success_rate",
+        "mean_actual_to_predicted_ratio",
+        "p95_actual_to_predicted_ratio",
+        "recommended_spatial_safety_factor"
+      ],
+      "properties": {
+        "category": { "type": "string", "minLength": 1 },
+        "target_profile_run_count": { "type": "integer", "minimum": 0 },
+        "sample_count": { "type": "integer", "minimum": 0 },
+        "sample_rate": { "$ref": "#/$defs/nullableFiniteNumber" },
+        "initial_under_target_count": { "type": "integer", "minimum": 0 },
+        "initial_under_target_rate": { "$ref": "#/$defs/nullableFiniteNumber" },
+        "correction_attempt_count": { "type": "integer", "minimum": 0 },
+        "correction_success_count": { "type": "integer", "minimum": 0 },
+        "correction_success_rate": { "$ref": "#/$defs/nullableFiniteNumber" },
+        "mean_actual_to_predicted_ratio": { "$ref": "#/$defs/nullableFiniteNumber" },
+        "p95_actual_to_predicted_ratio": { "$ref": "#/$defs/nullableFiniteNumber" },
+        "recommended_spatial_safety_factor": {
+          "oneOf": [
+            { "type": "number", "exclusiveMinimum": 0, "maximum": 1 },
+            { "type": "null" }
+          ]
+        }
+      }
+    },
+    "hardCapAcceptance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "acceptance_id",
+        "fill_ratio_floor",
+        "required_hit_rate",
+        "overall",
+        "categories"
+      ],
+      "properties": {
+        "acceptance_id": { "type": "string", "minLength": 1 },
+        "fill_ratio_floor": { "type": "number", "minimum": 0, "maximum": 1 },
+        "required_hit_rate": { "type": "number", "minimum": 0, "maximum": 1 },
+        "overall": { "$ref": "#/$defs/hardCapAcceptanceSlice" },
+        "categories": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/hardCapAcceptanceSlice" }
+        }
+      }
+    },
+    "hardCapAcceptanceSlice": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "category",
+        "target_run_count",
+        "known_feasible_count",
+        "unknown_feasibility_count",
+        "accepted_hit_count",
+        "undershoot_count",
+        "overshoot_count",
+        "unmeasurable_output_count",
+        "correctness_failed_count",
+        "hit_rate",
+        "all_measurable_outputs_under_cap",
+        "passed"
+      ],
+      "properties": {
+        "category": { "type": "string", "minLength": 1 },
+        "target_run_count": { "type": "integer", "minimum": 0 },
+        "known_feasible_count": { "type": "integer", "minimum": 0 },
+        "unknown_feasibility_count": { "type": "integer", "minimum": 0 },
+        "accepted_hit_count": { "type": "integer", "minimum": 0 },
+        "undershoot_count": { "type": "integer", "minimum": 0 },
+        "overshoot_count": { "type": "integer", "minimum": 0 },
+        "unmeasurable_output_count": { "type": "integer", "minimum": 0 },
+        "correctness_failed_count": { "type": "integer", "minimum": 0 },
+        "hit_rate": { "$ref": "#/$defs/nullableFiniteNumber" },
+        "all_measurable_outputs_under_cap": { "type": "boolean" },
+        "passed": { "type": "boolean" }
+      }
+    },
+    "bestQualityAcceptance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "acceptance_id",
+        "corpus_id",
+        "corpus_manifest_sha256",
+        "canonical_corpus_passed",
+        "canonical_fixture_identity_passed",
+        "applicable",
+        "candidate_profile_id",
+        "reference_profile_id",
+        "maximum_size_delta_percent",
+        "minimum_pair_count",
+        "minimum_category_count",
+        "required_pair_coverage",
+        "required_vmaf_win_rate",
+        "provenance_passed",
+        "expected_pair_count",
+        "eligible_pair_count",
+        "omitted_pair_count",
+        "pair_coverage",
+        "overall",
+        "categories",
+        "pairs",
+        "omissions",
+        "passed",
+        "violations"
+      ],
+      "properties": {
+        "acceptance_id": { "const": "gifp.best_same_size.first_tier.v1" },
+        "corpus_id": { "type": "string", "minLength": 1 },
+        "corpus_manifest_sha256": { "$ref": "#/$defs/sha256" },
+        "canonical_corpus_passed": { "type": "boolean" },
+        "canonical_fixture_identity_passed": { "type": "boolean" },
+        "applicable": { "type": "boolean" },
+        "candidate_profile_id": { "$ref": "#/$defs/nullableString" },
+        "reference_profile_id": { "$ref": "#/$defs/nullableString" },
+        "maximum_size_delta_percent": { "const": 5.0 },
+        "minimum_pair_count": { "const": 28 },
+        "minimum_category_count": { "const": 7 },
+        "required_pair_coverage": { "const": 1.0 },
+        "required_vmaf_win_rate": { "const": 0.60 },
+        "provenance_passed": { "type": "boolean" },
+        "expected_pair_count": { "type": "integer", "minimum": 0 },
+        "eligible_pair_count": { "type": "integer", "minimum": 0 },
+        "omitted_pair_count": { "type": "integer", "minimum": 0 },
+        "pair_coverage": { "$ref": "#/$defs/nullableRate" },
+        "overall": { "$ref": "#/$defs/bestQualityAcceptanceSlice" },
+        "categories": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/bestQualityAcceptanceSlice" }
+        },
+        "pairs": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/bestQualityPairObservation" }
+        },
+        "omissions": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/bestQualityPairOmission" }
+        },
+        "passed": { "type": "boolean" },
+        "violations": { "type": "array", "items": { "type": "string", "minLength": 1 } }
+      }
+    },
+    "bestQualityAcceptanceSlice": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "category",
+        "expected_pair_count",
+        "eligible_pair_count",
+        "pair_coverage",
+        "metrics",
+        "passed"
+      ],
+      "properties": {
+        "category": { "type": "string", "minLength": 1 },
+        "expected_pair_count": { "type": "integer", "minimum": 0 },
+        "eligible_pair_count": { "type": "integer", "minimum": 0 },
+        "pair_coverage": { "$ref": "#/$defs/nullableRate" },
+        "metrics": {
+          "type": "array",
+          "minItems": 9,
+          "maxItems": 9,
+          "items": { "$ref": "#/$defs/bestQualityMetricSummary" }
+        },
+        "passed": { "type": "boolean" }
+      }
+    },
+    "bestQualityMetricSummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "metric_id",
+        "direction",
+        "applicable_pair_count",
+        "win_count",
+        "tie_count",
+        "loss_count",
+        "win_rate",
+        "loss_rate",
+        "decisive_count",
+        "decisive_win_rate",
+        "mean_quality_improvement",
+        "mean_quality_improvement_in_tie_units",
+        "minimum_quality_improvement",
+        "p05_quality_improvement",
+        "median_quality_improvement",
+        "p95_quality_improvement",
+        "maximum_quality_improvement",
+        "severe_regression_count",
+        "passed"
+      ],
+      "properties": {
+        "metric_id": { "$ref": "#/$defs/bestQualityMetricId" },
+        "direction": { "enum": ["higher_is_better", "lower_is_better"] },
+        "applicable_pair_count": { "type": "integer", "minimum": 0 },
+        "win_count": { "type": "integer", "minimum": 0 },
+        "tie_count": { "type": "integer", "minimum": 0 },
+        "loss_count": { "type": "integer", "minimum": 0 },
+        "win_rate": { "$ref": "#/$defs/nullableRate" },
+        "loss_rate": { "$ref": "#/$defs/nullableRate" },
+        "decisive_count": { "type": "integer", "minimum": 0 },
+        "decisive_win_rate": { "$ref": "#/$defs/nullableRate" },
+        "mean_quality_improvement": { "$ref": "#/$defs/nullableFiniteNumber" },
+        "mean_quality_improvement_in_tie_units": { "$ref": "#/$defs/nullableFiniteNumber" },
+        "minimum_quality_improvement": { "$ref": "#/$defs/nullableFiniteNumber" },
+        "p05_quality_improvement": { "$ref": "#/$defs/nullableFiniteNumber" },
+        "median_quality_improvement": { "$ref": "#/$defs/nullableFiniteNumber" },
+        "p95_quality_improvement": { "$ref": "#/$defs/nullableFiniteNumber" },
+        "maximum_quality_improvement": { "$ref": "#/$defs/nullableFiniteNumber" },
+        "severe_regression_count": { "type": "integer", "minimum": 0 },
+        "passed": { "type": "boolean" }
+      }
+    },
+    "bestQualityPairObservation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "fixture_id",
+        "category",
+        "candidate_size_bytes",
+        "reference_size_bytes",
+        "size_delta_percent",
+        "candidate_output_sha256",
+        "reference_output_sha256",
+        "metrics"
+      ],
+      "properties": {
+        "fixture_id": { "type": "string", "minLength": 1 },
+        "category": { "type": "string", "minLength": 1 },
+        "candidate_size_bytes": { "type": "integer", "minimum": 1 },
+        "reference_size_bytes": { "type": "integer", "minimum": 1 },
+        "size_delta_percent": { "type": "number", "minimum": 0 },
+        "candidate_output_sha256": { "$ref": "#/$defs/sha256" },
+        "reference_output_sha256": { "$ref": "#/$defs/sha256" },
+        "metrics": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 9,
+          "items": { "$ref": "#/$defs/bestQualityMetricComparison" }
+        }
+      }
+    },
+    "bestQualityMetricComparison": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "metric_id",
+        "direction",
+        "candidate_value",
+        "reference_value",
+        "quality_improvement",
+        "quality_improvement_in_tie_units",
+        "tie_tolerance",
+        "severe_regression_tolerance",
+        "outcome",
+        "severe_regression"
+      ],
+      "properties": {
+        "metric_id": { "$ref": "#/$defs/bestQualityMetricId" },
+        "direction": { "enum": ["higher_is_better", "lower_is_better"] },
+        "candidate_value": { "type": "number" },
+        "reference_value": { "type": "number" },
+        "quality_improvement": { "type": "number" },
+        "quality_improvement_in_tie_units": { "type": "number" },
+        "tie_tolerance": { "type": "number", "exclusiveMinimum": 0 },
+        "severe_regression_tolerance": { "type": "number", "exclusiveMinimum": 0 },
+        "outcome": { "enum": ["win", "tie", "loss"] },
+        "severe_regression": { "type": "boolean" }
+      }
+    },
+    "bestQualityPairOmission": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["fixture_id", "category", "reason"],
+      "properties": {
+        "fixture_id": { "type": "string", "minLength": 1 },
+        "category": { "type": "string", "minLength": 1 },
+        "reason": { "type": "string", "minLength": 1 }
+      }
+    },
+    "bestQualityMetricId": {
+      "enum": [
+        "vmaf_neg_mean",
+        "vmaf_neg_p05",
+        "cambi_mean",
+        "mean_oklab_error",
+        "edge_error",
+        "static_region_temporal_residual",
+        "alpha_coverage_error",
+        "alpha_mean_absolute_error",
+        "loop_seam_excess_oklab"
+      ]
+    },
+    "performanceBaseline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "baseline_id",
+        "build_profile",
+        "measurement_scope",
+        "memory_metric",
+        "memory_sampler_id",
+        "sample_interval_ms",
+        "percentile_method",
+        "budget_evaluation",
+        "overall",
+        "profiles",
+        "categories"
+      ],
+      "properties": {
+        "baseline_id": { "type": "string", "minLength": 1 },
+        "build_profile": { "enum": ["debug", "release"] },
+        "measurement_scope": { "const": "convert_animation_inner" },
+        "memory_metric": { "const": "summed_process_tree_resident_set_bytes" },
+        "memory_sampler_id": { "type": "string", "minLength": 1 },
+        "sample_interval_ms": { "type": "integer", "minimum": 1 },
+        "percentile_method": { "const": "nearest_rank" },
+        "budget_evaluation": {
+          "oneOf": [
+            { "$ref": "#/$defs/performanceBudgetEvaluation" },
+            { "type": "null" }
+          ]
+        },
+        "overall": { "$ref": "#/$defs/performanceBaselineSlice" },
+        "profiles": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/performanceBaselineSlice" }
+        },
+        "categories": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/performanceBaselineSlice" }
+        }
+      }
+    },
+    "performanceBudgetEvaluation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "budget_id",
+        "profile_scope",
+        "profile_ids",
+        "evaluated_run_count",
+        "excluded_run_count",
+        "actual",
+        "required_build_profile",
+        "actual_build_profile",
+        "minimum_memory_coverage",
+        "p95_encode_wall_elapsed_ms_limit",
+        "max_encode_wall_elapsed_ms_limit",
+        "p95_peak_tree_rss_bytes_limit",
+        "max_peak_tree_rss_bytes_limit",
+        "build_profile_passed",
+        "memory_coverage_passed",
+        "p95_encode_wall_elapsed_passed",
+        "max_encode_wall_elapsed_passed",
+        "p95_peak_tree_rss_passed",
+        "max_peak_tree_rss_passed",
+        "passed",
+        "violations"
+      ],
+      "properties": {
+        "budget_id": { "type": "string", "minLength": 1 },
+        "profile_scope": { "const": "stable_profiles" },
+        "profile_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "evaluated_run_count": { "type": "integer", "minimum": 0 },
+        "excluded_run_count": { "type": "integer", "minimum": 0 },
+        "actual": { "$ref": "#/$defs/performanceBaselineSlice" },
+        "required_build_profile": { "const": "release" },
+        "actual_build_profile": { "enum": ["debug", "release"] },
+        "minimum_memory_coverage": { "type": "number", "minimum": 0, "maximum": 1 },
+        "p95_encode_wall_elapsed_ms_limit": { "type": "integer", "minimum": 1 },
+        "max_encode_wall_elapsed_ms_limit": { "type": "integer", "minimum": 1 },
+        "p95_peak_tree_rss_bytes_limit": { "type": "integer", "minimum": 1 },
+        "max_peak_tree_rss_bytes_limit": { "type": "integer", "minimum": 1 },
+        "build_profile_passed": { "type": "boolean" },
+        "memory_coverage_passed": { "type": "boolean" },
+        "p95_encode_wall_elapsed_passed": { "type": "boolean" },
+        "max_encode_wall_elapsed_passed": { "type": "boolean" },
+        "p95_peak_tree_rss_passed": { "type": "boolean" },
+        "max_peak_tree_rss_passed": { "type": "boolean" },
+        "passed": { "type": "boolean" },
+        "violations": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "performanceBaselineSlice": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "label",
+        "run_count",
+        "timed_run_count",
+        "memory_measured_run_count",
+        "memory_coverage",
+        "p50_encode_wall_elapsed_ms",
+        "p95_encode_wall_elapsed_ms",
+        "max_encode_wall_elapsed_ms",
+        "p50_peak_tree_rss_bytes",
+        "p95_peak_tree_rss_bytes",
+        "max_peak_tree_rss_bytes",
+        "p50_peak_incremental_tree_rss_bytes",
+        "p95_peak_incremental_tree_rss_bytes",
+        "max_peak_incremental_tree_rss_bytes"
+      ],
+      "properties": {
+        "label": { "type": "string", "minLength": 1 },
+        "run_count": { "type": "integer", "minimum": 0 },
+        "timed_run_count": { "type": "integer", "minimum": 0 },
+        "memory_measured_run_count": { "type": "integer", "minimum": 0 },
+        "memory_coverage": { "$ref": "#/$defs/nullableFiniteNumber" },
+        "p50_encode_wall_elapsed_ms": { "$ref": "#/$defs/nullableNonnegativeInteger" },
+        "p95_encode_wall_elapsed_ms": { "$ref": "#/$defs/nullableNonnegativeInteger" },
+        "max_encode_wall_elapsed_ms": { "$ref": "#/$defs/nullableNonnegativeInteger" },
+        "p50_peak_tree_rss_bytes": { "$ref": "#/$defs/nullableNonnegativeInteger" },
+        "p95_peak_tree_rss_bytes": { "$ref": "#/$defs/nullableNonnegativeInteger" },
+        "max_peak_tree_rss_bytes": { "$ref": "#/$defs/nullableNonnegativeInteger" },
+        "p50_peak_incremental_tree_rss_bytes": { "$ref": "#/$defs/nullableNonnegativeInteger" },
+        "p95_peak_incremental_tree_rss_bytes": { "$ref": "#/$defs/nullableNonnegativeInteger" },
+        "max_peak_incremental_tree_rss_bytes": { "$ref": "#/$defs/nullableNonnegativeInteger" }
+      }
+    },
+    "processMemoryBreakdown": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "pid",
+        "parent_pid",
+        "name",
+        "start_time_unix_seconds",
+        "rss_bytes",
+        "is_root"
+      ],
+      "properties": {
+        "pid": { "type": "integer", "minimum": 1 },
+        "parent_pid": {
+          "oneOf": [
+            { "type": "integer", "minimum": 1 },
+            { "type": "null" }
+          ]
+        },
+        "name": { "type": "string", "minLength": 1 },
+        "start_time_unix_seconds": { "type": "integer", "minimum": 0 },
+        "rss_bytes": { "type": "integer", "minimum": 0 },
+        "is_root": { "type": "boolean" }
+      }
+    },
+    "processTreeMemory": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sampler_id",
+        "metric",
+        "includes_root",
+        "includes_descendants",
+        "sample_interval_ms",
+        "sample_count",
+        "baseline_tree_rss_bytes",
+        "peak_tree_rss_bytes",
+        "peak_incremental_tree_rss_bytes",
+        "max_process_count",
+        "peak_processes"
+      ],
+      "properties": {
+        "sampler_id": { "type": "string", "minLength": 1 },
+        "metric": { "const": "summed_resident_set_bytes" },
+        "includes_root": { "const": true },
+        "includes_descendants": { "const": true },
+        "sample_interval_ms": { "type": "integer", "minimum": 1 },
+        "sample_count": { "type": "integer", "minimum": 1 },
+        "baseline_tree_rss_bytes": { "type": "integer", "minimum": 0 },
+        "peak_tree_rss_bytes": { "type": "integer", "minimum": 0 },
+        "peak_incremental_tree_rss_bytes": { "type": "integer", "minimum": 0 },
+        "max_process_count": { "type": "integer", "minimum": 1 },
+        "peak_processes": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/processMemoryBreakdown" }
+        }
+      }
+    },
+    "inspection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "codec",
+        "width",
+        "height",
+        "duration",
+        "frame_count",
+        "animated",
+        "has_alpha"
+      ],
+      "properties": {
+        "codec": { "type": "string" },
+        "width": { "type": "integer", "minimum": 0 },
+        "height": { "type": "integer", "minimum": 0 },
+        "duration": { "type": "number", "minimum": 0 },
+        "frame_count": { "type": "integer", "minimum": 0 },
+        "animated": { "type": "boolean" },
+        "has_alpha": { "type": "boolean" }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "fixture_id",
+        "category",
+        "tags",
+        "path",
+        "sha256",
+        "expected_source_sha256",
+        "canonical_identity_passed",
+        "inspection"
+      ],
+      "properties": {
+        "fixture_id": { "type": "string", "minLength": 1 },
+        "category": { "type": "string", "minLength": 1 },
+        "tags": { "type": "array", "items": { "type": "string" } },
+        "path": { "type": "string", "minLength": 1 },
+        "sha256": { "$ref": "#/$defs/sha256" },
+        "expected_source_sha256": {
+          "oneOf": [
+            { "$ref": "#/$defs/sha256" },
+            { "type": "null" }
+          ]
+        },
+        "canonical_identity_passed": { "type": "boolean" },
+        "inspection": { "$ref": "#/$defs/inspection" }
+      }
+    },
+    "objectiveMetrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "analysis_fps",
+        "compared_frames",
+        "sample_width",
+        "sample_height",
+        "alpha_sample_width",
+        "alpha_sample_height",
+        "raw_vmaf_log_path",
+        "vmaf_neg_mean",
+        "vmaf_neg_p05",
+        "vmaf_neg_min",
+        "psnr_y_mean_db",
+        "ssim_mean",
+        "ssim_min",
+        "ms_ssim_mean",
+        "ms_ssim_min",
+        "ms_ssim_valid_ratio",
+        "ciede2000_mean",
+        "ciede2000_p95",
+        "ciede2000_valid_ratio",
+        "cambi_mean",
+        "cambi_p95",
+        "mean_oklab_error",
+        "static_region_oklab_error",
+        "static_region_temporal_residual",
+        "static_pixel_ratio",
+        "edge_error",
+        "edge_preservation",
+        "edge_pixel_ratio",
+        "alpha_mean_absolute_error",
+        "alpha_coverage_error",
+        "reference_loop_seam_oklab",
+        "output_loop_seam_oklab",
+        "loop_seam_excess_oklab"
+      ],
+      "properties": {
+        "status": { "const": "full" },
+        "analysis_fps": { "type": "integer", "minimum": 1 },
+        "compared_frames": { "type": "integer", "minimum": 1 },
+        "presentation_width": { "type": "integer", "minimum": 2 },
+        "presentation_height": { "type": "integer", "minimum": 2 },
+        "sample_width": { "type": "integer", "minimum": 1 },
+        "sample_height": { "type": "integer", "minimum": 1 },
+        "alpha_sample_width": { "type": "integer", "minimum": 1 },
+        "alpha_sample_height": { "type": "integer", "minimum": 1 },
+        "raw_vmaf_log_path": { "type": "string", "minLength": 1 },
+        "vmaf_neg_mean": { "type": "number" },
+        "vmaf_neg_p05": { "type": "number" },
+        "vmaf_neg_min": { "type": "number" },
+        "psnr_y_mean_db": { "$ref": "#/$defs/nullableFiniteNumber" },
+        "ssim_mean": { "type": "number" },
+        "ssim_min": { "type": "number" },
+        "ms_ssim_mean": { "$ref": "#/$defs/nullableFiniteNumber" },
+        "ms_ssim_min": { "$ref": "#/$defs/nullableFiniteNumber" },
+        "ms_ssim_valid_ratio": { "type": "number", "minimum": 0, "maximum": 1 },
+        "ciede2000_mean": {
+          "description": "Mean libvmaf ciede feature quality score; higher is better. This is not raw Delta E.",
+          "oneOf": [
+            { "type": "number", "minimum": 0 },
+            { "type": "null" }
+          ]
+        },
+        "ciede2000_p95": {
+          "description": "P95 libvmaf ciede feature quality score; higher is better.",
+          "oneOf": [
+            { "type": "number", "minimum": 0 },
+            { "type": "null" }
+          ]
+        },
+        "ciede2000_valid_ratio": { "type": "number", "minimum": 0, "maximum": 1 },
+        "cambi_mean": { "type": "number", "minimum": 0 },
+        "cambi_p95": { "type": "number", "minimum": 0 },
+        "mean_oklab_error": { "type": "number", "minimum": 0 },
+        "static_region_oklab_error": { "type": "number", "minimum": 0 },
+        "static_region_temporal_residual": { "type": "number", "minimum": 0 },
+        "static_pixel_ratio": { "type": "number", "minimum": 0, "maximum": 1 },
+        "edge_error": { "type": "number", "minimum": 0 },
+        "edge_preservation": { "type": "number", "minimum": 0 },
+        "edge_pixel_ratio": { "type": "number", "minimum": 0, "maximum": 1 },
+        "alpha_mean_absolute_error": { "type": "number", "minimum": 0, "maximum": 1 },
+        "alpha_coverage_error": { "type": "number", "minimum": 0, "maximum": 1 },
+        "reference_loop_seam_oklab": { "type": "number", "minimum": 0 },
+        "output_loop_seam_oklab": { "type": "number", "minimum": 0 },
+        "loop_seam_excess_oklab": { "type": "number", "minimum": 0 }
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "size_bytes",
+        "frame_count",
+        "duration_seconds",
+        "encode_elapsed_ms",
+        "encode_wall_elapsed_ms",
+        "encode_memory",
+        "metric_elapsed_ms",
+        "total_wall_elapsed_ms",
+        "objective"
+      ],
+      "properties": {
+        "size_bytes": { "type": "integer", "minimum": 0 },
+        "frame_count": { "type": "integer", "minimum": 0 },
+        "duration_seconds": { "type": "number", "minimum": 0 },
+        "encode_elapsed_ms": { "type": "integer", "minimum": 0 },
+        "encode_wall_elapsed_ms": { "type": "integer", "minimum": 0 },
+        "encode_memory": {
+          "oneOf": [
+            { "$ref": "#/$defs/processTreeMemory" },
+            { "type": "null" }
+          ]
+        },
+        "metric_elapsed_ms": { "type": "integer", "minimum": 0 },
+        "total_wall_elapsed_ms": { "type": "integer", "minimum": 0 },
+        "objective": {
+          "oneOf": [
+            { "$ref": "#/$defs/objectiveMetrics" },
+            { "type": "null" }
+          ]
+        }
+      }
+    },
+    "correctness": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "duration_error_ms",
+        "duration_passed",
+        "frame_count_passed",
+        "alpha_required",
+        "alpha_coverage_tolerance",
+        "alpha_passed",
+        "seamless_loop_required",
+        "seamless_loop_passed",
+        "all_passed",
+        "violations"
+      ],
+      "properties": {
+        "duration_error_ms": { "type": "number", "minimum": 0 },
+        "duration_passed": { "type": "boolean" },
+        "frame_count_passed": { "type": "boolean" },
+        "alpha_required": { "type": "boolean" },
+        "alpha_coverage_tolerance": { "type": "number", "minimum": 0, "maximum": 1 },
+        "alpha_passed": { "type": "boolean" },
+        "seamless_loop_required": { "type": "boolean" },
+        "seamless_loop_passed": { "type": "boolean" },
+        "all_passed": { "type": "boolean" },
+        "violations": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "run": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "fixture_id",
+        "profile_id",
+        "status",
+        "source_sha256",
+        "request_sha256",
+        "request",
+        "output_sha256",
+        "metrics",
+        "correctness",
+        "output_inspection",
+        "result",
+        "error"
+      ],
+      "properties": {
+        "fixture_id": { "type": "string", "minLength": 1 },
+        "profile_id": { "type": "string", "minLength": 1 },
+        "status": { "enum": ["ok", "gate_failed", "error"] },
+        "source_sha256": { "$ref": "#/$defs/sha256" },
+        "request_sha256": { "$ref": "#/$defs/sha256" },
+        "request": { "type": "object" },
+        "output_sha256": {
+          "oneOf": [
+            { "$ref": "#/$defs/sha256" },
+            { "type": "null" }
+          ]
+        },
+        "metrics": {
+          "oneOf": [
+            { "$ref": "#/$defs/metrics" },
+            { "type": "null" }
+          ]
+        },
+        "correctness": {
+          "oneOf": [
+            { "$ref": "#/$defs/correctness" },
+            { "type": "null" }
+          ]
+        },
+        "output_inspection": {
+          "oneOf": [
+            { "$ref": "#/$defs/inspection" },
+            { "type": "null" }
+          ]
+        },
+        "result": {
+          "oneOf": [
+            { "type": "object" },
+            { "type": "null" }
+          ]
+        },
+        "error": { "$ref": "#/$defs/nullableString" }
+      }
+    }
+  }
+}

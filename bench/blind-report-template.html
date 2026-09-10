@@ -1,0 +1,632 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>GIFP 成对盲测</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --ink: #ecfff5;
+      --muted: #9cb7aa;
+      --line: rgba(154, 224, 190, .18);
+      --panel: rgba(18, 34, 29, .92);
+      --panel-2: rgba(27, 49, 41, .9);
+      --green: #64e8a7;
+      --green-2: #20b978;
+      --amber: #ffc86b;
+      --danger: #ff8f88;
+      --shadow: 0 22px 65px rgba(0, 0, 0, .34);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      font: 15px/1.55 "Segoe UI", "Microsoft YaHei", system-ui, sans-serif;
+      background:
+        radial-gradient(circle at 12% 0%, rgba(63, 207, 139, .18), transparent 32rem),
+        radial-gradient(circle at 90% 18%, rgba(78, 165, 127, .12), transparent 28rem),
+        #07110e;
+    }
+    button, select, input { font: inherit; }
+    button, select {
+      color: var(--ink);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(25, 48, 40, .92);
+    }
+    button {
+      padding: 9px 13px;
+      cursor: pointer;
+      transition: transform .18s ease, border-color .18s ease, background .18s ease;
+    }
+    button:hover { transform: translateY(-1px); border-color: rgba(100, 232, 167, .55); }
+    button:disabled { cursor: not-allowed; opacity: .45; transform: none; }
+    button:focus-visible, select:focus-visible, input:focus-visible {
+      outline: 3px solid rgba(100, 232, 167, .28);
+      outline-offset: 2px;
+    }
+    .shell { width: min(1480px, calc(100% - 32px)); margin: 0 auto; padding: 30px 0 70px; }
+    .hero {
+      position: sticky;
+      top: 12px;
+      z-index: 20;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: rgba(10, 23, 19, .86);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+    .hero-top { display: flex; align-items: start; justify-content: space-between; gap: 18px; }
+    h1 { margin: 0; font-size: clamp(23px, 3vw, 38px); line-height: 1.1; letter-spacing: -.03em; }
+    .eyebrow { margin: 0 0 8px; color: var(--green); font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+    .intro { max-width: 860px; margin: 10px 0 0; color: var(--muted); }
+    .summary { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+    .pill, .tag, .eligibility {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 9px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--muted);
+      background: rgba(255, 255, 255, .025);
+      font-size: 12px;
+    }
+    .pill strong { color: var(--ink); }
+    .toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 16px; }
+    .toolbar select { min-width: 170px; padding: 9px 34px 9px 11px; }
+    .reviewer { display: inline-flex; align-items: center; gap: 7px; color: var(--muted); }
+    .reviewer input {
+      width: 170px;
+      padding: 9px 11px;
+      color: var(--ink);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(25, 48, 40, .92);
+    }
+    .check { display: inline-flex; align-items: center; gap: 7px; color: var(--muted); }
+    .check input { accent-color: var(--green-2); }
+    .primary { color: #052117; border-color: transparent; background: linear-gradient(135deg, var(--green), #35ca8b); font-weight: 800; }
+    .danger { color: #ffd8d4; border-color: rgba(255, 143, 136, .25); }
+    .count { margin-left: auto; color: var(--muted); }
+    .notice {
+      margin: 18px 0;
+      padding: 13px 16px;
+      border: 1px solid rgba(255, 200, 107, .28);
+      border-radius: 14px;
+      color: #ffe2aa;
+      background: rgba(86, 59, 17, .28);
+    }
+    .grid { display: grid; gap: 18px; }
+    .pair {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: var(--panel);
+      box-shadow: 0 14px 40px rgba(0, 0, 0, .22);
+    }
+    .pair.exploratory { border-color: rgba(255, 200, 107, .3); }
+    .pair-head { display: flex; align-items: start; justify-content: space-between; gap: 14px; padding: 16px 18px; border-bottom: 1px solid var(--line); }
+    .pair h2 { margin: 0; font-size: 17px; }
+    .meta { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 8px; }
+    .eligibility.formal { color: var(--green); border-color: rgba(100, 232, 167, .3); }
+    .eligibility.explore { color: var(--amber); border-color: rgba(255, 200, 107, .3); }
+    .previews { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .candidate { min-width: 0; padding: 18px; }
+    .candidate + .candidate { border-left: 1px solid var(--line); }
+    .candidate-title { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .letter {
+      display: inline-grid;
+      width: 34px;
+      height: 34px;
+      place-items: center;
+      border-radius: 11px;
+      color: #052117;
+      background: var(--green);
+      font-weight: 900;
+      font-size: 18px;
+    }
+    .correct { color: var(--green); font-size: 12px; }
+    .incorrect { color: var(--danger); font-size: 12px; }
+    .stage {
+      display: grid;
+      min-height: 290px;
+      place-items: center;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background-color: #dcd9cf;
+      background-image:
+        linear-gradient(45deg, #c8c5bb 25%, transparent 25%),
+        linear-gradient(-45deg, #c8c5bb 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #c8c5bb 75%),
+        linear-gradient(-45deg, transparent 75%, #c8c5bb 75%);
+      background-position: 0 0, 0 8px, 8px -8px, -8px 0;
+      background-size: 16px 16px;
+    }
+    .stage.cream { background: #f0eadb; }
+    .stage.dark { background: #18211e; }
+    .stage img { display: block; max-width: 100%; max-height: 430px; image-rendering: auto; }
+    .technical {
+      margin-top: 12px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(5, 17, 13, .5);
+    }
+    .technical[hidden] { display: none; }
+    .identity { margin: 0 0 9px; color: var(--green); font-weight: 800; }
+    .metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 5px 14px; margin: 0; }
+    .metric { display: flex; justify-content: space-between; gap: 9px; color: var(--muted); font-size: 12px; }
+    .metric output { color: var(--ink); font-variant-numeric: tabular-nums; }
+    .pair-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 9px; padding: 0 18px 14px; }
+    .vote-row { display: flex; flex-wrap: wrap; align-items: center; gap: 9px; padding: 14px 18px 18px; border-top: 1px solid var(--line); }
+    .vote-label { margin-right: 4px; color: var(--muted); }
+    .vote.active { color: #052117; border-color: transparent; background: var(--green); font-weight: 800; }
+    .saved { margin-left: auto; color: var(--green); font-size: 12px; }
+    .saved.explore { color: var(--amber); }
+    .empty { padding: 50px 20px; text-align: center; color: var(--muted); border: 1px dashed var(--line); border-radius: 18px; }
+    .omissions { margin-top: 18px; color: var(--muted); }
+    .omissions summary { cursor: pointer; color: var(--amber); }
+    .omissions li { margin: 5px 0; }
+    @media (max-width: 820px) {
+      .shell { width: min(100% - 18px, 1480px); padding-top: 10px; }
+      .hero { position: static; }
+      .hero-top, .pair-head { display: block; }
+      .previews { grid-template-columns: 1fr; }
+      .candidate + .candidate { border-left: 0; border-top: 1px solid var(--line); }
+      .stage { min-height: 210px; }
+      .count { width: 100%; margin-left: 0; }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <section class="hero">
+      <div class="hero-top">
+        <div>
+          <p class="eyebrow">GIFP Quality Lab</p>
+          <h1>成对盲测</h1>
+          <p class="intro">先观察运动、肤色、文字边缘、静态闪烁和循环接缝，再投 A / B / 接近。候选身份和客观指标默认隐藏，减少先入为主。</p>
+        </div>
+        <button class="primary" id="exportVotes" type="button">导出投票 JSON</button>
+      </div>
+      <div class="summary" id="summary"></div>
+      <div class="toolbar">
+        <select id="categoryFilter" aria-label="按类别筛选"></select>
+        <label class="reviewer"><span>评审代号</span><input id="reviewerLabel" type="text" maxlength="64" autocomplete="off" placeholder="例如 reviewer-01"></label>
+        <label class="check"><input id="formalOnly" type="checkbox">仅正式对照</label>
+        <label class="check"><input id="pendingOnly" type="checkbox">仅未投票</label>
+        <button id="resetVotes" class="danger" type="button">重置本轮盲测</button>
+        <button id="newReviewerSession" class="danger" type="button">开始新评审会话</button>
+        <span class="count" id="visibleCount"></span>
+      </div>
+    </section>
+    <div class="notice" id="protocolNotice">正式票只计入体积差不超过 5%、两侧都通过正确性门禁且来自干净 Git 提交的配对；投票前或改票前揭示身份也会自动降为探索票。</div>
+    <section class="grid" id="pairs"></section>
+    <details class="omissions" id="omissions" hidden>
+      <summary></summary>
+      <ul></ul>
+    </details>
+  </main>
+  <script id="gifp-blind-data" type="application/json">__GIFP_BLIND_DATA__</script>
+  <script>
+    (() => {
+      "use strict";
+      const data = JSON.parse(document.getElementById("gifp-blind-data").textContent);
+      const storageKey = `gifp-blind-votes:${data.run_id}:${data.reference_profile_id}:${data.candidate_profile_id}`;
+      const reviewerId = () => {
+        if (globalThis.crypto?.randomUUID) return globalThis.crypto.randomUUID();
+        return `reviewer-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 12)}`;
+      };
+      const freshState = () => ({
+        votes: {},
+        voteMeta: {},
+        revealed: {},
+        revealHistory: {},
+        backgrounds: {},
+        reviewerId: reviewerId(),
+        reviewerLabel: "",
+      });
+      const defaultState = freshState();
+      let state = defaultState;
+      let storageAvailable = true;
+      try {
+        const saved = JSON.parse(localStorage.getItem(storageKey));
+        if (saved && typeof saved === "object") {
+          state = {
+            votes: saved.votes || {},
+            voteMeta: saved.voteMeta || {},
+            revealed: saved.revealed || {},
+            revealHistory: saved.revealHistory || {},
+            backgrounds: saved.backgrounds || {},
+            reviewerId: saved.reviewerId || defaultState.reviewerId,
+            reviewerLabel: typeof saved.reviewerLabel === "string" ? saved.reviewerLabel : "",
+          };
+        }
+      } catch (_) {
+        state = defaultState;
+        storageAvailable = false;
+      }
+
+      const pairRoot = document.getElementById("pairs");
+      const summary = document.getElementById("summary");
+      const protocolNotice = document.getElementById("protocolNotice");
+      const categoryFilter = document.getElementById("categoryFilter");
+      const formalOnly = document.getElementById("formalOnly");
+      const pendingOnly = document.getElementById("pendingOnly");
+      const reviewerLabel = document.getElementById("reviewerLabel");
+      const exportVotesButton = document.getElementById("exportVotes");
+      const visibleCount = document.getElementById("visibleCount");
+      const categories = [...new Set(data.pairs.map(pair => pair.category))].sort();
+      if (data.git_dirty !== false || !data.git_commit) {
+        protocolNotice.textContent += " 当前报告不是可验证的干净提交，因此所有配对仅作探索。";
+      }
+      if (!storageAvailable) {
+        protocolNotice.textContent += " 当前浏览器不允许本地持久化；本页仍可投票并导出，但刷新会丢失未导出的票。";
+      }
+      categoryFilter.append(option("all", "全部类别"));
+      categories.forEach(category => categoryFilter.append(option(category, category)));
+      reviewerLabel.value = state.reviewerLabel;
+
+      function option(value, label) {
+        const node = document.createElement("option");
+        node.value = value;
+        node.textContent = label;
+        return node;
+      }
+
+      function save() {
+        try {
+          localStorage.setItem(storageKey, JSON.stringify(state));
+        } catch (_) {
+          if (storageAvailable) {
+            protocolNotice.textContent += " 本地持久化失败；请在刷新前导出投票 JSON。";
+          }
+          storageAvailable = false;
+        }
+        renderSummary();
+      }
+
+      function pill(label, value) {
+        const node = document.createElement("span");
+        node.className = "pill";
+        node.append(document.createTextNode(`${label} `));
+        const strong = document.createElement("strong");
+        strong.textContent = value;
+        node.append(strong);
+        return node;
+      }
+
+      function renderSummary() {
+        const formalPairs = data.pairs.filter(pair => pair.formal_vote_eligible);
+        const voted = data.pairs.filter(pair => state.votes[pair.fixture_id]).length;
+        const formalVoted = formalPairs.filter(pair => state.votes[pair.fixture_id] && blindVoteEligible(pair)).length;
+        const complete = data.available_pairs > 0 && voted === data.available_pairs;
+        exportVotesButton.disabled = !complete;
+        exportVotesButton.title = complete ? "导出本轮投票 JSON" : "完成全部可比较配对后才能导出";
+        summary.replaceChildren(
+          pill("语料", data.expected_pairs),
+          pill("可比较", data.available_pairs),
+          pill("正式配对", formalPairs.length),
+          pill("已投票", `${voted}/${data.available_pairs}`),
+          pill("正式票", `${formalVoted}/${formalPairs.length}`),
+          pill("Commit", data.git_commit ? data.git_commit.slice(0, 12) : "unknown"),
+          pill("Run", data.run_id),
+        );
+      }
+
+      function blindVoteEligible(pair) {
+        const meta = state.voteMeta[pair.fixture_id];
+        return pair.formal_vote_eligible
+          && Boolean(meta)
+          && meta.identity_revealed_before_or_during_vote !== true;
+      }
+
+      function formatBytes(bytes) {
+        if (!Number.isFinite(bytes)) return "—";
+        if (bytes < 1024) return `${bytes} B`;
+        if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KiB`;
+        return `${(bytes / 1024 / 1024).toFixed(2)} MiB`;
+      }
+
+      function fixed(value, digits = 4) {
+        return Number.isFinite(value) ? Number(value).toFixed(digits) : "—";
+      }
+
+      function metric(label, value) {
+        const row = document.createElement("div");
+        row.className = "metric";
+        const name = document.createElement("span");
+        name.textContent = label;
+        const output = document.createElement("output");
+        output.textContent = value;
+        row.append(name, output);
+        return row;
+      }
+
+      function candidateNode(pair, candidate, letter) {
+        const section = document.createElement("section");
+        section.className = "candidate";
+        const title = document.createElement("div");
+        title.className = "candidate-title";
+        const badge = document.createElement("span");
+        badge.className = "letter";
+        badge.textContent = letter;
+        const gate = document.createElement("span");
+        gate.className = candidate.correctness_passed ? "correct" : "incorrect";
+        gate.textContent = candidate.correctness_passed ? "正确性通过" : "正确性未通过";
+        title.append(badge, gate);
+
+        const stage = document.createElement("div");
+        const background = state.backgrounds[pair.fixture_id] || "checker";
+        stage.className = `stage ${background === "checker" ? "" : background}`.trim();
+        const image = document.createElement("img");
+        image.loading = "lazy";
+        image.decoding = "async";
+        image.src = candidate.image_src;
+        image.alt = `${pair.fixture_id} 候选 ${letter}`;
+        image.dataset.originalSrc = candidate.image_src;
+        stage.append(image);
+
+        const technical = document.createElement("div");
+        technical.className = "technical";
+        technical.hidden = !state.revealed[pair.fixture_id];
+        const identity = document.createElement("p");
+        identity.className = "identity";
+        identity.textContent = `${candidate.profile_id} · ${candidate.generation_mode} · ${candidate.backend_id}`;
+        const metrics = document.createElement("div");
+        metrics.className = "metrics";
+        metrics.append(
+          metric("体积", formatBytes(candidate.size_bytes)),
+          metric("帧数", String(candidate.frame_count)),
+          metric("编码", `${candidate.encode_elapsed_ms} ms`),
+          metric("调色板", candidate.palette_strategy),
+          metric("目标体积", formatBytes(candidate.target_size_bytes)),
+          metric("体积偏差", Number.isFinite(candidate.target_deviation_percent) ? `${fixed(candidate.target_deviation_percent, 2)}%` : "—"),
+          metric("搜索次数", String(candidate.target_attempts)),
+          metric("目标状态", candidate.target_fit_status),
+          metric("VMAF NEG ↑", fixed(candidate.vmaf_neg_mean, 2)),
+          metric("VMAF P05 ↑", fixed(candidate.vmaf_neg_p05, 2)),
+          metric("SSIM ↑", fixed(candidate.ssim_mean, 5)),
+          metric("MS-SSIM ↑", fixed(candidate.ms_ssim_mean, 5)),
+          metric("MS-SSIM 覆盖", `${fixed(candidate.ms_ssim_valid_ratio * 100, 1)}%`),
+          metric("CIEDE2000 质量分 ↑", fixed(candidate.ciede2000_mean, 3)),
+          metric("CIEDE 覆盖", `${fixed(candidate.ciede2000_valid_ratio * 100, 1)}%`),
+          metric("CAMBI ↓", fixed(candidate.cambi_mean, 3)),
+          metric("OKLab 误差 ↓", fixed(candidate.mean_oklab_error, 5)),
+          metric("静态闪烁 ↓", fixed(candidate.static_region_temporal_residual, 5)),
+          metric("边缘保真 ↑", fixed(candidate.edge_preservation, 4)),
+          metric("Alpha 误差 ↓", fixed(candidate.alpha_coverage_error, 5)),
+          metric("循环缝增量 ↓", fixed(candidate.loop_seam_excess_oklab, 5)),
+          metric("编码器", candidate.encoder_used),
+        );
+        technical.append(identity, metrics);
+        section.append(title, stage, technical);
+        return section;
+      }
+
+      function makeButton(label, className, handler) {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = className || "";
+        button.textContent = label;
+        button.addEventListener("click", handler);
+        return button;
+      }
+
+      function renderPair(pair) {
+        const article = document.createElement("article");
+        article.className = `pair ${pair.formal_vote_eligible ? "" : "exploratory"}`.trim();
+        const head = document.createElement("header");
+        head.className = "pair-head";
+        const titleWrap = document.createElement("div");
+        const title = document.createElement("h2");
+        title.textContent = pair.fixture_id;
+        const meta = document.createElement("div");
+        meta.className = "meta";
+        [pair.category, ...pair.tags].forEach(value => {
+          const tag = document.createElement("span");
+          tag.className = "tag";
+          tag.textContent = value;
+          meta.append(tag);
+        });
+        titleWrap.append(title, meta);
+        const eligibility = document.createElement("span");
+        eligibility.className = `eligibility ${pair.formal_vote_eligible ? "formal" : "explore"}`;
+        eligibility.textContent = pair.formal_vote_eligible
+          ? `正式 · 体积差 ${fixed(pair.size_delta_percent, 1)}%`
+          : `探索 · 体积差 ${fixed(pair.size_delta_percent, 1)}%`;
+        head.append(titleWrap, eligibility);
+
+        const previews = document.createElement("div");
+        previews.className = "previews";
+        previews.append(
+          candidateNode(pair, pair.candidate_a, "A"),
+          candidateNode(pair, pair.candidate_b, "B"),
+        );
+
+        const actions = document.createElement("div");
+        actions.className = "pair-actions";
+        actions.append(
+          makeButton("重新同步播放", "", () => {
+            const token = Date.now();
+            article.querySelectorAll("img").forEach(image => {
+              image.src = `${image.dataset.originalSrc}?sync=${token}`;
+            });
+          }),
+          makeButton("切换底色", "", () => {
+            const values = ["checker", "cream", "dark"];
+            const current = state.backgrounds[pair.fixture_id] || "checker";
+            state.backgrounds[pair.fixture_id] = values[(values.indexOf(current) + 1) % values.length];
+            save();
+            render();
+          }),
+          makeButton(state.revealed[pair.fixture_id] ? "隐藏身份与指标" : "揭示身份与指标", "", () => {
+            if (!state.revealed[pair.fixture_id]
+                && !state.votes[pair.fixture_id]
+                && !confirm("尚未投票。现在揭示会使这个配对只能计为探索票，仍要继续吗？")) return;
+            if (!state.revealed[pair.fixture_id]) {
+              state.revealHistory[pair.fixture_id] = true;
+            }
+            state.revealed[pair.fixture_id] = !state.revealed[pair.fixture_id];
+            save();
+            render();
+          }),
+        );
+
+        const voteRow = document.createElement("div");
+        voteRow.className = "vote-row";
+        const voteLabel = document.createElement("span");
+        voteLabel.className = "vote-label";
+        voteLabel.textContent = "主观观感：";
+        voteRow.append(voteLabel);
+        [["A", "A 更好"], ["B", "B 更好"], ["same", "接近"]].forEach(([value, label]) => {
+          const button = makeButton(label, `vote ${state.votes[pair.fixture_id] === value ? "active" : ""}`, () => {
+            const now = new Date().toISOString();
+            const previous = state.voteMeta[pair.fixture_id];
+            state.votes[pair.fixture_id] = value;
+            state.voteMeta[pair.fixture_id] = {
+              first_voted_at: previous?.first_voted_at || now,
+              last_voted_at: now,
+              revision_count: (previous?.revision_count || 0) + (previous ? 1 : 0),
+              identity_revealed_before_or_during_vote:
+                Boolean(previous?.identity_revealed_before_or_during_vote)
+                || Boolean(state.revealHistory[pair.fixture_id]),
+            };
+            save();
+            render();
+          });
+          voteRow.append(button);
+        });
+        if (state.votes[pair.fixture_id]) {
+          const saved = document.createElement("span");
+          const formal = blindVoteEligible(pair);
+          saved.className = `saved ${formal ? "" : "explore"}`.trim();
+          saved.textContent = formal
+            ? "已计入正式盲测票"
+            : pair.formal_vote_eligible
+              ? "已记录为探索票（投票前或改票前已揭示）"
+              : "已记录为探索票（体积/正确性不满足）";
+          voteRow.append(saved);
+        }
+        article.append(head, previews, actions, voteRow);
+        return article;
+      }
+
+      function filteredPairs() {
+        return data.pairs.filter(pair => {
+          if (categoryFilter.value !== "all" && pair.category !== categoryFilter.value) return false;
+          if (formalOnly.checked && !pair.formal_vote_eligible) return false;
+          if (pendingOnly.checked && state.votes[pair.fixture_id]) return false;
+          return true;
+        });
+      }
+
+      function render() {
+        const visible = filteredPairs();
+        pairRoot.replaceChildren(...visible.map(renderPair));
+        if (!visible.length) {
+          const empty = document.createElement("div");
+          empty.className = "empty";
+          empty.textContent = "当前筛选条件下没有配对。";
+          pairRoot.append(empty);
+        }
+        visibleCount.textContent = `显示 ${visible.length} / ${data.available_pairs}`;
+        renderSummary();
+      }
+
+      function exportVotes() {
+        const votes = data.pairs
+          .filter(pair => state.votes[pair.fixture_id])
+          .map(pair => {
+            const choice = state.votes[pair.fixture_id];
+            const voteMeta = state.voteMeta[pair.fixture_id] || {};
+            const chosenProfile = choice === "A"
+              ? pair.candidate_a.profile_id
+              : choice === "B" ? pair.candidate_b.profile_id : null;
+            return {
+              fixture_id: pair.fixture_id,
+              category: pair.category,
+              formal_vote_eligible: pair.formal_vote_eligible,
+              blind_vote_eligible: blindVoteEligible(pair),
+              choice,
+              chosen_profile_id: chosenProfile,
+              candidate_a_profile_id: pair.candidate_a.profile_id,
+              candidate_b_profile_id: pair.candidate_b.profile_id,
+              first_voted_at: voteMeta.first_voted_at || null,
+              last_voted_at: voteMeta.last_voted_at || null,
+              revision_count: voteMeta.revision_count || 0,
+              identity_revealed_before_or_during_vote:
+                voteMeta.identity_revealed_before_or_during_vote === true,
+            };
+          });
+        const formalVoteCount = votes.filter(vote => vote.blind_vote_eligible).length;
+        const payload = {
+          schema_version: 2,
+          protocol: "gifp-paired-blind-v2",
+          run_id: data.run_id,
+          corpus_id: data.corpus_id,
+          manifest_sha256: data.manifest_sha256,
+          git_commit: data.git_commit,
+          git_dirty: data.git_dirty,
+          reviewer_id: state.reviewerId,
+          reviewer_label: state.reviewerLabel || null,
+          exported_at: new Date().toISOString(),
+          expected_pair_count: data.expected_pairs,
+          available_pair_count: data.available_pairs,
+          formal_pair_count: data.pairs.filter(pair => pair.formal_vote_eligible).length,
+          formal_vote_count: formalVoteCount,
+          votes,
+        };
+        const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+        const anchor = document.createElement("a");
+        anchor.href = URL.createObjectURL(blob);
+        anchor.download = `gifp-blind-votes-${data.run_id}-${state.reviewerId.slice(0, 8)}.json`;
+        anchor.click();
+        setTimeout(() => URL.revokeObjectURL(anchor.href), 1000);
+      }
+
+      categoryFilter.addEventListener("change", render);
+      formalOnly.addEventListener("change", render);
+      pendingOnly.addEventListener("change", render);
+      reviewerLabel.addEventListener("input", () => {
+        state.reviewerLabel = reviewerLabel.value.trim();
+        save();
+      });
+      exportVotesButton.addEventListener("click", exportVotes);
+      document.getElementById("resetVotes").addEventListener("click", () => {
+        if (!confirm("清空这次运行的全部选择？已经揭示过身份的配对仍只能计为探索票。")) return;
+        state.votes = {};
+        state.voteMeta = {};
+        state.revealed = {};
+        save();
+        render();
+      });
+      document.getElementById("newReviewerSession").addEventListener("click", () => {
+        if (!confirm("仅当换了一位真实评审者时才开始新会话。当前未导出的投票会被清空，仍要继续吗？")) return;
+        state = freshState();
+        reviewerLabel.value = "";
+        save();
+        render();
+      });
+
+      const omissions = document.getElementById("omissions");
+      if (data.omitted_pairs.length) {
+        omissions.hidden = false;
+        omissions.querySelector("summary").textContent = `${data.omitted_pairs.length} 个配对未生成`;
+        const list = omissions.querySelector("ul");
+        data.omitted_pairs.forEach(item => {
+          const line = document.createElement("li");
+          line.textContent = `${item.fixture_id}: ${item.reason}`;
+          list.append(line);
+        });
+      }
+      render();
+    })();
+  </script>
+</body>
+</html>

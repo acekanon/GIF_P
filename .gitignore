@@ -1,10 +1,25 @@
 # Dependencies and generated output
 node_modules/
 dist/
-release/
+/release/
 tmp/
 src-tauri/target/
 public/preset-previews/*.png
+bench/generated/
+test/*.mp4
+test/.quality-lab/
+test/private-*.json
+
+# Local experiments and user media are not source release inputs.
+.qa/
+audits/
+__pycache__/
+*.pyc
+test/*
+!test/fixtures/
+.env
+.env.*
+!.env.example
 
 # Local/editor noise
 .DS_Store
@@ -12,6 +27,7 @@ Thumbs.db
 *.log
 *.tmp
 *.bak
+~$*.pptx
 
 # Workspace folders that are not part of GIF_P
 .reference/

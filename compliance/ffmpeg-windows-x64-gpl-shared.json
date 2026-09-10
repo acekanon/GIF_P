@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "component": "FFmpeg",
+  "platform": "windows-x86_64",
+  "variant": "win64-gpl-shared",
+  "licenseExpression": "GPL-3.0-or-later",
+  "distributionPolicy": {
+    "internalAllowed": true,
+    "publicAlphaAllowed": false,
+    "publicBlockers": [
+      "COMPLETE_CORRESPONDING_SOURCE_NOT_ARCHIVED",
+      "BUILD_INPUTS_NOT_FULLY_IMMUTABLE"
+    ]
+  },
+  "binaryAsset": {
+    "provider": "Gyan.dev FFmpeg Builds",
+    "releaseTag": "9.0",
+    "name": "ffmpeg-9.0-full_build-shared.7z",
+    "url": "https://www.gyan.dev/ffmpeg/builds/packages/ffmpeg-9.0-full_build-shared.7z",
+    "sizeBytes": 58700192,
+    "sha256": "c07e3313aba524186c4684052e1c860dd2bb6983a7299668255939660126907a"
+  },
+  "version": {
+    "marker": "9.0-full_build-www.gyan.dev",
+    "ffmpegCommit": "d32b387f2b0a484599d4587d651891f0c63c4238",
+    "buildRecipeCommit": "46465995c991fe65c5de853fa79bddec09cd6c37"
+  },
+  "sourceProvenance": {
+    "ffmpegCommitUrl": "https://github.com/FFmpeg/FFmpeg/commit/d32b387f2b0a484599d4587d651891f0c63c4238",
+    "ffmpegArchiveUrl": "https://github.com/FFmpeg/FFmpeg/archive/d32b387f2b0a484599d4587d651891f0c63c4238.tar.gz",
+    "buildRecipeCommitUrl": "https://github.com/GyanD/codexffmpeg/commit/46465995c991fe65c5de853fa79bddec09cd6c37"
+  },
+  "configuration": {
+    "requiredFlags": [
+      "--enable-gpl",
+      "--enable-version3",
+      "--enable-shared",
+      "--enable-libwebp",
+      "--enable-libvmaf"
+    ],
+    "forbiddenFlags": [
+      "--enable-nonfree"
+    ]
+  },
+  "licenseFile": {
+    "name": "LICENSE",
+    "sizeBytes": 35147,
+    "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+  },
+  "runtimeFiles": [
+    {
+      "name": "avcodec-63.dll",
+      "sizeBytes": 97922560,
+      "sha256": "26c8a528ae31323440c093fc2da209b7e3701fdc3a1bd1af88952831542784c5"
+    },
+    {
+      "name": "avdevice-63.dll",
+      "sizeBytes": 6548992,
+      "sha256": "ee5c232ad7fe54a1c7dad3c6210883a46f07ebc6dd4d4da74c39856476157a9e"
+    },
+    {
+      "name": "avfilter-12.dll",
+      "sizeBytes": 103114240,
+      "sha256": "943319e100c980ad47f88d08ab589244dc56740e34a2d342ab620e8d411364e8"
+    },
+    {
+      "name": "avformat-63.dll",
+      "sizeBytes": 20253184,
+      "sha256": "7c41bd95da7ead42e53ca93ff1c6f721bead0beedd156aa10a2027dafe8923ae"
+    },
+    {
+      "name": "avutil-61.dll",
+      "sizeBytes": 3160576,
+      "sha256": "b8c34139adb91ecad883bbf1deb57eeee752deee490d11d464bad6be01d83e3d"
+    },
+    {
+      "name": "ffmpeg.exe",
+      "sizeBytes": 632832,
+      "sha256": "a5a39c26af5925b33d277e12fa338d68380d94a06c3b0b5184018226bf89e2f1"
+    },
+    {
+      "name": "ffprobe.exe",
+      "sizeBytes": 230400,
+      "sha256": "35dab4c6bee96f80632d0759922d1b21e61a71fcad4fe1f2eb49a86bb2680fc5"
+    },
+    {
+      "name": "swresample-7.dll",
+      "sizeBytes": 486912,
+      "sha256": "1dc803e4b2c54f12ed9298e4cfb8436a3eefb69132574c27c002c3abb840e93f"
+    },
+    {
+      "name": "swscale-10.dll",
+      "sizeBytes": 2421760,
+      "sha256": "8a69ca5328b6765b75ff50571413011f9300593f43c63db1b256e3d8b2f7bf13"
+    }
+  ]
+}

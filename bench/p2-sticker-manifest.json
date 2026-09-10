@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "corpus_id": "p2-sticker-pipeline-pilot-v1",
+  "scope": "Deterministic synthetic regression fixtures, not a competitive quality ranking or platform compliance suite.",
+  "fixtures": [
+    {
+      "id": "small-caption",
+      "input": "color=c=0x39536B:s=320x180:r=10:d=2",
+      "filter": "drawbox=x=80:y=24:w=160:h=112:color=0xF2C879:t=fill,drawbox=x=100:y=50:w=24:h=16:color=0x293142:t=fill,drawbox=x=196:y=50:w=24:h=16:color=0x293142:t=fill,drawbox=x=128:y=98:w=64:h=8:color=0xD47777:t=fill:enable='lt(mod(t,1),0.5)'",
+      "pixel_format": "yuv444p",
+      "width": 160,
+      "fps": 10,
+      "duration": 2.0,
+      "caption": true,
+      "alpha": false,
+      "tags": ["small-text", "caption-outline", "local-motion"]
+    },
+    {
+      "id": "alpha-panels",
+      "input": "color=c=black@0.0:s=256x256:r=10:d=2,format=rgba",
+      "filter": "drawbox=x=36:y=30:w=184:h=186:color=0x173D38@0.65:t=fill:replace=1,drawbox=x=52:y=62:w=152:h=8:color=0xF3EBDD@1.0:t=fill:replace=1,drawbox=x=52:y=94:w=128:h=4:color=0x73D0AE@1.0:t=fill:replace=1,drawbox=x=90:y=138:w=76:h=40:color=0xEAA15B@1.0:t=fill:replace=1:enable='lt(mod(t,1),0.5)'",
+      "pixel_format": "bgra",
+      "width": 128,
+      "fps": 10,
+      "duration": 2.0,
+      "caption": true,
+      "alpha": true,
+      "tags": ["transparent", "semi-transparent-source", "thin-lines", "caption"]
+    },
+    {
+      "id": "lowlight-texture",
+      "input": "color=c=0x151820:s=320x180:r=10:d=2",
+      "filter": "noise=alls=7:allf=t+u:all_seed=17,drawbox=x=110:y=26:w=100:h=128:color=0x6E4D46:t=fill,drawbox=x=126:y=44:w=68:h=90:color=0xA87162:t=fill,drawbox=x=142:y=78:w=8:h=6:color=0x211F24:t=fill,drawbox=x=170:y=78:w=8:h=6:color=0x211F24:t=fill",
+      "pixel_format": "yuv444p",
+      "width": 160,
+      "fps": 10,
+      "duration": 2.0,
+      "caption": false,
+      "alpha": false,
+      "tags": ["low-light", "seeded-noise", "skin-tone-proxy"]
+    },
+    {
+      "id": "portrait-loop",
+      "input": "color=c=0x20383D:s=192x320:r=10:d=2",
+      "filter": "drawbox=x=18:y=26:w=156:h=268:color=0xA0CCB5:t=fill,drawbox=x=36:y=52:w=120:h=7:color=0xFFF5DC:t=fill,drawbox=x=36:y=74:w=94:h=3:color=0x20383D:t=fill,drawbox=x=62:y=128:w=68:h=68:color=0xEAA15B:t=fill:enable='lt(mod(t,1),0.5)',drawbox=x=62:y=152:w=68:h=68:color=0xEAA15B:t=fill:enable='gte(mod(t,1),0.5)'",
+      "pixel_format": "yuv444p",
+      "width": 128,
+      "fps": 10,
+      "duration": 2.0,
+      "caption": false,
+      "alpha": false,
+      "tags": ["portrait", "periodic-loop", "local-motion", "static-background"]
+    }
+  ]
+}

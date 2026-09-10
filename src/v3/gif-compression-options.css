@@ -1,0 +1,19 @@
+.gif-compression-panel { min-width: 0; }
+.gif-compression-panel > header { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+.gif-compression-panel > header > strong { color: var(--ink); font-size: 13px; }
+.gif-compression-count { padding: 3px 7px; background: color-mix(in srgb, var(--aqua) 16%, var(--paper)); border-radius: 9px; font-size: 10px; color: var(--aqua-strong); font-weight: 850; animation: compression-count-in .2s ease-out; }
+.gif-compression-panel > header > button { margin-left: auto; padding: 4px 7px; border: 1px solid var(--line-soft); border-radius: 8px; background: var(--paper-strong); color: var(--ink-soft); font: inherit; font-size: 10px; cursor: pointer; }
+.gif-compression-panel > header > button:disabled { opacity: .45; cursor: default; }
+.gif-compression-section { margin: 9px 0 7px; font-size: 11px; font-weight: 900; color: var(--ink-soft); }
+.gif-compression-panel .gif-postprocess-option { transition: transform .18s ease, box-shadow .2s, border-color .2s; }
+.gif-compression-panel .gif-postprocess-option:not(.is-disabled):hover { transform: translateY(-1px); box-shadow: 0 3px 0 color-mix(in srgb, var(--ink) 9%, transparent); }
+.gif-compression-panel .gif-postprocess-option.is-disabled > span { opacity: .6; }
+.gif-compression-panel .gif-postprocess-option.is-dependent { margin-left: 12px; border-style: dashed; }
+.gif-compression-footnote { margin: 9px 0 0; color: var(--ink-soft); font-size: 10px; line-height: 1.5; }
+@keyframes compression-count-in { from { opacity: .5; transform: translateY(3px) scale(.96); } to { opacity: 1; transform: none; } }
+.reduce-motion .gif-compression-panel *, .reduce-motion .gif-compression-panel *::after { animation: none !important; transition: none !important; }
+.reduce-motion .gif-compression-panel .gif-postprocess-option { transform: none !important; }
+@media (prefers-reduced-motion: reduce) {
+  .gif-compression-panel *, .gif-compression-panel *::after { animation: none !important; transition: none !important; }
+  .gif-compression-panel .gif-postprocess-option { transform: none !important; }
+}

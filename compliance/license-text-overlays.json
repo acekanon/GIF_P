@@ -1,0 +1,230 @@
+{
+  "schemaVersion": 1,
+  "entries": [
+    {
+      "ecosystem": "cargo",
+      "name": "alloc-stdlib",
+      "version": "0.2.2",
+      "source": "registry+https://github.com/rust-lang/crates.io-index",
+      "integrity": "94fb8275041c72129eb51b7d0322c29b8387a0386127718b096429201a5d6ece",
+      "license": "BSD-3-Clause",
+      "vcsCommit": "6032b6a9b20e03737135c55a0270ccffcc1438ef",
+      "vcsUrl": "https://github.com/dropbox/rust-alloc-no-stdlib/commit/6032b6a9b20e03737135c55a0270ccffcc1438ef",
+      "files": [
+        {
+          "path": "compliance/license-texts/alloc-stdlib-0.2.2-LICENSE.txt",
+          "sha256": "c0c56f26d9c051cac4d200c34c84e7ae9aaa853e01a982a1df08b09931e518ae",
+          "kind": "license",
+          "sourceType": "repository-revision",
+          "sourceUrl": "https://raw.githubusercontent.com/dropbox/rust-alloc-no-stdlib/6032b6a9b20e03737135c55a0270ccffcc1438ef/LICENSE"
+        }
+      ]
+    },
+    {
+      "ecosystem": "cargo",
+      "name": "selectors",
+      "version": "0.36.1",
+      "source": "registry+https://github.com/rust-lang/crates.io-index",
+      "integrity": "c5d9c0c92a92d33f08817311cf3f2c29a3538a8240e94a6a3c622ce652d7e00c",
+      "license": "MPL-2.0",
+      "vcsCommit": "635e1a19d02960588a00e189bd4bd5bdb150ec3d",
+      "vcsUrl": "https://github.com/servo/stylo/commit/635e1a19d02960588a00e189bd4bd5bdb150ec3d",
+      "files": [
+        {
+          "path": "compliance/license-texts/selectors-0.36.1-MPL-2.0.txt",
+          "sha256": "3f3d9e0024b1921b067d6f7f88deb4a60cbe7a78e76c64e3f1d7fc3b779b9d04",
+          "kind": "license",
+          "sourceType": "canonical-license",
+          "sourceUrl": "https://www.mozilla.org/media/MPL/2.0/index.f75d2927d3c1.txt"
+        }
+      ]
+    },
+    {
+      "ecosystem": "cargo",
+      "name": "unic-char-property",
+      "version": "0.9.0",
+      "source": "registry+https://github.com/rust-lang/crates.io-index",
+      "integrity": "a8c57a407d9b6fa02b4795eb81c5b6652060a15a7903ea981f3d723e6c0be221",
+      "license": "MIT/Apache-2.0",
+      "vcsCommit": "5878605364af97a3358368a6eaef02104af2e016",
+      "vcsUrl": "https://github.com/open-i18n/rust-unic/commit/5878605364af97a3358368a6eaef02104af2e016",
+      "files": [
+        {
+          "path": "compliance/license-texts/rust-unic-0.9.0-LICENSE-APACHE.txt",
+          "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+          "kind": "license",
+          "sourceType": "repository-revision",
+          "sourceUrl": "https://raw.githubusercontent.com/open-i18n/rust-unic/5878605364af97a3358368a6eaef02104af2e016/LICENSE-APACHE"
+        },
+        {
+          "path": "compliance/license-texts/rust-unic-0.9.0-LICENSE-MIT.txt",
+          "sha256": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3",
+          "kind": "license",
+          "sourceType": "repository-revision",
+          "sourceUrl": "https://raw.githubusercontent.com/open-i18n/rust-unic/5878605364af97a3358368a6eaef02104af2e016/LICENSE-MIT"
+        }
+      ]
+    },
+    {
+      "ecosystem": "cargo",
+      "name": "unic-char-range",
+      "version": "0.9.0",
+      "source": "registry+https://github.com/rust-lang/crates.io-index",
+      "integrity": "0398022d5f700414f6b899e10b8348231abf9173fa93144cbc1a43b9793c1fbc",
+      "license": "MIT/Apache-2.0",
+      "vcsCommit": "5878605364af97a3358368a6eaef02104af2e016",
+      "vcsUrl": "https://github.com/open-i18n/rust-unic/commit/5878605364af97a3358368a6eaef02104af2e016",
+      "files": [
+        {
+          "path": "compliance/license-texts/rust-unic-0.9.0-LICENSE-APACHE.txt",
+          "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+          "kind": "license",
+          "sourceType": "repository-revision",
+          "sourceUrl": "https://raw.githubusercontent.com/open-i18n/rust-unic/5878605364af97a3358368a6eaef02104af2e016/LICENSE-APACHE"
+        },
+        {
+          "path": "compliance/license-texts/rust-unic-0.9.0-LICENSE-MIT.txt",
+          "sha256": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3",
+          "kind": "license",
+          "sourceType": "repository-revision",
+          "sourceUrl": "https://raw.githubusercontent.com/open-i18n/rust-unic/5878605364af97a3358368a6eaef02104af2e016/LICENSE-MIT"
+        }
+      ]
+    },
+    {
+      "ecosystem": "cargo",
+      "name": "unic-common",
+      "version": "0.9.0",
+      "source": "registry+https://github.com/rust-lang/crates.io-index",
+      "integrity": "80d7ff825a6a654ee85a63e80f92f054f904f21e7d12da4e22f9834a4aaa35bc",
+      "license": "MIT/Apache-2.0",
+      "vcsCommit": "5878605364af97a3358368a6eaef02104af2e016",
+      "vcsUrl": "https://github.com/open-i18n/rust-unic/commit/5878605364af97a3358368a6eaef02104af2e016",
+      "files": [
+        {
+          "path": "compliance/license-texts/rust-unic-0.9.0-LICENSE-APACHE.txt",
+          "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+          "kind": "license",
+          "sourceType": "repository-revision",
+          "sourceUrl": "https://raw.githubusercontent.com/open-i18n/rust-unic/5878605364af97a3358368a6eaef02104af2e016/LICENSE-APACHE"
+        },
+        {
+          "path": "compliance/license-texts/rust-unic-0.9.0-LICENSE-MIT.txt",
+          "sha256": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3",
+          "kind": "license",
+          "sourceType": "repository-revision",
+          "sourceUrl": "https://raw.githubusercontent.com/open-i18n/rust-unic/5878605364af97a3358368a6eaef02104af2e016/LICENSE-MIT"
+        }
+      ]
+    },
+    {
+      "ecosystem": "cargo",
+      "name": "unic-ucd-ident",
+      "version": "0.9.0",
+      "source": "registry+https://github.com/rust-lang/crates.io-index",
+      "integrity": "e230a37c0381caa9219d67cf063aa3a375ffed5bf541a452db16e744bdab6987",
+      "license": "MIT/Apache-2.0",
+      "vcsCommit": "8a6ce83063d90b91ae2ce59eddb803edd393fca9",
+      "vcsUrl": "https://github.com/open-i18n/rust-unic/commit/8a6ce83063d90b91ae2ce59eddb803edd393fca9",
+      "files": [
+        {
+          "path": "compliance/license-texts/rust-unic-0.9.0-LICENSE-APACHE.txt",
+          "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+          "kind": "license",
+          "sourceType": "repository-revision",
+          "sourceUrl": "https://raw.githubusercontent.com/open-i18n/rust-unic/8a6ce83063d90b91ae2ce59eddb803edd393fca9/LICENSE-APACHE"
+        },
+        {
+          "path": "compliance/license-texts/rust-unic-0.9.0-LICENSE-MIT.txt",
+          "sha256": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3",
+          "kind": "license",
+          "sourceType": "repository-revision",
+          "sourceUrl": "https://raw.githubusercontent.com/open-i18n/rust-unic/8a6ce83063d90b91ae2ce59eddb803edd393fca9/LICENSE-MIT"
+        }
+      ]
+    },
+    {
+      "ecosystem": "cargo",
+      "name": "unic-ucd-version",
+      "version": "0.9.0",
+      "source": "registry+https://github.com/rust-lang/crates.io-index",
+      "integrity": "96bd2f2237fe450fcd0a1d2f5f4e91711124f7857ba2e964247776ebeeb7b0c4",
+      "license": "MIT/Apache-2.0",
+      "vcsCommit": "5878605364af97a3358368a6eaef02104af2e016",
+      "vcsUrl": "https://github.com/open-i18n/rust-unic/commit/5878605364af97a3358368a6eaef02104af2e016",
+      "files": [
+        {
+          "path": "compliance/license-texts/rust-unic-0.9.0-LICENSE-APACHE.txt",
+          "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+          "kind": "license",
+          "sourceType": "repository-revision",
+          "sourceUrl": "https://raw.githubusercontent.com/open-i18n/rust-unic/5878605364af97a3358368a6eaef02104af2e016/LICENSE-APACHE"
+        },
+        {
+          "path": "compliance/license-texts/rust-unic-0.9.0-LICENSE-MIT.txt",
+          "sha256": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3",
+          "kind": "license",
+          "sourceType": "repository-revision",
+          "sourceUrl": "https://raw.githubusercontent.com/open-i18n/rust-unic/5878605364af97a3358368a6eaef02104af2e016/LICENSE-MIT"
+        }
+      ]
+    },
+    {
+      "ecosystem": "cargo",
+      "name": "webview2-com",
+      "version": "0.38.2",
+      "source": "registry+https://github.com/rust-lang/crates.io-index",
+      "integrity": "7130243a7a5b33c54a444e54842e6a9e133de08b5ad7b5861cd8ed9a6a5bc96a",
+      "license": "MIT",
+      "vcsCommit": "b74dc5e2b394044bea5191052868ce7a106c202c",
+      "vcsUrl": "https://github.com/wravery/webview2-rs/commit/b74dc5e2b394044bea5191052868ce7a106c202c",
+      "files": [
+        {
+          "path": "compliance/license-texts/webview2-rs-MIT.txt",
+          "sha256": "0dcf41516e608bbcb6cdc5229feb7b86fe4a643b85e7df251133c93408fdac73",
+          "kind": "license",
+          "sourceType": "repository-revision",
+          "sourceUrl": "https://raw.githubusercontent.com/wravery/webview2-rs/b74dc5e2b394044bea5191052868ce7a106c202c/LICENSE"
+        }
+      ]
+    },
+    {
+      "ecosystem": "cargo",
+      "name": "webview2-com-sys",
+      "version": "0.38.2",
+      "source": "registry+https://github.com/rust-lang/crates.io-index",
+      "integrity": "381336cfffd772377d291702245447a5251a2ffa5bad679c99e61bc48bacbf9c",
+      "license": "MIT",
+      "vcsCommit": "b74dc5e2b394044bea5191052868ce7a106c202c",
+      "vcsUrl": "https://github.com/wravery/webview2-rs/commit/b74dc5e2b394044bea5191052868ce7a106c202c",
+      "files": [
+        {
+          "path": "compliance/license-texts/webview2-rs-MIT.txt",
+          "sha256": "0dcf41516e608bbcb6cdc5229feb7b86fe4a643b85e7df251133c93408fdac73",
+          "kind": "license",
+          "sourceType": "repository-revision",
+          "sourceUrl": "https://raw.githubusercontent.com/wravery/webview2-rs/b74dc5e2b394044bea5191052868ce7a106c202c/LICENSE"
+        }
+      ]
+    },
+    {
+      "ecosystem": "cargo",
+      "name": "webview2-com-macros",
+      "version": "0.8.1",
+      "source": "registry+https://github.com/rust-lang/crates.io-index",
+      "integrity": "67a921c1b6914c367b2b823cd4cde6f96beec77d30a939c8199bb377cf9b9b54",
+      "license": "MIT",
+      "vcsCommit": "dffa41a8a46d3f5565eefbff2de57d38d399f158",
+      "vcsUrl": "https://github.com/wravery/webview2-rs/commit/dffa41a8a46d3f5565eefbff2de57d38d399f158",
+      "files": [
+        {
+          "path": "compliance/license-texts/webview2-rs-MIT.txt",
+          "sha256": "0dcf41516e608bbcb6cdc5229feb7b86fe4a643b85e7df251133c93408fdac73",
+          "kind": "license",
+          "sourceType": "repository-revision",
+          "sourceUrl": "https://raw.githubusercontent.com/wravery/webview2-rs/dffa41a8a46d3f5565eefbff2de57d38d399f158/LICENSE"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+GIFP FREEWARE LICENSE 1.0
+
+Copyright (c) 2026 acekanon. All rights reserved.
+
+GIFP is freeware: you may install and use the unmodified GIFP application
+without paying a license fee, including for personal and commercial work.
+“Freeware” describes the price of GIFP; it does not make GIFP source code open
+source and does not grant rights to modify, reverse engineer, or create
+derivative works, except where applicable law expressly permits them.
+
+You may redistribute an unmodified official GIFP package only when all of the
+following are true:
+
+1. the package is complete and its DISTRIBUTION.json file says
+   `redistributable: true`;
+2. this license, THIRD_PARTY_NOTICES.md, all third-party license files, source
+   information or source offer, and integrity records remain included and
+   unchanged; and
+3. you do not charge a license fee for GIFP or claim to be its author.
+
+Third-party components are licensed separately. In particular, a portable GIFP
+package may include FFmpeg under GPL-3.0-or-later or LGPL-2.1-or-later, as
+identified by its FFmpeg-PROVENANCE.json. The FFmpeg license and source
+information supplied with the package govern FFmpeg and are not limited by this
+GIFP license. Nothing in this license restricts rights granted directly by an
+applicable third-party license.
+
+THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND. TO THE MAXIMUM
+EXTENT PERMITTED BY LAW, THE AUTHOR IS NOT LIABLE FOR ANY CLAIM, DAMAGE, OR
+OTHER LIABILITY ARISING FROM THE SOFTWARE OR ITS USE.
+
+---
+
+GIFP 免费软件许可 1.0
+
+版权所有 (c) 2026 acekanon。保留所有权利。
+
+GIFP 是免费软件：个人或商业用途均可免费安装、使用未经修改的 GIFP。
+“免费软件”表示不收取软件许可费，不表示 GIFP 源代码采用开源许可；除适用
+法律明确允许的情形外，本许可不授予修改、反向工程或制作衍生作品的权利。
+
+只有当软件包完整、DISTRIBUTION.json 明确标记 `redistributable: true`，且
+本许可、第三方声明、第三方许可证、源代码说明或源代码要约及完整性记录均
+原样保留时，才可以再分发未经修改的官方软件包。不得对 GIFP 本身收取许可
+费，也不得冒充作者。
+
+第三方组件适用各自许可证。便携包可能包含采用 GPL-3.0-or-later 或
+LGPL-2.1-or-later 的 FFmpeg，具体以 `FFmpeg-PROVENANCE.json` 为准；随包提供的
+FFmpeg 许可证及源代码信息独立适用于 FFmpeg，不受本许可限制。本许可不限制
+适用的第三方许可证直接授予的任何权利。
+
+软件按“现状”提供，不作任何明示或默示担保。在法律允许的最大范围内，作者
+不对因软件或其使用产生的索赔、损害或其他责任负责。

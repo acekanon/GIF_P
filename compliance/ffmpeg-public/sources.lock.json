@@ -1,0 +1,224 @@
+{
+  "schemaVersion": 1,
+  "profile": "gifp-windows-x64-lgpl-shared",
+  "target": "x86_64-w64-mingw32",
+  "builder": {
+    "image": "ghcr.io/btbn/ffmpeg-builds/base-win64@sha256:80f095930d8ec013bbc5205522a7ba0dc45e4c554e9f2b4b1e0818c1876e5e87",
+    "manifestDigest": "sha256:80f095930d8ec013bbc5205522a7ba0dc45e4c554e9f2b4b1e0818c1876e5e87",
+    "configDigest": "sha256:027c750e5181480fadacb108f1f634df6d875561d91c7972524e5dcf9d4f1015",
+    "networkPolicy": "release-build-must-run-with-network-none",
+    "buildRecipeCommit": "ca65803800fa316b49813e653e57b45808cfc087"
+  },
+  "licensePolicy": {
+    "runtimeExpression": "LGPL-2.1-or-later",
+    "requiredConfigureFlags": [
+      "--disable-version3",
+      "--enable-shared",
+      "--disable-static",
+      "--disable-gpl",
+      "--disable-nonfree",
+      "--disable-autodetect",
+      "--disable-network",
+      "--enable-parser=av1,gif,h264,hevc,mpeg4video,mpegvideo,vp8,vp9"
+    ],
+    "forbiddenConfigureFlags": [
+      "--enable-gpl",
+      "--enable-version3",
+      "--enable-nonfree",
+      "--enable-libx264",
+      "--enable-filter=eq",
+      "--enable-filter=hqdn3d"
+    ],
+    "forbiddenComponents": [
+      "eq_filter",
+      "hqdn3d_filter",
+      "libx264_encoder",
+      "libx264rgb_encoder"
+    ]
+  },
+  "externalLibraries": [
+    "zlib",
+    "libwebp",
+    "libvpx",
+    "libass",
+    "freetype",
+    "dlg",
+    "harfbuzz",
+    "fribidi",
+    "libunibreak"
+  ],
+  "sources": [
+    {
+      "id": "ffmpeg",
+      "role": "runtime-source",
+      "repository": "https://github.com/FFmpeg/FFmpeg",
+      "commit": "d32b387f2b0a484599d4587d651891f0c63c4238",
+      "archiveUrl": "https://codeload.github.com/FFmpeg/FFmpeg/tar.gz/d32b387f2b0a484599d4587d651891f0c63c4238",
+      "archiveFile": "ffmpeg-d32b387f2b0a484599d4587d651891f0c63c4238.tar.gz",
+      "archiveRoot": "FFmpeg-d32b387f2b0a484599d4587d651891f0c63c4238",
+      "sizeBytes": 17322287,
+      "sha256": "8a830a34bfaf98514b5d45cf6c01b1fe78b38d5e4c10eab0de2531b783c15f90",
+      "licenseExpression": "LGPL-2.1-or-later",
+      "licenseFiles": [
+        "COPYING.LGPLv2.1"
+      ]
+    },
+    {
+      "id": "zlib",
+      "role": "runtime-source",
+      "repository": "https://github.com/madler/zlib",
+      "commit": "e3dc0a85b7032e98380dec011bc8f2c2ee0d8fca",
+      "archiveUrl": "https://codeload.github.com/madler/zlib/tar.gz/e3dc0a85b7032e98380dec011bc8f2c2ee0d8fca",
+      "archiveFile": "zlib-e3dc0a85b7032e98380dec011bc8f2c2ee0d8fca.tar.gz",
+      "archiveRoot": "zlib-e3dc0a85b7032e98380dec011bc8f2c2ee0d8fca",
+      "sizeBytes": 1571579,
+      "sha256": "33356dac6140d584347fe46bcf7083bd949dec49ac4b52417ae334ec70e3dbc3",
+      "licenseExpression": "Zlib",
+      "licenseFiles": [
+        "LICENSE"
+      ]
+    },
+    {
+      "id": "libwebp",
+      "role": "runtime-source",
+      "repository": "https://chromium.googlesource.com/webm/libwebp",
+      "commit": "733c91e461c18cf1127c9ed0a80dccbcfed599d3",
+      "archiveUrl": "https://codeload.github.com/webmproject/libwebp/tar.gz/733c91e461c18cf1127c9ed0a80dccbcfed599d3",
+      "archiveFile": "libwebp-733c91e461c18cf1127c9ed0a80dccbcfed599d3.tar.gz",
+      "archiveRoot": "libwebp-733c91e461c18cf1127c9ed0a80dccbcfed599d3",
+      "sizeBytes": 3859739,
+      "sha256": "cea2cac21a5eceffd34582f853fd6417f5abcabe5bf25ffcc2e5b71e76f18c24",
+      "licenseExpression": "BSD-3-Clause",
+      "licenseFiles": [
+        "COPYING"
+      ]
+    },
+    {
+      "id": "libvpx",
+      "role": "runtime-source",
+      "repository": "https://chromium.googlesource.com/webm/libvpx",
+      "commit": "8592391cdb3ef142c56d835788d71d6d4de36a63",
+      "archiveUrl": "https://codeload.github.com/webmproject/libvpx/tar.gz/8592391cdb3ef142c56d835788d71d6d4de36a63",
+      "archiveFile": "libvpx-8592391cdb3ef142c56d835788d71d6d4de36a63.tar.gz",
+      "archiveRoot": "libvpx-8592391cdb3ef142c56d835788d71d6d4de36a63",
+      "sizeBytes": 5671682,
+      "sha256": "130c8a655c7939adc6ca36d4dc754497392c6042cfb2bcd24140aac50d04b007",
+      "licenseExpression": "BSD-3-Clause",
+      "licenseFiles": [
+        "LICENSE"
+      ]
+    },
+    {
+      "id": "freetype",
+      "role": "runtime-source",
+      "repository": "https://gitlab.freedesktop.org/freetype/freetype",
+      "commit": "5336c0d4da22a13dab3389eb153b12672fdf841c",
+      "archiveUrl": "https://gitlab.freedesktop.org/freetype/freetype/-/archive/5336c0d4da22a13dab3389eb153b12672fdf841c/freetype-5336c0d4da22a13dab3389eb153b12672fdf841c.tar.gz",
+      "archiveFile": "freetype-5336c0d4da22a13dab3389eb153b12672fdf841c.tar.gz",
+      "archiveRoot": "freetype-5336c0d4da22a13dab3389eb153b12672fdf841c",
+      "sizeBytes": 2534732,
+      "sha256": "878395239d222d0eefd5a6c52748f0de724df1b58c6a75eaee77fb831b941d03",
+      "licenseExpression": "FTL",
+      "licenseFiles": [
+        "LICENSE.TXT",
+        "docs/FTL.TXT"
+      ]
+    },
+    {
+      "id": "dlg",
+      "role": "runtime-source",
+      "repository": "https://github.com/nyorain/dlg",
+      "commit": "395ccad2c1e0daae535c4d20bb0a3f2424648e17",
+      "archiveUrl": "https://codeload.github.com/nyorain/dlg/tar.gz/395ccad2c1e0daae535c4d20bb0a3f2424648e17",
+      "archiveFile": "dlg-395ccad2c1e0daae535c4d20bb0a3f2424648e17.tar.gz",
+      "archiveRoot": "dlg-395ccad2c1e0daae535c4d20bb0a3f2424648e17",
+      "sizeBytes": 837072,
+      "sha256": "263a4a3777d9839e34cd41db988310659e0c00eab37beb7aedd30511a460133b",
+      "licenseExpression": "BSL-1.0",
+      "licenseFiles": [
+        "LICENSE"
+      ],
+      "submodule": {
+        "parentSourceId": "freetype",
+        "parentCommit": "5336c0d4da22a13dab3389eb153b12672fdf841c",
+        "path": "subprojects/dlg",
+        "gitlinkCommit": "395ccad2c1e0daae535c4d20bb0a3f2424648e17"
+      }
+    },
+    {
+      "id": "harfbuzz",
+      "role": "runtime-source",
+      "repository": "https://github.com/harfbuzz/harfbuzz",
+      "commit": "fe9501b08d1bf40bf5c6285d336157aa82b29e40",
+      "archiveUrl": "https://codeload.github.com/harfbuzz/harfbuzz/tar.gz/fe9501b08d1bf40bf5c6285d336157aa82b29e40",
+      "archiveFile": "harfbuzz-fe9501b08d1bf40bf5c6285d336157aa82b29e40.tar.gz",
+      "archiveRoot": "harfbuzz-fe9501b08d1bf40bf5c6285d336157aa82b29e40",
+      "sizeBytes": 37433199,
+      "sha256": "58801dbe95442a7666c0cacac5ac231a846585ba13823dbe02eb4d94e560f2b0",
+      "licenseExpression": "MIT",
+      "licenseFiles": [
+        "COPYING"
+      ]
+    },
+    {
+      "id": "fribidi",
+      "role": "runtime-source",
+      "repository": "https://github.com/fribidi/fribidi",
+      "commit": "069a7e3d31e6aa74f2068a8e0804106ce7906639",
+      "archiveUrl": "https://codeload.github.com/fribidi/fribidi/tar.gz/069a7e3d31e6aa74f2068a8e0804106ce7906639",
+      "archiveFile": "fribidi-069a7e3d31e6aa74f2068a8e0804106ce7906639.tar.gz",
+      "archiveRoot": "fribidi-069a7e3d31e6aa74f2068a8e0804106ce7906639",
+      "sizeBytes": 2144222,
+      "sha256": "25eea1fc1fbc9a8b87682f59bea935c54871ae504fbc51459288064d876bd4a7",
+      "licenseExpression": "LGPL-2.1-or-later",
+      "licenseFiles": [
+        "COPYING"
+      ]
+    },
+    {
+      "id": "libunibreak",
+      "role": "runtime-source",
+      "repository": "https://github.com/adah1972/libunibreak",
+      "commit": "3ce4bfa3129ff3738046a44a6db533d2ce25af2b",
+      "archiveUrl": "https://codeload.github.com/adah1972/libunibreak/tar.gz/3ce4bfa3129ff3738046a44a6db533d2ce25af2b",
+      "archiveFile": "libunibreak-3ce4bfa3129ff3738046a44a6db533d2ce25af2b.tar.gz",
+      "archiveRoot": "libunibreak-3ce4bfa3129ff3738046a44a6db533d2ce25af2b",
+      "sizeBytes": 175581,
+      "sha256": "829dd89358b2096121af166b0f23a0236c4cc17456f5b6c5e68060838ae2cd50",
+      "licenseExpression": "Zlib",
+      "licenseFiles": [
+        "LICENCE"
+      ]
+    },
+    {
+      "id": "libass",
+      "role": "runtime-source",
+      "repository": "https://github.com/libass/libass",
+      "commit": "4a05d8127f525943ebf45fdc6497c9e665947f0d",
+      "archiveUrl": "https://codeload.github.com/libass/libass/tar.gz/4a05d8127f525943ebf45fdc6497c9e665947f0d",
+      "archiveFile": "libass-4a05d8127f525943ebf45fdc6497c9e665947f0d.tar.gz",
+      "archiveRoot": "libass-4a05d8127f525943ebf45fdc6497c9e665947f0d",
+      "sizeBytes": 351823,
+      "sha256": "3546ecc8748c62e100a9dd18e52ea2d17d7facedf89cfcad97000ad60b1bce2b",
+      "licenseExpression": "ISC",
+      "licenseFiles": [
+        "COPYING"
+      ]
+    },
+    {
+      "id": "ffmpeg-builds-recipe",
+      "role": "build-environment-source",
+      "repository": "https://github.com/BtbN/FFmpeg-Builds",
+      "commit": "ca65803800fa316b49813e653e57b45808cfc087",
+      "archiveUrl": "https://codeload.github.com/BtbN/FFmpeg-Builds/tar.gz/ca65803800fa316b49813e653e57b45808cfc087",
+      "archiveFile": "ffmpeg-builds-ca65803800fa316b49813e653e57b45808cfc087.tar.gz",
+      "archiveRoot": "FFmpeg-Builds-ca65803800fa316b49813e653e57b45808cfc087",
+      "sizeBytes": 101529,
+      "sha256": "319a39ec6585fe698544145700edf564c61b082c77d6c09dd9f49930f2567588",
+      "licenseExpression": "GPL-3.0-or-later",
+      "licenseFiles": [
+        "LICENSE"
+      ]
+    }
+  ]
+}

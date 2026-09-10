@@ -1,0 +1,412 @@
+{
+  "schemaVersion": 1,
+  "type": "gifp-public-ffmpeg-reproducibility",
+  "gitCommit": "a244ef090f93ba01d29af159fec8a701ebb8a0cf",
+  "status": "pass",
+  "reproducible": true,
+  "baseline": {
+    "rootLabel": "out-a244ef0-runA",
+    "buildIdentity": {
+      "profile": "gifp-windows-x64-lgpl-shared",
+      "target": "x86_64-w64-mingw32",
+      "builderImage": "ghcr.io/btbn/ffmpeg-builds/base-win64@sha256:7d4e07358dc3d87ab1c0bbbb48418bc13f6326872af4fd954b799eda348f3e8b",
+      "sourceDateEpoch": 1783757450,
+      "sourceLockSha256": "3be038b0fa357653740976ae3389b64efe0dc7da64f261e8cbe893388d345aad",
+      "buildRecipeLockSha256": "9db06c1873bcb1c108397a0577b560d9d908b78b35377b808412a5501d4af0f6"
+    },
+    "runtime": [
+      {
+        "path": "avcodec-63.dll",
+        "sizeBytes": 12666368,
+        "sha256": "73dd3fcdf01002393522eacfebe865e379dc29961e085d14fb2fbfc7122ccae2"
+      },
+      {
+        "path": "avdevice-63.dll",
+        "sizeBytes": 82432,
+        "sha256": "b8ae01efbcfdd265a351f0187f2f8cd22aa888f783a0e6d711552e6ac7e6fad9"
+      },
+      {
+        "path": "avfilter-12.dll",
+        "sizeBytes": 2903040,
+        "sha256": "e8e9c1d5748760310e5ddb4f1fe0e1b943d356c35171d20345495b7d90d4b43f"
+      },
+      {
+        "path": "avformat-63.dll",
+        "sizeBytes": 1043456,
+        "sha256": "97bf9708a4400ce6ee1c77c5a51136db9315f198b3cb9d8867e9d58cd8089a78"
+      },
+      {
+        "path": "avutil-61.dll",
+        "sizeBytes": 1142784,
+        "sha256": "0800002093e2f00267ed49be1155018accff0856a05d77275861154164ce7339"
+      },
+      {
+        "path": "ffmpeg.exe",
+        "sizeBytes": 513536,
+        "sha256": "c18721539ca1f93994744c637d0b417ae3cddbac78feda4e9a168f581ab93533"
+      },
+      {
+        "path": "ffprobe.exe",
+        "sizeBytes": 224768,
+        "sha256": "acc437a70ffd1f1928a80a6eb8ab4c64709ada333deeea2dc28bfe0ad7e4b9aa"
+      },
+      {
+        "path": "swscale-10.dll",
+        "sizeBytes": 2267136,
+        "sha256": "a29d2546cdee29de16da6fd3fc0bc02c73e21a15a0b9d7618d46d25ccba8b0e5"
+      }
+    ],
+    "artifacts": {
+      "runtimeLicenses": {
+        "path": "RUNTIME-LICENSES.txt",
+        "sizeBytes": 73673,
+        "sha256": "92226c3dbd1223df59926f9afcd89a8fe4002dad7d71c0e82f25c39b14df38e5"
+      },
+      "correspondingSource": {
+        "path": "GIFP-FFmpeg-Corresponding-Source.tar",
+        "sizeBytes": 72304640,
+        "sha256": "c9603900a0e77ee7237a7093869004c98d144c0295861a21f7e0f7c693ca0245"
+      },
+      "runtimeArchive": {
+        "path": "GIFP-FFmpeg-Windows-x64-LGPL-shared.zip",
+        "sizeBytes": 7877507,
+        "sha256": "b105202c344af07ddc7c87b03572960811366f3d10945f7f1fabb85335bddad3"
+      }
+    },
+    "manifests": {
+      "runtime.sha256": {
+        "sizeBytes": 659,
+        "sha256": "9c77854f97b7602c58df8cf620cae06339f0bc43476f3bc6a0f733a5421cb30b",
+        "entryCount": 8
+      },
+      "runtime-licenses.sha256": {
+        "sizeBytes": 87,
+        "sha256": "680945790aab801356b5b1afd90d17b43e2576d15704381ebad03be629b6c499",
+        "entryCount": 1
+      },
+      "corresponding-source-archive.sha256": {
+        "sizeBytes": 103,
+        "sha256": "8479c27d503c60e91d95fda173fe19d92516447f8d7c892e5ef2788732f82aec",
+        "entryCount": 1
+      },
+      "corresponding-sources.sha256": {
+        "sizeBytes": 1366,
+        "sha256": "18ea51831d8cf0050bece2bcfddc0d892bd677fd7b61f8834e02259b845907b1",
+        "entryCount": 11
+      },
+      "recipe.sha256": {
+        "sizeBytes": 717,
+        "sha256": "9961243e761593411478e832d77927f134892b97d2a05243d8baea20515abe29",
+        "entryCount": 8
+      },
+      "build-inputs.sha256": {
+        "sizeBytes": 950,
+        "sha256": "2068b5c4afb7a6cf55f9ab2e4e7a4a627dfcae0f0ec29fc87e44a912b8e5c089",
+        "entryCount": 10
+      },
+      "runtime-archive.sha256": {
+        "sizeBytes": 106,
+        "sha256": "46913ccaac5a1700235c901e1add826a8881a8cb531f813f94af7b4c36691930",
+        "entryCount": 1
+      }
+    },
+    "evidence": {
+      "build-metadata.json": "1b8cab94a4faf33d43ffe49a2ebe2364aeacb1a69b155ec643123eb970488041",
+      "build-recipe-verification.json": "a57f7da4ed92f7ecd033eed1029a41f2bbd4beaf618fbf7e0079b8329d206723",
+      "source-cache-verification.json": "f8ecd12a60395258aa5789233d41f28c2a9d4f147fd97673b6ba96714b751443",
+      "runtime-inventory-verification.json": "7d514f98ac9fc4db5ce605e526b5d43c7f0d0d2addbb9c16e96af676ab38e275",
+      "host-driver.json": "799513a9035fb235d71a3207eda002e051e683515a1586400f17b4d3dc042500",
+      "build-status.json": "c6f6a819526632287b8c9f8f5d984bbf1e0c13fc6f9b8476a8f827b4bedab1e8",
+      "docker-image-inspect.json": "9db5fac5caea666f26ee72faa3322ea9bd8cc326cea6e092a05f5912c06ef4f4"
+    },
+    "hostFacts": {
+      "schemaVersion": 1,
+      "builderImage": "ghcr.io/btbn/ffmpeg-builds/base-win64@sha256:7d4e07358dc3d87ab1c0bbbb48418bc13f6326872af4fd954b799eda348f3e8b",
+      "builderImageId": "sha256:027c750e5181480fadacb108f1f634df6d875561d91c7972524e5dcf9d4f1015",
+      "sourceDateEpoch": 1783757450,
+      "networkPolicy": "docker --network=none; --pull=never",
+      "platform": "linux/amd64",
+      "inputSnapshot": "fresh verified copies under the preserved run directory",
+      "inputMountPolicy": [
+        "/lock:read-only",
+        "/recipe:read-only",
+        "/sources:read-only"
+      ],
+      "outputMountPolicy": [
+        "/out:read-write",
+        "/work:fresh Linux-native Docker volume"
+      ],
+      "workVolumeStatus": "removed-after-success",
+      "dockerExitCode": 0,
+      "dockerInvocationError": null
+    },
+    "builderImageFacts": {
+      "id": "sha256:027c750e5181480fadacb108f1f634df6d875561d91c7972524e5dcf9d4f1015",
+      "repoDigests": [
+        "ghcr.io/btbn/ffmpeg-builds/base-win64@sha256:7d4e07358dc3d87ab1c0bbbb48418bc13f6326872af4fd954b799eda348f3e8b"
+      ],
+      "architecture": "amd64",
+      "os": "linux"
+    }
+  },
+  "replay": {
+    "rootLabel": "out-a244ef0-runB",
+    "buildIdentity": {
+      "profile": "gifp-windows-x64-lgpl-shared",
+      "target": "x86_64-w64-mingw32",
+      "builderImage": "ghcr.io/btbn/ffmpeg-builds/base-win64@sha256:7d4e07358dc3d87ab1c0bbbb48418bc13f6326872af4fd954b799eda348f3e8b",
+      "sourceDateEpoch": 1783757450,
+      "sourceLockSha256": "3be038b0fa357653740976ae3389b64efe0dc7da64f261e8cbe893388d345aad",
+      "buildRecipeLockSha256": "9db06c1873bcb1c108397a0577b560d9d908b78b35377b808412a5501d4af0f6"
+    },
+    "runtime": [
+      {
+        "path": "avcodec-63.dll",
+        "sizeBytes": 12666368,
+        "sha256": "73dd3fcdf01002393522eacfebe865e379dc29961e085d14fb2fbfc7122ccae2"
+      },
+      {
+        "path": "avdevice-63.dll",
+        "sizeBytes": 82432,
+        "sha256": "b8ae01efbcfdd265a351f0187f2f8cd22aa888f783a0e6d711552e6ac7e6fad9"
+      },
+      {
+        "path": "avfilter-12.dll",
+        "sizeBytes": 2903040,
+        "sha256": "e8e9c1d5748760310e5ddb4f1fe0e1b943d356c35171d20345495b7d90d4b43f"
+      },
+      {
+        "path": "avformat-63.dll",
+        "sizeBytes": 1043456,
+        "sha256": "97bf9708a4400ce6ee1c77c5a51136db9315f198b3cb9d8867e9d58cd8089a78"
+      },
+      {
+        "path": "avutil-61.dll",
+        "sizeBytes": 1142784,
+        "sha256": "0800002093e2f00267ed49be1155018accff0856a05d77275861154164ce7339"
+      },
+      {
+        "path": "ffmpeg.exe",
+        "sizeBytes": 513536,
+        "sha256": "c18721539ca1f93994744c637d0b417ae3cddbac78feda4e9a168f581ab93533"
+      },
+      {
+        "path": "ffprobe.exe",
+        "sizeBytes": 224768,
+        "sha256": "acc437a70ffd1f1928a80a6eb8ab4c64709ada333deeea2dc28bfe0ad7e4b9aa"
+      },
+      {
+        "path": "swscale-10.dll",
+        "sizeBytes": 2267136,
+        "sha256": "a29d2546cdee29de16da6fd3fc0bc02c73e21a15a0b9d7618d46d25ccba8b0e5"
+      }
+    ],
+    "artifacts": {
+      "runtimeLicenses": {
+        "path": "RUNTIME-LICENSES.txt",
+        "sizeBytes": 73673,
+        "sha256": "92226c3dbd1223df59926f9afcd89a8fe4002dad7d71c0e82f25c39b14df38e5"
+      },
+      "correspondingSource": {
+        "path": "GIFP-FFmpeg-Corresponding-Source.tar",
+        "sizeBytes": 72304640,
+        "sha256": "c9603900a0e77ee7237a7093869004c98d144c0295861a21f7e0f7c693ca0245"
+      },
+      "runtimeArchive": {
+        "path": "GIFP-FFmpeg-Windows-x64-LGPL-shared.zip",
+        "sizeBytes": 7877507,
+        "sha256": "b105202c344af07ddc7c87b03572960811366f3d10945f7f1fabb85335bddad3"
+      }
+    },
+    "manifests": {
+      "runtime.sha256": {
+        "sizeBytes": 659,
+        "sha256": "9c77854f97b7602c58df8cf620cae06339f0bc43476f3bc6a0f733a5421cb30b",
+        "entryCount": 8
+      },
+      "runtime-licenses.sha256": {
+        "sizeBytes": 87,
+        "sha256": "680945790aab801356b5b1afd90d17b43e2576d15704381ebad03be629b6c499",
+        "entryCount": 1
+      },
+      "corresponding-source-archive.sha256": {
+        "sizeBytes": 103,
+        "sha256": "8479c27d503c60e91d95fda173fe19d92516447f8d7c892e5ef2788732f82aec",
+        "entryCount": 1
+      },
+      "corresponding-sources.sha256": {
+        "sizeBytes": 1366,
+        "sha256": "18ea51831d8cf0050bece2bcfddc0d892bd677fd7b61f8834e02259b845907b1",
+        "entryCount": 11
+      },
+      "recipe.sha256": {
+        "sizeBytes": 717,
+        "sha256": "9961243e761593411478e832d77927f134892b97d2a05243d8baea20515abe29",
+        "entryCount": 8
+      },
+      "build-inputs.sha256": {
+        "sizeBytes": 950,
+        "sha256": "2068b5c4afb7a6cf55f9ab2e4e7a4a627dfcae0f0ec29fc87e44a912b8e5c089",
+        "entryCount": 10
+      },
+      "runtime-archive.sha256": {
+        "sizeBytes": 106,
+        "sha256": "46913ccaac5a1700235c901e1add826a8881a8cb531f813f94af7b4c36691930",
+        "entryCount": 1
+      }
+    },
+    "evidence": {
+      "build-metadata.json": "1b8cab94a4faf33d43ffe49a2ebe2364aeacb1a69b155ec643123eb970488041",
+      "build-recipe-verification.json": "a57f7da4ed92f7ecd033eed1029a41f2bbd4beaf618fbf7e0079b8329d206723",
+      "source-cache-verification.json": "f8ecd12a60395258aa5789233d41f28c2a9d4f147fd97673b6ba96714b751443",
+      "runtime-inventory-verification.json": "7d514f98ac9fc4db5ce605e526b5d43c7f0d0d2addbb9c16e96af676ab38e275",
+      "host-driver.json": "342f141b937a30b4a9c39ca7e31255ca272f14d4f3657cb2a895bd91b428cab1",
+      "build-status.json": "c6f6a819526632287b8c9f8f5d984bbf1e0c13fc6f9b8476a8f827b4bedab1e8",
+      "docker-image-inspect.json": "9db5fac5caea666f26ee72faa3322ea9bd8cc326cea6e092a05f5912c06ef4f4"
+    },
+    "hostFacts": {
+      "schemaVersion": 1,
+      "builderImage": "ghcr.io/btbn/ffmpeg-builds/base-win64@sha256:7d4e07358dc3d87ab1c0bbbb48418bc13f6326872af4fd954b799eda348f3e8b",
+      "builderImageId": "sha256:027c750e5181480fadacb108f1f634df6d875561d91c7972524e5dcf9d4f1015",
+      "sourceDateEpoch": 1783757450,
+      "networkPolicy": "docker --network=none; --pull=never",
+      "platform": "linux/amd64",
+      "inputSnapshot": "fresh verified copies under the preserved run directory",
+      "inputMountPolicy": [
+        "/lock:read-only",
+        "/recipe:read-only",
+        "/sources:read-only"
+      ],
+      "outputMountPolicy": [
+        "/out:read-write",
+        "/work:fresh Linux-native Docker volume"
+      ],
+      "workVolumeStatus": "removed-after-success",
+      "dockerExitCode": 0,
+      "dockerInvocationError": null
+    },
+    "builderImageFacts": {
+      "id": "sha256:027c750e5181480fadacb108f1f634df6d875561d91c7972524e5dcf9d4f1015",
+      "repoDigests": [
+        "ghcr.io/btbn/ffmpeg-builds/base-win64@sha256:7d4e07358dc3d87ab1c0bbbb48418bc13f6326872af4fd954b799eda348f3e8b"
+      ],
+      "architecture": "amd64",
+      "os": "linux"
+    }
+  },
+  "checks": [
+    {
+      "id": "build.independent-invocations",
+      "ok": true
+    },
+    {
+      "id": "runtime.file-set-size-sha256",
+      "ok": true,
+      "baselineSha256": "5ac85e2ed1aba1a2b79ca6de877b96e9024e4a6f901267d0f4c25a58d4b43222",
+      "replaySha256": "5ac85e2ed1aba1a2b79ca6de877b96e9024e4a6f901267d0f4c25a58d4b43222"
+    },
+    {
+      "id": "artifact.runtimeLicenses",
+      "ok": true,
+      "baselineSha256": "fbeee08fc6cf497dc8aa893cc913fa98c741a7b9acaa8a6c9cc206a3dfac96e6",
+      "replaySha256": "fbeee08fc6cf497dc8aa893cc913fa98c741a7b9acaa8a6c9cc206a3dfac96e6"
+    },
+    {
+      "id": "artifact.runtimeArchive",
+      "ok": true,
+      "baselineSha256": "266bf46e05fef5a28c9a079700d29559058f6a026f1008671aabbcc7d0851be9",
+      "replaySha256": "266bf46e05fef5a28c9a079700d29559058f6a026f1008671aabbcc7d0851be9"
+    },
+    {
+      "id": "artifact.correspondingSource",
+      "ok": true,
+      "baselineSha256": "2957e4949bc717bb52d88cc4a554b1c6c64250fd456cd4eb77fcc82205f1809d",
+      "replaySha256": "2957e4949bc717bb52d88cc4a554b1c6c64250fd456cd4eb77fcc82205f1809d"
+    },
+    {
+      "id": "manifest.runtime.sha256",
+      "ok": true,
+      "baselineSha256": "492015ebddb355b71a9609fc7dacd6f0262ed67830b15ee26b832f1aaba9c87f",
+      "replaySha256": "492015ebddb355b71a9609fc7dacd6f0262ed67830b15ee26b832f1aaba9c87f"
+    },
+    {
+      "id": "manifest.runtime-licenses.sha256",
+      "ok": true,
+      "baselineSha256": "f0bf49b7e8f15cc2d626b10f9267acfb03f21394324f94d66fcf3f491b0c520f",
+      "replaySha256": "f0bf49b7e8f15cc2d626b10f9267acfb03f21394324f94d66fcf3f491b0c520f"
+    },
+    {
+      "id": "manifest.corresponding-source-archive.sha256",
+      "ok": true,
+      "baselineSha256": "6c6370eeb0f00be238845eebea239f42ffde8ce998b196e1aad8dc77baa62eb0",
+      "replaySha256": "6c6370eeb0f00be238845eebea239f42ffde8ce998b196e1aad8dc77baa62eb0"
+    },
+    {
+      "id": "manifest.corresponding-sources.sha256",
+      "ok": true,
+      "baselineSha256": "c06413190bf1bca7b53f3900c8061726abbdddfc3e1b9c383622a5ab8245fc8c",
+      "replaySha256": "c06413190bf1bca7b53f3900c8061726abbdddfc3e1b9c383622a5ab8245fc8c"
+    },
+    {
+      "id": "manifest.recipe.sha256",
+      "ok": true,
+      "baselineSha256": "68bf16ea1b3808b45fdec853bab130eb7844f70fc6fdc05d2d0451eaeb88433b",
+      "replaySha256": "68bf16ea1b3808b45fdec853bab130eb7844f70fc6fdc05d2d0451eaeb88433b"
+    },
+    {
+      "id": "manifest.build-inputs.sha256",
+      "ok": true,
+      "baselineSha256": "d35306704a102d764ceb14cfe345b36c9c2fd727869f413bdedcc5c7e1f9eae1",
+      "replaySha256": "d35306704a102d764ceb14cfe345b36c9c2fd727869f413bdedcc5c7e1f9eae1"
+    },
+    {
+      "id": "manifest.runtime-archive.sha256",
+      "ok": true,
+      "baselineSha256": "fb50049a2e71842e556ec2eb7ac3156360a76d825232aaf63198aa38a8d94b51",
+      "replaySha256": "fb50049a2e71842e556ec2eb7ac3156360a76d825232aaf63198aa38a8d94b51"
+    },
+    {
+      "id": "evidence.build-metadata.json",
+      "ok": true,
+      "baselineSha256": "1b8cab94a4faf33d43ffe49a2ebe2364aeacb1a69b155ec643123eb970488041",
+      "replaySha256": "1b8cab94a4faf33d43ffe49a2ebe2364aeacb1a69b155ec643123eb970488041"
+    },
+    {
+      "id": "evidence.build-recipe-verification.json",
+      "ok": true,
+      "baselineSha256": "a57f7da4ed92f7ecd033eed1029a41f2bbd4beaf618fbf7e0079b8329d206723",
+      "replaySha256": "a57f7da4ed92f7ecd033eed1029a41f2bbd4beaf618fbf7e0079b8329d206723"
+    },
+    {
+      "id": "evidence.source-cache-verification.json",
+      "ok": true,
+      "baselineSha256": "f8ecd12a60395258aa5789233d41f28c2a9d4f147fd97673b6ba96714b751443",
+      "replaySha256": "f8ecd12a60395258aa5789233d41f28c2a9d4f147fd97673b6ba96714b751443"
+    },
+    {
+      "id": "evidence.runtime-inventory-verification.json",
+      "ok": true,
+      "baselineSha256": "7d514f98ac9fc4db5ce605e526b5d43c7f0d0d2addbb9c16e96af676ab38e275",
+      "replaySha256": "7d514f98ac9fc4db5ce605e526b5d43c7f0d0d2addbb9c16e96af676ab38e275"
+    },
+    {
+      "id": "evidence.build-status.json",
+      "ok": true,
+      "baselineSha256": "c6f6a819526632287b8c9f8f5d984bbf1e0c13fc6f9b8476a8f827b4bedab1e8",
+      "replaySha256": "c6f6a819526632287b8c9f8f5d984bbf1e0c13fc6f9b8476a8f827b4bedab1e8"
+    },
+    {
+      "id": "evidence.host-driver.builder-offline-facts",
+      "ok": true,
+      "baselineSha256": "46df3a15449cdf0684bc6b4c3ef95211478124bc3cd20d0b0cae9b8d6aef292f",
+      "replaySha256": "46df3a15449cdf0684bc6b4c3ef95211478124bc3cd20d0b0cae9b8d6aef292f"
+    },
+    {
+      "id": "evidence.docker-image.builder-facts",
+      "ok": true,
+      "baselineSha256": "5222a635b36ffc23f75666ba528c8c52a8a408a63122403ad27323d5f273cd39",
+      "replaySha256": "5222a635b36ffc23f75666ba528c8c52a8a408a63122403ad27323d5f273cd39"
+    }
+  ],
+  "errors": []
+}

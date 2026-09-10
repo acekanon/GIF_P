@@ -1,0 +1,60 @@
+# One literal configure argv entry per line. build-offline.sh ignores comments.
+--prefix=/work/prefix
+--pkg-config=pkg-config
+--pkg-config-flags=--static
+--arch=x86_64
+--target-os=mingw32
+--cross-prefix=x86_64-w64-mingw32-
+--enable-cross-compile
+--extra-version=gifp-n9.0
+--disable-gpl
+--disable-version3
+--disable-nonfree
+--disable-autodetect
+--disable-network
+--disable-everything
+--disable-debug
+--disable-doc
+--disable-htmlpages
+--disable-manpages
+--disable-podpages
+--disable-txtpages
+--disable-programs
+--enable-ffmpeg
+--enable-ffprobe
+--disable-ffplay
+--enable-shared
+--disable-static
+--enable-avcodec
+--enable-avdevice
+--enable-avfilter
+--enable-avformat
+--enable-avutil
+--enable-swscale
+--disable-swresample
+--disable-iconv
+--disable-bzlib
+--disable-lzma
+--enable-zlib
+--enable-libass
+--enable-libvpx
+--enable-libwebp
+--enable-mediafoundation
+--enable-d3d11va
+--enable-w32threads
+--disable-pthreads
+--disable-os2threads
+--enable-protocol=file,pipe
+--enable-indev=gdigrab,lavfi
+--enable-demuxer=mov,matroska,gif,apng,image2,image2pipe,webp_anim,image_webp_pipe,image_png_pipe,image_jpeg_pipe,image_gif_pipe,nut,rawvideo
+--enable-decoder=h264,hevc,av1,vp8,vp9,mpeg4,gif,png,apng,webp,webp_anim,mjpeg,rawvideo,wrapped_avframe,bmp,libvpx_vp9,prores,dnxhd,mpeg2video,vc1
+--enable-parser=av1,gif,h264,hevc,mpeg4video,mpegvideo,vp8,vp9
+--enable-encoder=gif,png,mjpeg,apng,rawvideo,wrapped_avframe,libwebp_anim,libvpx_vp9,h264_mf
+--enable-muxer=gif,webp,apng,mp4,webm,image2,nut,rawvideo,null
+--enable-filter=alphaextract,ass,atadenoise,bilateral,color,colorbalance,concat,crop,curves,ddagrab,drawgrid,format,fps,gradfun,hflip,hue,hwdownload,lutyuv,metadata,pad,palettegen,paletteuse,rotate,scale,select,setpts,setsar,signalstats,split,transpose,trim,unsharp,vflip,vignette
+--extra-cflags=-O2 -pipe -D_FORTIFY_SOURCE=2 -fstack-protector-strong -ffile-prefix-map=/work=. -fdebug-prefix-map=/work=.
+--extra-cxxflags=-O2 -pipe -D_FORTIFY_SOURCE=2 -fstack-protector-strong -ffile-prefix-map=/work=. -fdebug-prefix-map=/work=.
+--extra-ldflags=-static-libgcc -static-libstdc++ -Wl,--no-insert-timestamp
+--extra-ldexeflags=-static-libgcc -static-libstdc++ -Wl,--no-insert-timestamp
+--extra-ldsoflags=-static-libgcc -static-libstdc++ -Wl,--no-insert-timestamp
+--extra-libs=-Wl,-Bstatic -lstdc++ -lwinpthread -Wl,-Bdynamic

@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gifp.local/schemas/platform-delivery-evidence-v1.json",
+  "title": "GIFP platform delivery evidence bundle",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "policySetVersion", "evidence"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "policySetVersion": { "const": "2026.07.27" },
+    "evidence": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/evidenceRecord" }
+    }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "isoInstant": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\\.[0-9]{3})?Z$"
+    },
+    "client": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "version", "platform", "osVersion"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "version": { "type": "string", "minLength": 1 },
+        "platform": { "enum": ["windows", "macos", "ios", "android", "web"] },
+        "osVersion": { "type": "string", "minLength": 1 }
+      }
+    },
+    "output": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["format", "width", "height", "fps", "durationSeconds", "sizeBytes"],
+      "properties": {
+        "format": { "enum": ["gif", "webp", "apng", "mp4", "live_photo"] },
+        "width": { "type": "integer", "minimum": 1 },
+        "height": { "type": "integer", "minimum": 1 },
+        "fps": { "type": "number", "exclusiveMinimum": 0 },
+        "durationSeconds": { "type": "number", "exclusiveMinimum": 0 },
+        "sizeBytes": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "lifecycle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["send", "receiverPlayback", "forward", "download", "reopen"],
+      "properties": {
+        "send": { "const": true },
+        "receiverPlayback": { "const": true },
+        "forward": { "const": true },
+        "download": { "const": true },
+        "reopen": { "const": true }
+      }
+    },
+    "evidenceRecord": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "evidenceId", "policyId", "policyRevision", "testedAt", "client",
+        "artifactSha256", "output", "lifecycle"
+      ],
+      "properties": {
+        "evidenceId": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{2,127}$" },
+        "policyId": {
+          "enum": [
+            "qq_chat", "wechat_chat", "wechat_sticker", "feishu_chat",
+            "xiaohongshu_live", "douyin_live", "web_animation", "web_transparent_ui"
+          ]
+        },
+        "policyRevision": { "const": "1" },
+        "testedAt": { "$ref": "#/$defs/isoInstant" },
+        "client": { "$ref": "#/$defs/client" },
+        "artifactSha256": { "$ref": "#/$defs/sha256" },
+        "output": { "$ref": "#/$defs/output" },
+        "lifecycle": { "$ref": "#/$defs/lifecycle" }
+      }
+    }
+  }
+}

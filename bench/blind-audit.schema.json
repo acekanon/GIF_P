@@ -1,0 +1,157 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gifp.local/schemas/blind-audit.schema.json",
+  "title": "GIFP paired blind-vote audit",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "generated_at_unix_ms",
+    "quality_report_path",
+    "quality_report_schema_version",
+    "run_id",
+    "corpus_id",
+    "manifest_sha256",
+    "git_commit",
+    "reviewer_count",
+    "complete_reviewer_count",
+    "formal_pair_count",
+    "formal_vote_count",
+    "exploratory_vote_count",
+    "formal_vote_coverage_ratio",
+    "reference_profile_id",
+    "candidate_profile_id",
+    "overall",
+    "categories",
+    "fixtures",
+    "reviewers",
+    "gates"
+  ],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "generated_at_unix_ms": { "type": "integer", "minimum": 0 },
+    "quality_report_path": { "type": "string", "minLength": 1 },
+    "quality_report_schema_version": { "type": "integer", "minimum": 1 },
+    "run_id": { "type": "string", "minLength": 1 },
+    "corpus_id": { "type": "string", "minLength": 1 },
+    "manifest_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "git_commit": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "reviewer_count": { "type": "integer", "minimum": 0 },
+    "complete_reviewer_count": { "type": "integer", "minimum": 0 },
+    "formal_pair_count": { "type": "integer", "minimum": 0 },
+    "formal_vote_count": { "type": "integer", "minimum": 0 },
+    "exploratory_vote_count": { "type": "integer", "minimum": 0 },
+    "formal_vote_coverage_ratio": { "type": "number", "minimum": 0, "maximum": 1 },
+    "reference_profile_id": { "type": "string", "minLength": 1 },
+    "candidate_profile_id": { "type": "string", "minLength": 1 },
+    "overall": { "$ref": "#/$defs/tally" },
+    "categories": {
+      "type": "object",
+      "additionalProperties": { "$ref": "#/$defs/tally" }
+    },
+    "fixtures": {
+      "type": "object",
+      "additionalProperties": { "$ref": "#/$defs/tally" }
+    },
+    "reviewers": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/reviewer" }
+    },
+    "gates": { "$ref": "#/$defs/gates" }
+  },
+  "$defs": {
+    "rate": {
+      "oneOf": [
+        { "type": "number", "minimum": 0, "maximum": 1 },
+        { "type": "null" }
+      ]
+    },
+    "tally": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "total_votes",
+        "candidate_wins",
+        "reference_wins",
+        "ties",
+        "decisive_votes",
+        "candidate_decisive_win_rate",
+        "candidate_preference_score",
+        "decisive_win_rate_wilson_low_95",
+        "decisive_win_rate_wilson_high_95"
+      ],
+      "properties": {
+        "total_votes": { "type": "integer", "minimum": 0 },
+        "candidate_wins": { "type": "integer", "minimum": 0 },
+        "reference_wins": { "type": "integer", "minimum": 0 },
+        "ties": { "type": "integer", "minimum": 0 },
+        "decisive_votes": { "type": "integer", "minimum": 0 },
+        "candidate_decisive_win_rate": { "$ref": "#/$defs/rate" },
+        "candidate_preference_score": { "$ref": "#/$defs/rate" },
+        "decisive_win_rate_wilson_low_95": { "$ref": "#/$defs/rate" },
+        "decisive_win_rate_wilson_high_95": { "$ref": "#/$defs/rate" }
+      }
+    },
+    "reviewer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reviewer_id",
+        "reviewer_label",
+        "exported_at",
+        "formal_votes",
+        "complete"
+      ],
+      "properties": {
+        "reviewer_id": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "reviewer_label": { "type": ["string", "null"], "maxLength": 64 },
+        "exported_at": { "type": "string", "format": "date-time" },
+        "formal_votes": { "type": "integer", "minimum": 0 },
+        "complete": { "type": "boolean" }
+      }
+    },
+    "gates": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "minimum_reviewer_count",
+        "reviewer_count_passed",
+        "formal_vote_coverage_target",
+        "formal_vote_coverage_passed",
+        "overall_decisive_win_rate_target",
+        "category_decisive_win_rate_floor",
+        "overall_target_passed",
+        "categories_below_floor",
+        "categories_without_decisive_votes",
+        "all_reviewers_complete",
+        "quality_gate_passed"
+      ],
+      "properties": {
+        "minimum_reviewer_count": { "type": "integer", "minimum": 1 },
+        "reviewer_count_passed": { "type": "boolean" },
+        "formal_vote_coverage_target": { "type": "number", "minimum": 0, "maximum": 1 },
+        "formal_vote_coverage_passed": { "type": "boolean" },
+        "overall_decisive_win_rate_target": { "type": "number", "minimum": 0, "maximum": 1 },
+        "category_decisive_win_rate_floor": { "type": "number", "minimum": 0, "maximum": 1 },
+        "overall_target_passed": {
+          "oneOf": [
+            { "type": "boolean" },
+            { "type": "null" }
+          ]
+        },
+        "categories_below_floor": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "categories_without_decisive_votes": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "all_reviewers_complete": { "type": "boolean" },
+        "quality_gate_passed": { "type": "boolean" }
+      }
+    }
+  }
+}

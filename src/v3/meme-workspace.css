@@ -1,0 +1,339 @@
+.meme-workspace {
+  --meme-paper: var(--paper, #fff9ec);
+  --meme-paper-strong: var(--paper-strong, #fffdf5);
+  --meme-ink: var(--ink, #55493f);
+  --meme-ink-soft: var(--ink-soft, #88796c);
+  --meme-line: var(--line-soft, #dfcbb5);
+  --meme-aqua: var(--aqua, #79c9c6);
+  --meme-aqua-strong: var(--aqua-strong, #47aaa7);
+  --meme-coral: var(--coral, #efb4aa);
+  --meme-yellow: var(--yellow, #f2cf74);
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  padding: 16px;
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
+  gap: 14px;
+  overflow: hidden;
+  border-radius: 20px;
+  color: var(--meme-ink);
+}
+
+.meme-workspace__header,
+.meme-section-heading,
+.meme-preview-heading,
+.meme-control-title,
+.meme-size-control > span {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.meme-workspace__title { display: flex; align-items: center; gap: 10px; }
+.meme-workspace__title-icon {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 15px 12px 16px 11px;
+  color: #fff;
+  background: linear-gradient(145deg, var(--meme-coral), #db887d);
+  box-shadow: 0 5px 0 rgba(171, 95, 84, .2);
+  transform: rotate(-3deg);
+}
+.meme-workspace__title-icon svg { width: 23px; height: 23px; }
+.meme-workspace__title > span:last-child { display: grid; gap: 1px; }
+.meme-workspace__title small { color: var(--meme-aqua-strong); font-size: 9px; font-weight: 950; letter-spacing: 1.2px; }
+.meme-workspace__title h1 { margin: 0; font-size: 22px; line-height: 1.2; letter-spacing: .5px; }
+
+.meme-source-chip {
+  min-width: 0;
+  max-width: 48%;
+  min-height: 44px;
+  padding: 7px 12px;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  column-gap: 8px;
+  border: 1px solid color-mix(in srgb, var(--meme-aqua-strong) 34%, var(--meme-line));
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--meme-aqua) 16%, var(--meme-paper-strong));
+}
+.meme-source-chip > span { grid-row: 1 / 3; padding: 4px 7px; border-radius: 8px; color: white; background: var(--meme-aqua-strong); font-size: 9px; font-weight: 950; }
+.meme-source-chip > svg { grid-row: 1 / 3; width: 22px; height: 22px; color: var(--meme-aqua-strong); }
+.meme-source-chip strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 11px; }
+.meme-source-chip small { color: var(--meme-ink-soft); font-size: 9px; }
+
+.meme-template-section { display: grid; gap: 8px; }
+.meme-section-heading > span { display: inline-flex; align-items: center; gap: 7px; font-size: 13px; }
+.meme-section-heading > span svg { color: var(--meme-coral); }
+.meme-section-heading > small { color: var(--meme-ink-soft); font-size: 9px; }
+.meme-template-list { display: grid; grid-template-columns: repeat(9, minmax(112px, 1fr)); gap: 8px; overflow-x: auto; scrollbar-width: thin; }
+.meme-template-item { min-width: 0; display: flex; }
+.meme-template-card {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  min-height: 68px;
+  padding: 8px;
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  text-align: left;
+  border: 1px solid var(--meme-line);
+  border-radius: 14px;
+  background: var(--meme-paper-strong);
+  box-shadow: 0 3px 0 rgba(85, 73, 63, .07);
+}
+.meme-template-card:hover { border-color: color-mix(in srgb, var(--meme-aqua-strong) 55%, var(--meme-line)); }
+.meme-template-card.selected { border-color: var(--meme-aqua-strong); background: color-mix(in srgb, var(--meme-aqua) 15%, var(--meme-paper-strong)); box-shadow: 0 4px 0 rgba(71, 170, 167, .17); }
+.meme-template-card > span:nth-child(2) { min-width: 0; display: grid; gap: 2px; }
+.meme-template-card strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 10px; }
+.meme-template-card small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--meme-ink-soft); font-size: 8px; }
+.meme-template-card__glyph {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 11px;
+  color: white;
+  background: #3f3c39;
+  font-size: 10px;
+  font-weight: 950;
+  text-shadow: 0 1px 1px #000;
+}
+.meme-template-card__glyph.template-subtitle { color: #222; background: #fff; border: 1px solid #d6d0c5; text-shadow: none; }
+.meme-template-card__glyph.template-blackbar { color: #fff; background: #050505; border-radius: 2px; }
+.meme-template-card__glyph.template-dialogue { color: #4f463e; background: #fff; border: 2px solid #514a44; border-radius: 5px; text-shadow: none; }
+.meme-template-card__glyph.template-cinema { color: #fff; background: linear-gradient(#060606 0 28%, #756d66 28% 72%, #060606 72%); border-radius: 3px; }
+.meme-template-card__glyph.template-poster { color: #5b5048; background: #fff; border: 4px solid #ece8df; text-shadow: none; }
+.meme-template-card__glyph.template-news { color: #29231f; background: linear-gradient(90deg, #e65c50 0 16%, #fff 16%); border: 1px solid #e5ded3; border-radius: 3px; text-shadow: none; }
+.meme-template-card__glyph.template-barrage { color: #3b302a; background: var(--meme-yellow); text-shadow: none; transform: rotate(-3deg); }
+.meme-template-card__glyph.template-minimal { color: #fff; background: #689b94; }
+.meme-template-card__check { position: absolute; top: 5px; right: 5px; width: 15px; height: 15px; padding: 3px; color: white; border-radius: 50%; background: var(--meme-aqua-strong); }
+
+.meme-workspace__body { min-height: 0; display: grid; grid-template-columns: minmax(460px, 1.25fr) minmax(360px, .75fr); gap: 14px; }
+.meme-preview-column,
+.meme-controls { min-height: 0; }
+.meme-preview-column { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; gap: 7px; }
+.meme-preview-heading { color: var(--meme-ink-soft); font-size: 10px; font-weight: 850; }
+.meme-preview-heading > span { display: inline-flex; align-items: center; gap: 6px; color: var(--meme-ink); }
+.meme-preview-heading i { width: 7px; height: 7px; border-radius: 50%; background: #58b780; box-shadow: 0 0 0 4px rgba(88, 183, 128, .12); }
+.meme-preview {
+  position: relative;
+  min-height: 300px;
+  overflow: hidden;
+  border: 6px solid #312d2a;
+  border-radius: 18px;
+  background: #252321;
+  box-shadow: 0 8px 0 rgba(71, 57, 48, .15), inset 0 0 0 1px rgba(255,255,255,.1);
+  isolation: isolate;
+  display: grid;
+  place-items: center;
+}
+.meme-preview.template-poster { border-width: 18px; border-color: white; box-shadow: 0 0 0 1px var(--meme-line), 0 8px 0 rgba(71,57,48,.12); }
+.meme-preview__canvas { position: relative; width: 100%; height: 100%; max-width: 100%; max-height: 100%; overflow: hidden; background: #1f1d1b; }
+.meme-preview__canvas::before,
+.meme-preview__canvas::after { position: absolute; z-index: 1; pointer-events: none; content: ""; }
+.meme-preview.template-blackbar .meme-preview__canvas::after { right: 0; bottom: 0; left: 0; height: 16%; background: #050505; }
+.meme-preview.template-cinema .meme-preview__canvas::before { top: 0; right: 0; left: 0; height: 16%; background: #050505; }
+.meme-preview.template-cinema .meme-preview__canvas::after { right: 0; bottom: 0; left: 0; height: 16%; background: #050505; }
+.meme-preview.template-news .meme-preview__canvas::after { right: 0; bottom: 0; left: 0; height: 22%; border-top: 1px solid rgba(0,0,0,.12); background: rgba(255,255,255,.96); }
+.meme-preview.template-news .meme-preview__canvas::before { bottom: 0; left: 0; width: 3%; height: 22%; background: #e65c50; }
+.meme-preview__media,
+.meme-preview__media img,
+.meme-preview__media video { width: 100%; height: 100%; }
+.meme-preview__media { position: absolute; inset: 0; }
+.meme-preview__media img,
+.meme-preview__media video { display: block; object-fit: contain; background: #1f1d1b; }
+.meme-animation-player { height: 100%; display: grid; grid-template-rows: minmax(0, 1fr) auto; border: 0; border-radius: 0; box-shadow: none; }
+.meme-animation-player .animated-media-player__stage { min-height: 0; aspect-ratio: auto; }
+.meme-animation-player .animated-media-player__panel { padding: 6px 8px; gap: 5px; }
+.meme-animation-player .animated-media-player__controls button { min-height: 28px; }
+.meme-animation-player .animated-media-player__help { display: none; }
+.meme-animation-player .animated-media-player__format { display: none; }
+.meme-animation-player.animated-media-player--stage-only { grid-template-rows: minmax(0, 1fr); }
+.meme-preview:has(.meme-animation-player:not(.animated-media-player--stage-only)) .meme-preview__captions { padding-bottom: 108px; }
+.meme-preview__empty { width: 100%; height: 100%; display: grid; place-content: center; justify-items: center; gap: 8px; color: #dad3c6; text-align: center; background: radial-gradient(circle at 50% 45%, #45403b, #252321 72%); }
+.meme-preview__empty svg { width: 54px; height: 54px; color: var(--meme-aqua); }
+.meme-preview__empty strong { font-size: 14px; }
+.meme-preview__empty small { color: #a79e93; font-size: 9px; }
+
+.meme-preview__captions {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  pointer-events: none;
+  text-align: center;
+}
+.meme-preview.align-left .meme-preview__captions { text-align: left; }
+.meme-preview.align-right .meme-preview__captions { text-align: right; }
+.meme-caption {
+  position: absolute;
+  width: max-content;
+  max-width: 88%;
+  margin: 0;
+  transform: translate(-50%, -50%);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: var(--meme-font-size);
+  line-height: 1.12;
+  font-weight: 950;
+  letter-spacing: .02em;
+  cursor: grab;
+  pointer-events: auto;
+  touch-action: none;
+  user-select: none;
+  outline: 0;
+}
+.meme-preview.align-left .meme-caption { transform: translate(0, -50%); }
+.meme-preview.align-right .meme-caption { transform: translate(-100%, -50%); }
+.meme-caption:hover,
+.meme-caption:focus-visible,
+.meme-caption[data-dragging="true"] { outline: 2px dashed rgba(121, 201, 198, .92); outline-offset: 6px; }
+.meme-caption[data-dragging="true"] { cursor: grabbing; }
+.meme-caption__drag-handle { position: absolute; top: -16px; right: -16px; width: 17px; height: 17px; padding: 3px; color: white; border-radius: 50%; background: var(--meme-aqua-strong); box-shadow: 0 2px 5px rgba(0,0,0,.28); opacity: 0; transition: opacity .15s ease; }
+.meme-caption:hover .meme-caption__drag-handle,
+.meme-caption:focus-visible .meme-caption__drag-handle,
+.meme-caption[data-dragging="true"] .meme-caption__drag-handle { opacity: 1; }
+.style-classic .meme-caption { color: white; -webkit-text-stroke: .07em #111; paint-order: stroke fill; text-shadow: 0 .07em .05em rgba(0,0,0,.55); }
+.style-panel .meme-caption { padding: .18em .38em; color: #1e1d1b; border-radius: .12em; background: rgba(255,255,255,.94); box-shadow: 0 .12em 0 rgba(0,0,0,.18); }
+.style-bubble .meme-caption { padding: .24em .42em; color: #302c29; border: .05em solid #332e2a; border-radius: .12em; background: rgba(255,255,255,.96); box-shadow: 0 .1em 0 rgba(0,0,0,.2); }
+.style-highlight .meme-caption { padding: .12em .28em; color: #2d2824; border-radius: .04em; background: rgba(246, 219, 91, .95); box-shadow: 0 .08em 0 rgba(111, 83, 13, .22); text-shadow: 0 1px rgba(255,255,255,.4); }
+.style-blackbar .meme-caption { color: white; -webkit-text-stroke: max(1px, .035em) #000; paint-order: stroke fill; text-shadow: 0 2px 2px rgba(0,0,0,.7); }
+.style-cinema .meme-caption { color: white; text-shadow: 0 2px 3px rgba(0,0,0,.9); }
+.style-news .meme-caption { padding: .12em .28em; color: #28231f; background: rgba(255,255,255,.92); text-shadow: none; }
+.meme-caption-placeholder { position: absolute; top: 50%; left: 50%; margin: 0; padding: 8px 12px; transform: translate(-50%, -50%); border-radius: 999px; color: #e3ded6; background: rgba(20,18,17,.72); font-size: 10px; font-weight: 800; }
+.meme-preview-note { margin: 0; color: var(--meme-ink-soft); font-size: 8px; text-align: center; }
+
+.meme-controls { border: 0; margin: 0; padding: 0 4px 0 0; min-width: 0; display: grid; align-content: start; gap: 9px; overflow: auto; scrollbar-width: thin; }
+.meme-control-card { margin: 0; padding: 11px; display: grid; gap: 9px; border: 1px solid var(--meme-line); border-radius: 15px; background: var(--meme-paper-strong); }
+.meme-control-card legend { padding: 0 5px; font-size: 11px; font-weight: 900; }
+.meme-control-title strong { font-size: 12px; }
+.meme-control-title small { color: var(--meme-ink-soft); font-size: 8px; }
+.meme-copy-editor label { display: grid; gap: 5px; }
+.meme-copy-editor label > span { display: flex; justify-content: space-between; color: var(--meme-ink-soft); font-size: 9px; font-weight: 850; }
+.meme-copy-editor textarea {
+  width: 100%;
+  min-height: 48px;
+  padding: 8px 10px;
+  resize: vertical;
+  color: var(--meme-ink);
+  border: 1px solid var(--meme-line);
+  border-radius: 11px;
+  outline: none;
+  background: var(--meme-paper-strong);
+  font: inherit;
+  font-size: 11px;
+  font-weight: 750;
+  transition: border-color .18s ease, box-shadow .18s ease, background .18s ease;
+}
+.meme-copy-editor textarea:focus { border-color: var(--meme-aqua-strong); box-shadow: 0 0 0 3px rgba(71,170,167,.13); background: var(--meme-paper); }
+
+.meme-style-options { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+.meme-style-option { min-width: 0; padding: 6px; display: grid; justify-items: center; gap: 4px; border: 1px solid var(--meme-line); border-radius: 10px; background: var(--meme-paper-strong); }
+.meme-style-option.selected { border-color: var(--meme-aqua-strong); background: color-mix(in srgb, var(--meme-aqua) 15%, var(--meme-paper-strong)); box-shadow: inset 0 0 0 1px var(--meme-aqua-strong); }
+.meme-style-option i { width: 28px; height: 24px; display: grid; place-items: center; font-size: 13px; font-style: normal; font-weight: 950; }
+.meme-style-option.preview-classic i { color: white; background: #373431; -webkit-text-stroke: 1px #111; }
+.meme-style-option.preview-panel i { color: #222; border: 1px solid #ccc; background: white; }
+.meme-style-option.preview-bubble i { color: #222; border: 2px solid #444; border-radius: 3px; background: white; }
+.meme-style-option.preview-highlight i { color: #222; border-radius: 1px; background: var(--meme-yellow); box-shadow: 0 2px 0 rgba(111, 83, 13, .2); }
+.meme-style-option.preview-blackbar i { color: white; background: #050505; }
+.meme-style-option.preview-cinema i { color: white; background: linear-gradient(#050505 0 25%, #777 25% 75%, #050505 75%); }
+.meme-style-option.preview-news i { color: #222; border-left: 4px solid #e65c50; background: white; }
+.meme-style-option span { min-width: 0; display: grid; text-align: center; }
+.meme-style-option strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 8px; }
+.meme-style-option small { color: var(--meme-ink-soft); font-size: 7px; }
+
+.meme-layout-controls { grid-template-columns: minmax(140px, 1fr) auto; align-items: end; }
+.meme-size-control { grid-column: 1 / -1; display: grid; gap: 6px; }
+.meme-size-control strong { font-size: 10px; }
+.meme-size-control output { padding: 2px 7px; border-radius: 999px; color: #2f827e; background: color-mix(in srgb, var(--meme-aqua) 20%, white); font-size: 9px; font-weight: 950; }
+.meme-size-control input { width: 100%; accent-color: var(--meme-aqua-strong); }
+.meme-layout-controls fieldset { min-width: 0; margin: 0; padding: 0; border: 0; }
+.meme-layout-controls fieldset legend { padding: 0 0 5px; color: var(--meme-ink-soft); font-size: 8px; }
+.meme-segmented { display: flex; overflow: hidden; border: 1px solid var(--meme-line); border-radius: 10px; background: var(--meme-paper-strong); }
+.meme-segmented button { min-width: 0; height: 32px; display: grid; place-items: center; border-right: 1px solid var(--meme-line); font-size: 8px; font-weight: 850; }
+.meme-segmented button:last-child { border-right: 0; }
+.meme-segmented button[aria-pressed="true"] { color: white; background: var(--meme-aqua-strong); }
+.meme-alignment-options button { width: 35px; }
+.meme-alignment-options svg { width: 16px; height: 16px; }
+.meme-placement-options button { padding: 0 7px; white-space: nowrap; }
+
+.meme-actions { display: flex; justify-content: flex-end; align-items: stretch; gap: 10px; padding: 8px 0 3px; border-top: 1px dashed var(--meme-line); }
+.meme-actions .meme-clear-button { margin-right: auto; }
+.meme-detail-button { display: flex; align-items: center; gap: 14px; padding: 7px 12px; border: 1px dashed var(--meme-line); border-radius: 13px; color: var(--meme-ink); }
+.meme-detail-button > span { display: grid; gap: 4px; text-align: left; }
+.meme-detail-button strong { font-size: 12px; }
+.meme-detail-button small { color: var(--meme-ink-soft); font-size: 10px; }
+.meme-preview-surfaces { display: flex; gap: 4px; }
+.meme-preview-surfaces button { padding: 6px 9px; min-height: 30px; border: 1px solid var(--meme-line); border-radius: 9px; color: var(--meme-ink); background: var(--meme-paper-strong); font-size: 11px; }
+.meme-preview-surfaces button[aria-pressed="true"] { border-color: var(--meme-aqua-strong); background: color-mix(in srgb, var(--meme-aqua) 18%, var(--meme-paper-strong)); }
+.meme-preview.surface-chat_light { background: #ededed; border-color: #dedede; }
+.meme-preview.surface-chat_dark { background: #171b20; border-color: #30353b; }
+.meme-preview:is(.surface-chat_light, .surface-chat_dark) .meme-preview__canvas { animation: memeSendIn .5s cubic-bezier(.18,.85,.28,1.1) both; }
+.meme-preview:is(.surface-chat_light, .surface-chat_dark) :is(.meme-preview__canvas, .meme-preview__media img, .meme-preview__media video, .animated-media-player__stage) { background: transparent; }
+.meme-reaction-copy { display: grid; gap: 6px; }
+.meme-reaction-copy > small { color: var(--meme-ink-soft); font-size: 10px; }
+.meme-reaction-copy > div { display: flex; gap: 5px; flex-wrap: wrap; }
+.meme-reaction-copy button { padding: 5px 9px; min-height: 30px; border: 1px solid var(--meme-line); border-radius: 999px; background: var(--meme-paper); color: var(--meme-ink); font-size: 12px; }
+.meme-reaction-copy button:hover { border-color: var(--meme-aqua-strong); transform: translateY(-2px); }
+.meme-template-card.selected .meme-template-card__glyph { animation: memeSendIn .5s cubic-bezier(.18,.85,.28,1.1) both; }
+.meme-workspace :is(button, textarea, input):focus-visible { outline: 3px solid var(--meme-aqua-strong); outline-offset: 2px; }
+@keyframes memeSendIn { from { opacity: 0; transform: translateY(18px) scale(.75) rotate(-5deg); } 65% { opacity: 1; transform: translateY(-3px) scale(1.05) rotate(2deg); } to { opacity: 1; transform: none; } }
+.meme-workspace.reduce-motion *, .meme-workspace.reduce-motion *::before, .meme-workspace.reduce-motion *::after { animation: none !important; transition: none !important; }
+.meme-clear-button { min-height: 50px; padding: 0 12px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; border: 1px solid var(--meme-line); border-radius: 13px; background: var(--meme-paper-strong); font-size: 9px; font-weight: 900; }
+.meme-clear-button svg { width: 17px; height: 17px; color: var(--meme-coral); }
+.meme-export-button { min-height: 50px; padding: 7px 13px; display: flex; align-items: center; justify-content: space-between; gap: 10px; color: white; border: 1px solid #328d89; border-radius: 14px; background: linear-gradient(135deg, var(--meme-aqua-strong), #46b76e); box-shadow: 0 5px 0 #2f827e, inset 0 1px 0 rgba(255,255,255,.3); text-align: left; }
+.meme-export-button > span { display: grid; gap: 1px; }
+.meme-export-button strong { font-size: 12px; }
+.meme-export-button small { color: rgba(255,255,255,.78); font-size: 8px; }
+.meme-export-button > svg { width: 20px; height: 20px; }
+
+@media (max-height: 820px) {
+  .meme-workspace { padding: 11px; gap: 9px; }
+  .meme-template-card { min-height: 56px; padding: 6px; }
+  .meme-template-card__glyph { width: 32px; height: 32px; }
+  .meme-preview { min-height: 230px; }
+  .meme-control-card { padding: 8px; gap: 6px; }
+  .meme-copy-editor textarea { min-height: 38px; }
+}
+
+@media (max-width: 1180px) {
+  .meme-workspace__body { grid-template-columns: minmax(0, 1.1fr) minmax(280px, .9fr); }
+  .meme-preview-column,
+  .meme-controls { min-width: 0; }
+  .meme-layout-controls { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (max-width: 900px) {
+  .meme-workspace { overflow: auto; }
+  .meme-workspace__header,
+  .meme-workspace__title,
+  .meme-template-section { min-width: 0; }
+  .meme-workspace__header { align-items: start; }
+  .meme-workspace__body { grid-template-columns: minmax(0, 1fr); }
+  .meme-preview-column { min-height: 360px; }
+  .meme-controls { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .meme-copy-editor,
+  .meme-layout-controls,
+  .meme-actions { grid-column: 1 / -1; }
+}
+
+@media (max-width: 680px) {
+  .meme-workspace__header { display: grid; grid-template-columns: minmax(0, 1fr); }
+  .meme-source-chip { justify-self: stretch; }
+  .meme-template-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .meme-controls { grid-template-columns: minmax(0, 1fr); }
+  .meme-style-options { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .meme-layout-controls { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .meme-workspace *,
+  .meme-workspace *::before,
+  .meme-workspace *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}

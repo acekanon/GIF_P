@@ -1,9 +1,11 @@
 [package]
 name = "gif_p"
-version = "2.1.0"
-description = "GIF_P portable GIF compressor"
+version = "6.0.1"
+description = "GIFP 6.0.1 free animation conversion and delivery software"
 authors = ["acekanon"]
+license-file = "../LICENSE.txt"
 edition = "2021"
+default-run = "gif_p"
 
 [lib]
 name = "gif_p_lib"
@@ -13,7 +15,18 @@ crate-type = ["staticlib", "cdylib", "rlib"]
 tauri-build = { version = "2", features = [] }
 
 [dependencies]
+gif = { version = "=0.14.2", default-features = false, features = ["raii_no_panic", "std"] }
+weezl = "=0.1.12"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
+sha2 = "0.10"
+sysinfo = { version = "=0.38.4", default-features = false, features = ["system"] }
 tauri = { version = "2", features = ["protocol-asset"] }
 thiserror = "2"
+uuid = { version = "1", features = ["v4"] }
+
+[target.'cfg(windows)'.dependencies]
+windows-sys = { version = "0.61", features = ["Win32_Foundation", "Win32_Security", "Win32_Storage_FileSystem", "Win32_System_JobObjects", "Win32_System_Threading", "Win32_System_Com", "Win32_UI_Controls_Dialogs", "Win32_UI_Shell", "Win32_UI_Shell_Common"] }
+
+[target.'cfg(unix)'.dependencies]
+libc = "0.2"

@@ -9,8 +9,14 @@ pub enum AppError {
     UnsupportedVideo(String),
     #[error("Missing dependency: {0}")]
     MissingDependency(String),
+    #[error("Decode failed: {0}")]
+    DecodeFailed(String),
     #[error("Encode failed: {0}")]
     EncodeFailed(String),
+    #[error("GIFP_RETRYABLE_RECORDING:{0}")]
+    RetryableRecording(String),
+    #[error("GIFP_TASK_CANCELLED:{0}")]
+    Cancelled(String),
     #[error("Internal error: {0}")]
     Internal(String),
 }

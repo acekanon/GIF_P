@@ -1,0 +1,570 @@
+{
+  "$schema": "./corpus-manifest.schema.json",
+  "schema_version": 1,
+  "corpus_id": "quality-corpus-v1",
+  "description": "GIFP Quality Lab 可合法复现的 28 素材基准集；七类各四个，并覆盖透明、渐变、像素画、无缝循环和硬切标签。",
+  "fixture_root": "generated",
+  "canonical_fixture_identity": {
+    "contract_id": "gifp.canonical_fixture_identity.v1",
+    "status": "complete",
+    "generator_ffmpeg_sha256": "eca2b638419a00a592ba18a22bbac08877a1424ba2cf5c6866440d95d6c7f3e2",
+    "generator_ffprobe_sha256": "0f49fc028cccb227d9f5313133e8811856024ff3579515eafbf13ba263de4003",
+    "reviewed_runtime_manifest_path": "compliance/ffmpeg-windows-x64-gpl-shared.json",
+    "reviewed_runtime_manifest_sha256": "364402b42772321f45cdbb3c377555adabd0aae465cb9f4082c5c7a81ba095b8"
+  },
+  "coverage": {
+    "minimum_total": 28,
+    "minimum_per_category": 4,
+    "required_categories": [
+      "portrait-skin",
+      "ui-subtitle",
+      "flat-animation",
+      "game-footage",
+      "lowlight-noise",
+      "high-motion",
+      "static-scene"
+    ],
+    "required_tags": ["transparent", "gradient", "pixel-art", "seamless-loop", "hard-cut"]
+  },
+  "performance_budget": {
+    "profile_scope": "stable_profiles",
+    "required_build_profile": "release",
+    "minimum_memory_coverage": 0.95,
+    "p95_encode_wall_elapsed_ms": 9000,
+    "max_encode_wall_elapsed_ms": 10000,
+    "p95_peak_tree_rss_bytes": 134217728,
+    "max_peak_tree_rss_bytes": 150994944
+  },
+  "fixtures": [
+    {
+      "id": "skin-flat-portrait",
+      "category": "portrait-skin",
+      "file": "skin-flat-portrait.mkv",
+      "expected_source_sha256": "a58a73401b52ff0156f11d7db0649952693c43dd7ab5dde2315d7f992f53cee5",
+      "duration_seconds": 3.0,
+      "tags": ["skin-tone", "flat-color", "static-background"],
+      "generator": {
+        "kind": "lavfi",
+        "input": "color=c=0x6F91A8:s=480x270:r=15:d=3",
+        "video_filter": "drawbox=x=150:y=24:w=180:h=218:color=0x3B2F3D:t=fill,drawbox=x=168:y=50:w=144:h=170:color=0xE7B89F:t=fill,drawbox=x=190:y=106:w=24:h=14:color=0x3B3238:t=fill,drawbox=x=266:y=106:w=24:h=14:color=0x3B3238:t=fill,drawbox=x=204:y=158:w=72:h=12:color=0xB86E6E:t=fill,drawbox=x=178:y=136:w=30:h=18:color=0xE88F91@0.55:t=fill:enable='lt(mod(t,1),0.4)'",
+        "pixel_format": "yuv444p"
+      }
+    },
+    {
+      "id": "skin-gradient-portrait",
+      "category": "portrait-skin",
+      "file": "skin-gradient-portrait.mkv",
+      "expected_source_sha256": "845edf4366995beb6730dacd66064be98fed2edcc0249dc8cc9240caad8ac9cd",
+      "duration_seconds": 3.0,
+      "tags": ["skin-tone", "gradient", "subtle-motion"],
+      "generator": {
+        "kind": "lavfi",
+        "input": "gradients=s=480x270:r=15:d=3:c0=0xF4D0BD:c1=0xC98776:c2=0x4B3548:n=3:x0=0:y0=0:x1=480:y1=270:speed=0.02:seed=101",
+        "video_filter": "drawbox=x=156:y=32:w=168:h=210:color=0x4A3443@0.82:t=fill,drawbox=x=176:y=58:w=128:h=154:color=0xEDC1A8@0.92:t=fill,drawbox=x=196:y=112:w=20:h=12:color=0x40343A:t=fill,drawbox=x=264:y=112:w=20:h=12:color=0x40343A:t=fill",
+        "pixel_format": "yuv444p"
+      }
+    },
+    {
+      "id": "skin-lowlight-portrait",
+      "category": "portrait-skin",
+      "file": "skin-lowlight-portrait.mkv",
+      "expected_source_sha256": "abe89aacee0740824cd81e7d783f1e34c3f8385a921e58c64f92dbf7d9bcdb1c",
+      "duration_seconds": 3.0,
+      "tags": ["skin-tone", "low-light", "noise"],
+      "generator": {
+        "kind": "lavfi",
+        "input": "color=c=0x151820:s=480x270:r=15:d=3",
+        "video_filter": "noise=alls=7:allf=t+u:all_seed=17,drawbox=x=166:y=36:w=148:h=196:color=0x6E4D46:t=fill,drawbox=x=184:y=64:w=112:h=146:color=0xA87162:t=fill,drawbox=x=202:y=116:w=18:h=10:color=0x211F24:t=fill,drawbox=x=260:y=116:w=18:h=10:color=0x211F24:t=fill",
+        "pixel_format": "yuv444p"
+      }
+    },
+    {
+      "id": "skin-panels-scroll",
+      "category": "portrait-skin",
+      "file": "skin-panels-scroll.mkv",
+      "expected_source_sha256": "dbb1016ae832c6792f71feaa46c56b04d16673f38b3bb83ec62b08a77ace2aaa",
+      "duration_seconds": 3.0,
+      "tags": ["skin-tone", "camera-motion-proxy", "palette-stability"],
+      "generator": {
+        "kind": "lavfi",
+        "input": "color=c=0x324957:s=480x270:r=15:d=3",
+        "video_filter": "drawbox=x=20:y=28:w=100:h=214:color=0xE8B69C:t=fill,drawbox=x=140:y=28:w=100:h=214:color=0xC98D78:t=fill,drawbox=x=260:y=28:w=100:h=214:color=0x8F5F55:t=fill,drawbox=x=380:y=28:w=80:h=214:color=0xF2CDB7:t=fill,scroll=h=0.012:v=0",
+        "pixel_format": "yuv444p"
+      }
+    },
+
+    {
+      "id": "ui-edge-blink",
+      "category": "ui-subtitle",
+      "file": "ui-edge-blink.mkv",
+      "expected_source_sha256": "81944b03c4c4ce34427d1624e9dc251a52c02bfac12a8e23bf1866974693eb09",
+      "duration_seconds": 3.0,
+      "tags": ["ui", "text-like-edges", "flat-color"],
+      "generator": {
+        "kind": "lavfi",
+        "input": "color=c=0xF1ECDD:s=480x270:r=15:d=3",
+        "video_filter": "drawbox=x=28:y=24:w=424:h=42:color=0x173D38:t=fill,drawbox=x=28:y=90:w=260:h=18:color=0x82C7AA:t=fill,drawbox=x=28:y=125:w=350:h=18:color=0x50A98C:t=fill,drawbox=x=28:y=160:w=220:h=18:color=0xE9A96B:t=fill,drawbox=x=390:y=202:w=42:h=42:color=0xE66F5C:t=fill:enable='lt(mod(t,1),0.5)'",
+        "pixel_format": "yuv444p"
+      }
+    },
+    {
+      "id": "ui-pixel-grid",
+      "category": "ui-subtitle",
+      "file": "ui-pixel-grid.mkv",
+      "expected_source_sha256": "20fc115dc74cd8b0a351421b878bcab7e6cbb1510a30d38bac99a9c8aca942bd",
+      "duration_seconds": 3.0,
+      "tags": ["ui", "pixel-art", "sharp-edge"],
+      "generator": {
+        "kind": "lavfi",
+        "input": "color=c=0x17212A:s=480x270:r=15:d=3",
+        "video_filter": "drawgrid=w=16:h=16:t=1:c=0x314455,drawbox=x=32:y=32:w=192:h=32:color=0x56C9A3:t=fill,drawbox=x=32:y=88:w=352:h=16:color=0xDCE7DF:t=fill,drawbox=x=32:y=120:w=288:h=16:color=0xA4B7C5:t=fill,drawbox=x=400:y=200:w=48:h=32:color=0xE6A15A:t=fill:enable='lt(mod(t,0.8),0.4)'",
+        "pixel_format": "yuv444p"
+      }
+    },
+    {
+      "id": "ui-scroll-ticker",
+      "category": "ui-subtitle",
+      "file": "ui-scroll-ticker.mkv",
+      "expected_source_sha256": "7a5bdf801470c04c5b3ea186f57cef5de20eff1cb2c0d0e010a7f1846b51a6d1",
+      "duration_seconds": 3.0,
+      "tags": ["ui", "subtitle", "horizontal-motion"],
+      "generator": {
+        "kind": "lavfi",
+        "input": "color=c=0xEEE7D8:s=480x270:r=15:d=3",
+        "video_filter": "drawbox=x=0:y=0:w=480:h=54:color=0x214A43:t=fill,drawbox=x=20:y=90:w=110:h=22:color=0xD96E5E:t=fill,drawbox=x=150:y=90:w=210:h=22:color=0x567F9D:t=fill,drawbox=x=380:y=90:w=80:h=22:color=0xD4A544:t=fill,drawbox=x=0:y=218:w=480:h=34:color=0x182A32:t=fill,drawbox=x=24:y=228:w=300:h=12:color=0xF6F0DF:t=fill,scroll=h=0.015:v=0",
+        "pixel_format": "yuv444p"
+      }
+    },
+    {
+      "id": "ui-alpha-panel",
+      "category": "ui-subtitle",
+      "file": "ui-alpha-panel.mkv",
+      "expected_source_sha256": "a407274ca74116b88984236d49e5768d7562194748da4254a4304c2b9c8495fc",
+      "duration_seconds": 3.0,
+      "tags": ["ui", "transparent", "semi-transparent", "alpha", "sharp-edge"],
+      "generator": {
+        "kind": "lavfi",
+        "input": "color=c=black@0.0:s=480x270:r=15:d=3,format=rgba",
+        "video_filter": "drawbox=x=44:y=38:w=392:h=194:color=0x173D38@0.78:t=fill:replace=1,drawbox=x=68:y=70:w=260:h=18:color=0xF3EBDD@1.0:t=fill:replace=1,drawbox=x=68:y=106:w=330:h=18:color=0x73D0AE@1.0:t=fill:replace=1,drawbox=x=350:y=174:w=54:h=34:color=0xEAA15B@1.0:t=fill:replace=1:enable='lt(mod(t,1),0.5)'",
+        "pixel_format": "bgra"
+      }
+    },
+
+    {
+      "id": "flat-gradient-orbit",
+      "category": "flat-animation",
+      "file": "flat-gradient-orbit.mkv",
+      "expected_source_sha256": "39cce9786b18150b41893aee90058cd1202fcdf68483c44138f952685c3aa52b",
+      "duration_seconds": 3.0,
+      "tags": ["animation", "gradient", "flat-color"],
+      "generator": {
+        "kind": "lavfi",
+        "input": "gradients=s=480x270:r=15:d=3:c0=0x423B7A:c1=0x7C5FD3:c2=0xF18BB5:c3=0xF4C36A:n=4:type=circular:speed=0.08:seed=103",
+        "video_filter": "drawbox=x=160:y=70:w=160:h=130:color=0xF8F2E4@0.72:t=fill,drawbox=x=196:y=104:w=88:h=62:color=0x3B3668@0.86:t=fill",
+        "pixel_format": "yuv444p"
+      }
+    },
+    {
+      "id": "flat-seamless-wave",
+      "category": "flat-animation",
+      "file": "flat-seamless-wave.mkv",
+      "expected_source_sha256": "62797a6679cd9886221ef8496444656611f3f580224798ab80fb6d8e12a385ab",
+      "duration_seconds": 3.0,
+      "tags": ["animation", "gradient", "seamless-loop"],
+      "generator": {
+        "kind": "lavfi",
+        "input": "nullsrc=s=480x270:r=15:d=3,geq=r='128+100*sin(2*PI*(X/W+T))':g='128+100*sin(2*PI*(Y/H+T))':b='128+100*sin(2*PI*(X/W+Y/H+T))'",
+        "pixel_format": "yuv444p"
+      }
+    },
+    {
+      "id": "flat-alpha-sprite",
+      "category": "flat-animation",
+      "file": "flat-alpha-sprite.mkv",
+      "expected_source_sha256": "61b23ba86de4228e060fc97648308fc7e1c8a07d30ea65c7487a68cc1567b459",
+      "duration_seconds": 3.0,
+      "tags": ["animation", "transparent", "alpha", "pixel-art"],
+      "generator": {
+        "kind": "lavfi",
+        "input": "color=c=black@0.0:s=480x270:r=15:d=3,format=rgba",
+        "video_filter": "drawbox=x=176:y=70:w=128:h=128:color=0x4EC39B@1.0:t=fill:replace=1,drawbox=x=208:y=102:w=24:h=24:color=0x173D38@1.0:t=fill:replace=1,drawbox=x=248:y=102:w=24:h=24:color=0x173D38@1.0:t=fill:replace=1,drawbox=x=216:y=154:w=48:h=16:color=0xF3EBDD@1.0:t=fill:replace=1:enable='lt(mod(t,1),0.5)'",
+        "pixel_format": "bgra"
+      }
+    },
+    {
+      "id": "flat-sierpinski-lines",
+      "category": "flat-animation",
+      "file": "flat-sierpinski-lines.mkv",
+      "expected_source_sha256": "70a7918bd48de14df19619e2ed1382fcce98bb73be4474680f15205567746cea",
+      "duration_seconds": 3.0,
+      "tags": ["animation", "line-art", "pixel-art"],
+      "generator": {
+        "kind": "lavfi",
+        "input": "sierpinski=s=480x270:r=15:seed=31:jump=37:type=triangle",
+        "video_filter": "negate,hue=h=95:s=0.8",
+        "pixel_format": "yuv444p"
+      }
+    },
+
+    {
+      "id": "game-testsrc-action",
+      "category": "game-footage",
+      "file": "game-testsrc-action.mkv",
+      "expected_source_sha256": "304618eb558377815d40531d3d72c1b57f4f770edaf0cf79be62305a5800d924",
+      "duration_seconds": 3.0,
+      "tags": ["game", "high-motion", "texture"],
+      "generator": {
+        "kind": "lavfi",
+        "input": "testsrc2=size=480x270:rate=15:duration=3",
+        "video_filter": "hue=h=8*t:s=1.15",
+        "pixel_format": "yuv444p"
+      }
+    },
+    {
+      "id": "game-cellular-pixels",
+      "category": "game-footage",
+      "file": "game-cellular-pixels.mkv",
+      "expected_source_sha256": "2a72097d6f41e600ea00ff8602d54e37eb5460c1d92b8865d538001956603116",
+      "duration_seconds": 3.0,
+      "tags": ["game", "pixel-art", "procedural"],
+      "generator": {
+        "kind": "lavfi",
+        "input": "cellauto=s=480x270:r=15:rule=110:ratio=0.22:seed=19:scroll=1:start_full=1:stitch=1",
+        "video_filter": "hue=h=120:s=0.7",
+        "pixel_format": "yuv444p"
+      }
+    },
+    {
+      "id": "game-life-field",
+      "category": "game-footage",
+      "file": "game-life-field.mkv",
+      "expected_source_sha256": "3a9c63c708914a5c76ed707c4a63af0d63d2d247f823cfe452c1dcbecab12f41",
+      "duration_seconds": 3.0,
+      "tags": ["game", "sprite-field", "procedural"],
+      "generator": {
+        "kind": "lavfi",
+        "input": "life=s=480x270:r=15:ratio=0.18:seed=23:stitch=1:mold=8:life_color=0x75D5A8:death_color=0x17232A:mold_color=0xD89A5E",
+        "pixel_format": "yuv444p"
+      }
+    },
+    {
+      "id": "game-zoneplate-effects",
+      "category": "game-footage",
+      "file": "game-zoneplate-effects.mkv",
+      "expected_source_sha256": "dc5f81048de4749d811ac053df2a290dc83f5c14f27ac42ad4436abe31f7d0aa",
+      "duration_seconds": 3.0,
+      "tags": ["game", "effects", "high-frequency"],
+      "generator": {
+        "kind": "lavfi",
+        "input": "zoneplate=s=480x270:r=15:d=3:kx2=32:ky2=24:kt=5:ku=64:kv=128",
+        "pixel_format": "yuv444p"
+      }
+    },
+
+    {
+      "id": "lowlight-temporal-noise",
+      "category": "lowlight-noise",
+      "file": "lowlight-temporal-noise.mkv",
+      "expected_source_sha256": "e3f6fe943b0387f7c8bcb0c50f202fc80044b8477e2ec9f3aa3357683e57d136",
+      "duration_seconds": 3.0,
+      "tags": ["low-light", "noise", "temporal-noise"],
+      "generator": {
+        "kind": "lavfi",
+        "input": "color=c=0x10151A:s=480x270:r=15:d=3",
+        "video_filter": "noise=alls=18:allf=t+u:all_seed=41,drawbox=x=120:y=64:w=240:h=142:color=0x29333A@0.58:t=fill",
+        "pixel_format": "yuv444p"
+      }
+    },
+    {
+      "id": "lowlight-perlin-cloud",
+      "category": "lowlight-noise",
+      "file": "lowlight-perlin-cloud.mkv",
+      "expected_source_sha256": "359f02c791d17eae33ac4f75f6584df7b0bc832334fd92f5e3548271ac4ea425",
+      "duration_seconds": 3.0,
+      "tags": ["low-light", "noise", "texture"],
+      "generator": {
+        "kind": "lavfi",
+        "input": "perlin=s=480x270:r=15:octaves=4:persistence=0.55:xscale=0.035:yscale=0.035:tscale=0.08:random_mode=seed:seed=29",
+        "video_filter": "eq=brightness=-0.34:contrast=0.72:saturation=0.45",
+        "pixel_format": "yuv444p"
+      }
+    },
+    {
+      "id": "lowlight-gradient-bands",
+      "category": "lowlight-noise",
+      "file": "lowlight-gradient-bands.mkv",
+      "expected_source_sha256": "e5df5e100412b34295ba0d09e257915c9189e6f16c61435db3792fc7eb47a98c",
+      "duration_seconds": 3.0,
+      "tags": ["low-light", "gradient", "banding-risk"],
+      "generator": {
+        "kind": "lavfi",
+        "input": "gradients=s=480x270:r=15:d=3:c0=0x080B12:c1=0x1B2534:c2=0x34233C:n=3:x0=0:y0=0:x1=480:y1=270:speed=0.01:seed=107",
+        "pixel_format": "yuv444p"
+      }
+    },
+    {
+      "id": "lowlight-small-light",
+      "category": "lowlight-noise",
+      "file": "lowlight-small-light.mkv",
+      "expected_source_sha256": "98c914685894f07f6508eb7a48ff05fb7699843bf1efe1dd3ce42cf567018e84",
+      "duration_seconds": 3.0,
+      "tags": ["low-light", "small-change", "noise"],
+      "generator": {
+        "kind": "lavfi",
+        "input": "color=c=0x090D12:s=480x270:r=15:d=3",
+        "video_filter": "noise=alls=9:allf=t+u:all_seed=53,drawbox=x=350:y=76:w=34:h=34:color=0xF2C56B@0.88:t=fill:enable='lt(mod(t,1.2),0.3)'",
+        "pixel_format": "yuv444p"
+      }
+    },
+
+    {
+      "id": "high-motion-texture",
+      "category": "high-motion",
+      "file": "high-motion-texture.mkv",
+      "expected_source_sha256": "21d842ad3383d2b2b8cd5b30acb3745865059caff667c5537f66b15b19d99ef9",
+      "duration_seconds": 3.0,
+      "tags": ["high-motion", "texture", "camera-motion-proxy"],
+      "generator": {
+        "kind": "lavfi",
+        "input": "testsrc2=size=480x270:rate=15:duration=3",
+        "pixel_format": "yuv444p"
+      }
+    },
+    {
+      "id": "motion-mandelbrot-zoom",
+      "category": "high-motion",
+      "file": "motion-mandelbrot-zoom.mkv",
+      "expected_source_sha256": "de81a6d898120132e44585e620d14bf01bbe937513e1d6ca6d25fa40fc1c449c",
+      "duration_seconds": 3.0,
+      "tags": ["high-motion", "zoom", "texture"],
+      "generator": {
+        "kind": "lavfi",
+        "input": "mandelbrot=s=480x270:r=15:maxiter=320:start_scale=3:end_scale=0.45:end_pts=45:morphxf=0.018:morphyf=0.021:morphamp=0.08",
+        "pixel_format": "yuv444p"
+      }
+    },
+    {
+      "id": "motion-scroll-bars",
+      "category": "high-motion",
+      "file": "motion-scroll-bars.mkv",
+      "expected_source_sha256": "cb2d5e3216a3a8ef27572454980b487aadb863af80a4d67fa80ef6c7a0494d70",
+      "duration_seconds": 3.0,
+      "tags": ["high-motion", "pan", "sharp-edge"],
+      "generator": {
+        "kind": "lavfi",
+        "input": "smptebars=s=480x270:r=15",
+        "video_filter": "scroll=h=0.08:v=0.025",
+        "pixel_format": "yuv444p"
+      }
+    },
+    {
+      "id": "motion-rotate-zoneplate",
+      "category": "high-motion",
+      "file": "motion-rotate-zoneplate.mkv",
+      "expected_source_sha256": "3b41bd1254210c284c0c32815112c0906326a38016e5c5298dad46a218566944",
+      "duration_seconds": 3.0,
+      "tags": ["high-motion", "rotation", "high-frequency"],
+      "generator": {
+        "kind": "lavfi",
+        "input": "zoneplate=s=480x270:r=15:d=3:kx2=18:ky2=18:kt=7:ku=96:kv=48",
+        "video_filter": "rotate=angle=2*PI*t/3:ow=iw:oh=ih:fillcolor=0x101820",
+        "pixel_format": "yuv444p"
+      }
+    },
+
+    {
+      "id": "static-small-change",
+      "category": "static-scene",
+      "file": "static-small-change.mkv",
+      "expected_source_sha256": "a5fa511d9eee87650b60db75841f5b5c0b51a168fcd73885b4fec07dd7c64c45",
+      "duration_seconds": 3.0,
+      "tags": ["static-background", "small-change", "flat-color"],
+      "generator": {
+        "kind": "lavfi",
+        "input": "color=c=0xF3EEDF:s=480x270:r=15:d=3",
+        "video_filter": "drawgrid=w=48:h=45:t=1:c=0xC8BFA7@0.35,drawbox=x=44:y=62:w=392:h=146:color=0xD9D2C1:t=fill,drawbox=x=330:y=108:w=52:h=52:color=0x42B883:t=fill:enable='lt(mod(t,1),0.25)'",
+        "pixel_format": "yuv444p"
+      }
+    },
+    {
+      "id": "flat-hard-cuts",
+      "category": "static-scene",
+      "file": "flat-hard-cuts.mkv",
+      "expected_source_sha256": "31c7a8559d65304dac3a814d755accbd7cfbd98aa846cd7b44417786c8ef43d4",
+      "duration_seconds": 3.0,
+      "tags": ["hard-cut", "flat-color", "scene-change"],
+      "generator": {
+        "kind": "lavfi",
+        "input": "color=c=0x214A3C:s=480x270:r=15:d=1[first];color=c=0xC26956:s=480x270:r=15:d=1[second];color=c=0xE4C56A:s=480x270:r=15:d=1[third];[first][second][third]concat=n=3:v=1:a=0",
+        "pixel_format": "yuv444p"
+      }
+    },
+    {
+      "id": "static-gradient-hold",
+      "category": "static-scene",
+      "file": "static-gradient-hold.mkv",
+      "expected_source_sha256": "8fa6a71581b157b34317f45a4eef18936898c348fc2f59c2e9d345fbac08c7ef",
+      "duration_seconds": 3.0,
+      "tags": ["static-background", "gradient", "banding-risk"],
+      "generator": {
+        "kind": "lavfi",
+        "input": "gradients=s=480x270:r=15:d=3:c0=0xECE5D6:c1=0x8DC7B1:c2=0x527B73:n=3:x0=0:y0=0:x1=480:y1=270:speed=0:seed=109",
+        "pixel_format": "yuv444p"
+      }
+    },
+    {
+      "id": "static-subtle-indicator",
+      "category": "static-scene",
+      "file": "static-subtle-indicator.mkv",
+      "expected_source_sha256": "075f711887e3a3ee1adaaee51258f5a0eba3bdd9729f73f471e80be6b2d8e571",
+      "duration_seconds": 3.0,
+      "tags": ["static-background", "small-change", "ui"],
+      "generator": {
+        "kind": "lavfi",
+        "input": "color=c=0xD9DED8:s=480x270:r=15:d=3",
+        "video_filter": "drawbox=x=38:y=34:w=404:h=202:color=0xF3F0E7:t=fill,drawbox=x=68:y=72:w=260:h=16:color=0x647A73:t=fill,drawbox=x=68:y=108:w=320:h=16:color=0xA4B4AD:t=fill,drawbox=x=398:y=194:w=12:h=12:color=0x4EB18D:t=fill:enable='lt(mod(t,1.5),0.2)'",
+        "pixel_format": "yuv444p"
+      }
+    }
+  ],
+  "profiles": [
+    {
+      "id": "fast-baseline",
+      "generation_mode": "fast_gif",
+      "encoder": "ffmpeg_fast",
+      "width": 320,
+      "fps": 12,
+      "colors": 96,
+      "dither": "sierra2_4a",
+      "optimize_level": 3,
+      "lossy": 20,
+      "bayer_scale": 2,
+      "alpha_threshold": 128,
+      "filter_style": "original",
+      "perceptual_focus": "auto",
+      "allow_experimental": false
+    },
+    {
+      "id": "best-current",
+      "generation_mode": "best_gif",
+      "encoder": "hybrid",
+      "width": 320,
+      "fps": 12,
+      "colors": 96,
+      "dither": "sierra2_4a",
+      "optimize_level": 3,
+      "lossy": 20,
+      "bayer_scale": 2,
+      "alpha_threshold": 128,
+      "filter_style": "original",
+      "perceptual_focus": "auto",
+      "allow_experimental": false
+    },
+    {
+      "id": "ffmpeg-size-match",
+      "generation_mode": "target_size",
+      "match_target_profile_id": "best-current",
+      "target_constraint": "symmetric_match",
+      "encoder": "ffmpeg_fast",
+      "width": 320,
+      "fps": 12,
+      "colors": 96,
+      "dither": "bayer",
+      "optimize_level": 3,
+      "lossy": 20,
+      "bayer_scale": 2,
+      "alpha_threshold": 128,
+      "filter_style": "original",
+      "perceptual_focus": "auto",
+      "allow_experimental": false
+    },
+    {
+      "id": "target-hard-cap-known-feasible",
+      "generation_mode": "target_size",
+      "match_target_profile_id": "fast-baseline",
+      "target_constraint": "hard_cap",
+      "target_size_scale": 1.025,
+      "encoder": "ffmpeg_fast",
+      "width": 320,
+      "fps": 12,
+      "colors": 96,
+      "dither": "sierra2_4a",
+      "optimize_level": 3,
+      "lossy": 20,
+      "bayer_scale": 2,
+      "alpha_threshold": 128,
+      "filter_style": "original",
+      "perceptual_focus": "auto",
+      "allow_experimental": false
+    },
+    {
+      "id": "fast-compressed-witness",
+      "generation_mode": "fast_gif",
+      "encoder": "ffmpeg_fast",
+      "width": 240,
+      "fps": 10,
+      "colors": 64,
+      "dither": "bayer",
+      "optimize_level": 3,
+      "lossy": 20,
+      "bayer_scale": 2,
+      "alpha_threshold": 128,
+      "filter_style": "original",
+      "perceptual_focus": "auto",
+      "allow_experimental": false
+    },
+    {
+      "id": "target-hard-cap-compressed",
+      "generation_mode": "target_size",
+      "match_target_profile_id": "fast-compressed-witness",
+      "target_constraint": "hard_cap",
+      "target_size_scale": 1.025,
+      "encoder": "ffmpeg_fast",
+      "width": 320,
+      "fps": 12,
+      "colors": 96,
+      "dither": "bayer",
+      "optimize_level": 3,
+      "lossy": 20,
+      "bayer_scale": 2,
+      "alpha_threshold": 128,
+      "filter_style": "original",
+      "perceptual_focus": "auto",
+      "allow_experimental": false
+    },
+    {
+      "id": "regional-experimental",
+      "generation_mode": "best_gif",
+      "encoder": "hybrid",
+      "width": 320,
+      "fps": 12,
+      "colors": 96,
+      "dither": "sierra2_4a",
+      "optimize_level": 3,
+      "lossy": 20,
+      "bayer_scale": 2,
+      "alpha_threshold": 128,
+      "filter_style": "original",
+      "perceptual_focus": "auto",
+      "allow_experimental": true
+    },
+    {
+      "id": "ffmpeg-regional-size-match",
+      "generation_mode": "target_size",
+      "match_target_profile_id": "regional-experimental",
+      "target_constraint": "symmetric_match",
+      "encoder": "ffmpeg_fast",
+      "width": 320,
+      "fps": 12,
+      "colors": 96,
+      "dither": "bayer",
+      "optimize_level": 3,
+      "lossy": 20,
+      "bayer_scale": 2,
+      "alpha_threshold": 128,
+      "filter_style": "original",
+      "perceptual_focus": "auto",
+      "allow_experimental": false
+    }
+  ]
+}

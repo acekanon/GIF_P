@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "type": "gifp-public-ffmpeg-windows-runtime-evidence",
+  "gitCommit": "a244ef090f93ba01d29af159fec8a701ebb8a0cf",
+  "generatedAt": "2026-07-17T08:28:55.6582178+08:00",
+  "producer": "Codex distributed Windows validation",
+  "inputSha256": [
+    "8e43b4cd4968cfc6e752cbc9747d595ce19f95eb8a5896092b34e83b2400fe5e",
+    "0779d13f52eaa6bb242eb606471147c84d20b85ba2819c7b7159fb77155b0c50",
+    "56d0d9b7b832540b261d961800d8d81589b2fa212ef804c5013edcf10cd3a8b9",
+    "88638cd2e570302ccfdf0a2c0df32e41981afb625082c74859435bb2750f4796",
+    "daef0b1c6ab28d75b44a5cae8e3ee66e67cfe63a8d718939936bb762fb353e03"
+  ],
+  "evidence": [
+    {
+      "name": "public-release-revalidation",
+      "fileName": "final-release.json",
+      "sizeBytes": 11428,
+      "sha256": "f6889701c5e69f99996f04fb472bcf7c28095209aba0b6e6d0dbf8e82cc3b3b9"
+    },
+    {
+      "name": "animated-format-matrix",
+      "fileName": "final-anim-matrix.json",
+      "sizeBytes": 45821,
+      "sha256": "892dad8321466e29bf342bf455469c3c6a31d9ebb4467937fd23da0853e51a4c"
+    },
+    {
+      "name": "independent-animated-validation",
+      "fileName": "independent-anim-validation.json",
+      "sizeBytes": 23242,
+      "sha256": "7e3ff09df4e407f6886f15666205f6d4767163d306c438d433047d0f00bbcd58"
+    },
+    {
+      "name": "video-and-ass-matrix",
+      "fileName": "final-video-ass-matrix.json",
+      "sizeBytes": 38547,
+      "sha256": "2834fb8bc22b455c5284029328fd9d821193f30d17d1ca81fe8cba4972771aba"
+    },
+    {
+      "name": "interactive-screen-capture-diagnosis",
+      "fileName": "final-screen-capture-diagnosis.json",
+      "sizeBytes": 12971,
+      "sha256": "faa71a8da1314f39d4bdd3b7fc0586537cada8b93132ef85da122a1400d0fe56"
+    },
+    {
+      "name": "h264-media-foundation-fallback",
+      "fileName": "h264-mf-fallback-final.json",
+      "sizeBytes": 5372,
+      "sha256": "99560431c7568924031e8c5b8f7d2556f053e528d4a7a5ed2c282d166f6e2db7"
+    }
+  ]
+}

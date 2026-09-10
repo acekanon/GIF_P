@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "profile": "gifp-windows-x64-lgpl-shared",
+  "builderImage": "ghcr.io/btbn/ffmpeg-builds/base-win64@sha256:80f095930d8ec013bbc5205522a7ba0dc45e4c554e9f2b4b1e0818c1876e5e87",
+  "sourceDateEpoch": 1785786727,
+  "sourceLock": {
+    "path": "compliance/ffmpeg-public/sources.lock.json",
+    "sizeBytes": 9069,
+    "sha256": "d380418885e1c3738a1e19b8105cb3fac8bc8cb79df2126264777ea40b5ea8d0"
+  },
+  "inputs": [
+    {
+      "path": "scripts/ffmpeg-public/README.md",
+      "sizeBytes": 5027,
+      "sha256": "a23d1b42a9764fb2474fef18e06a4f6a2eb65f1733a9f39625a8347e183d2f97"
+    },
+    {
+      "path": "scripts/ffmpeg-public/build-offline.sh",
+      "sizeBytes": 34729,
+      "sha256": "ff1571ddc8e36aac04c02d054164e44c96598d6638c1e6ab8135f1300e8399e4"
+    },
+    {
+      "path": "scripts/ffmpeg-public/build-public-runtime.ps1",
+      "sizeBytes": 17251,
+      "sha256": "c6e17df7a27d31d6454fdc781222a42a9ea7741711c674aaf1678fbda53bf46b"
+    },
+    {
+      "path": "scripts/ffmpeg-public/fetch-sources.ps1",
+      "sizeBytes": 2513,
+      "sha256": "0d2d59383d79e8b9fe5d958bb77f76dea5c3a42ae03edb6d7eedc85cbcb6b7c3"
+    },
+    {
+      "path": "scripts/ffmpeg-public/ffmpeg-configure.args",
+      "sizeBytes": 2315,
+      "sha256": "9507691d70e07273b18980c76f637e92a872b30b18ee5c03a3d11e337ea46a82"
+    },
+    {
+      "path": "scripts/ffmpeg-public/ffmpeg-metadata-filter-avformat.patch",
+      "sizeBytes": 607,
+      "sha256": "4444ec173837211cda98704165c6b5d576b4dde6d845277756dba0792c8f0dfa"
+    },
+    {
+      "path": "scripts/ffmpeg-public/prepare_sources.py",
+      "sizeBytes": 17900,
+      "sha256": "cca6a436f1e0c0ec81d8244e109cad569b0e53b48120e8e926b5efa2e48fb7ae"
+    },
+    {
+      "path": "scripts/ffmpeg-public/verify-source-cache.mjs",
+      "sizeBytes": 8842,
+      "sha256": "0b61d066619a07a5da115c2205cbd924345b9919ba856af636c30f6d16bd1ac3"
+    }
+  ]
+}

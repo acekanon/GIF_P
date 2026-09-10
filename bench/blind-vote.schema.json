@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gifp.local/schemas/blind-vote.schema.json",
+  "title": "GIFP paired blind vote export",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "protocol",
+    "run_id",
+    "corpus_id",
+    "manifest_sha256",
+    "git_commit",
+    "git_dirty",
+    "reviewer_id",
+    "reviewer_label",
+    "exported_at",
+    "expected_pair_count",
+    "available_pair_count",
+    "formal_pair_count",
+    "formal_vote_count",
+    "votes"
+  ],
+  "properties": {
+    "schema_version": { "const": 2 },
+    "protocol": { "const": "gifp-paired-blind-v2" },
+    "run_id": { "type": "string", "minLength": 1 },
+    "corpus_id": { "type": "string", "minLength": 1 },
+    "manifest_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "git_commit": {
+      "oneOf": [
+        { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+        { "type": "null" }
+      ]
+    },
+    "git_dirty": { "type": ["boolean", "null"] },
+    "reviewer_id": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "reviewer_label": { "type": ["string", "null"], "maxLength": 64 },
+    "exported_at": { "type": "string", "format": "date-time" },
+    "expected_pair_count": { "type": "integer", "minimum": 0 },
+    "available_pair_count": { "type": "integer", "minimum": 0 },
+    "formal_pair_count": { "type": "integer", "minimum": 0 },
+    "formal_vote_count": { "type": "integer", "minimum": 0 },
+    "votes": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/vote" }
+    }
+  },
+  "$defs": {
+    "nullableDateTime": {
+      "oneOf": [
+        { "type": "string", "format": "date-time" },
+        { "type": "null" }
+      ]
+    },
+    "vote": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "fixture_id",
+        "category",
+        "formal_vote_eligible",
+        "blind_vote_eligible",
+        "choice",
+        "chosen_profile_id",
+        "candidate_a_profile_id",
+        "candidate_b_profile_id",
+        "first_voted_at",
+        "last_voted_at",
+        "revision_count",
+        "identity_revealed_before_or_during_vote"
+      ],
+      "properties": {
+        "fixture_id": { "type": "string", "minLength": 1 },
+        "category": { "type": "string", "minLength": 1 },
+        "formal_vote_eligible": { "type": "boolean" },
+        "blind_vote_eligible": { "type": "boolean" },
+        "choice": { "enum": ["A", "B", "same"] },
+        "chosen_profile_id": { "type": ["string", "null"] },
+        "candidate_a_profile_id": { "type": "string", "minLength": 1 },
+        "candidate_b_profile_id": { "type": "string", "minLength": 1 },
+        "first_voted_at": { "$ref": "#/$defs/nullableDateTime" },
+        "last_voted_at": { "$ref": "#/$defs/nullableDateTime" },
+        "revision_count": { "type": "integer", "minimum": 0 },
+        "identity_revealed_before_or_during_vote": { "type": "boolean" }
+      }
+    }
+  }
+}

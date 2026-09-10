@@ -1,0 +1,37 @@
+.meme-set { min-width: 0; }
+.meme-set-heading { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 8px; }
+.meme-set-heading strong { white-space: nowrap; }
+.meme-set-heading small { color: var(--meme-ink-soft); font-size: 10px; }
+.meme-set-heading > div { display: flex; gap: 5px; }
+.meme-set button, .meme-set-footer > button, .meme-set-output button { border: 1px solid var(--meme-line); border-radius: 12px; background: var(--meme-paper-strong); color: var(--meme-ink); padding: 7px 10px; cursor: pointer; font-size: 11px; font-weight: 800; }
+.meme-set button:disabled, .meme-set-footer button:disabled { opacity: .45; cursor: default; }
+.meme-set-list { display: flex; gap: 8px; overflow-x: auto; padding: 3px 2px 8px; scrollbar-width: thin; }
+.meme-set .meme-set-card { flex: 0 0 165px; display: flex; align-items: center; gap: 8px; text-align: left; min-width: 0; height: 55px; transition: transform .2s, background .2s; animation: meme-set-arrive .28s ease-out; }
+.meme-set-card img { width: 34px; height: 34px; object-fit: cover; border-radius: 8px; }
+.meme-set-card > span { display: grid; min-width: 0; gap: 3px; }
+.meme-set-card strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 11px; }
+.meme-set-card small { font-size: 10px; color: var(--meme-ink-soft); }
+.meme-set .meme-set-card[aria-pressed="true"] { background: color-mix(in srgb, var(--meme-aqua) 24%, var(--meme-paper)); border-color: var(--meme-aqua-strong); transform: translateY(-2px); box-shadow: 0 3px 0 color-mix(in srgb, var(--meme-aqua-strong) 25%, transparent); }
+.meme-set-card.status-completed small { color: var(--meme-aqua-strong); }
+.meme-set-card.status-failed small { color: var(--meme-ink); text-decoration: underline wavy var(--meme-coral); }
+.meme-set-templates, .meme-set-output { padding: 10px; border: 1px solid var(--meme-line); border-radius: 13px; background: var(--meme-paper-strong); font-size: 11px; }
+.meme-set-templates summary, .meme-set-output summary { cursor: pointer; font-weight: 850; }
+.meme-set-templates .meme-template-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); overflow: visible; margin-top: 9px; }
+.meme-set-templates .meme-section-heading { display: none; }
+.meme-set-templates .meme-template-item { min-width: 0; }
+.meme-set-templates .meme-template-card { min-width: 0; width: 100%; padding: 7px; }
+.meme-set-templates .meme-template-card__glyph { display: none; }
+.meme-set-output-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 10px 0; }
+.meme-set-output-fields label { display: grid; gap: 4px; min-width: 0; }
+.meme-set-output-fields input, .meme-set-output-fields select { width: 100%; min-width: 0; background: var(--meme-paper); color: var(--meme-ink); border: 1px solid var(--meme-line); padding: 5px; border-radius: 7px; }
+.meme-set-output > button { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.meme-set-output > small { display: block; margin-top: 7px; line-height: 1.5; color: var(--meme-ink-soft); }
+.meme-set-footer { display: flex; align-items: center; gap: 8px; border-top: 1px solid var(--meme-line); padding-top: 9px; min-width: 0; }
+.meme-set-summary { display: grid; gap: 3px; min-width: 0; flex: 1; }
+.meme-set-summary strong { font-size: 12px; }
+.meme-set-summary small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 10px; color: var(--meme-ink-soft); }
+.meme-set-footer > button { flex-shrink: 0; min-height: 38px; }
+.meme-set-footer > .meme-export-button { background: var(--meme-aqua); border-color: var(--meme-aqua-strong); color: var(--meme-ink); box-shadow: 0 3px 0 color-mix(in srgb, var(--meme-aqua-strong) 40%, transparent); }
+@keyframes meme-set-arrive { from { opacity: 0; transform: translateY(8px) scale(.94); } to { opacity: 1; transform: none; } }
+.reduce-motion .meme-set-card { animation: none; transition: none; }
+@media (prefers-reduced-motion: reduce) { .meme-set .meme-set-card { animation: none; transition: none; } }

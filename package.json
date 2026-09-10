@@ -1,29 +1,59 @@
 {
   "name": "gifp",
-  "version": "2.1.0",
+  "version": "6.0.1",
   "author": "acekanon",
+  "description": "GIFP 6.0.1 - free animation conversion and delivery software",
+  "license": "LicenseRef-GIFP-Freeware-1.0",
   "private": true,
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "test": "vitest run",
+    "test:release-compliance": "node --test scripts/verify-release-compliance.node-test.mjs scripts/VERIFY-GIFP.node-test.mjs",
+    "test:platform-evidence": "node scripts/verify-platform-delivery-evidence.mjs compliance/platform-delivery/evidence.json",
+    "test:ffmpeg-public-sources": "node --test scripts/ffmpeg-public/verify-source-cache.node-test.mjs",
+    "test:ffmpeg-public-reproducibility": "node --test scripts/ffmpeg-public/verify-reproducible-build.node-test.mjs",
+    "test:watch": "vitest",
+    "quality:fixtures": "cargo run --manifest-path src-tauri/Cargo.toml --bin gifp_quality_lab -- prepare --manifest bench/corpus-manifest.json",
+    "quality:fixtures:harness": "cargo test --manifest-path src-tauri/Cargo.toml quality_lab::tests::manual_prepare_quality_fixtures -- --ignored --exact --nocapture --test-threads=1",
+    "arena:fixtures": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/prepare-arena10.ps1",
+    "quality:lab": "cargo run --manifest-path src-tauri/Cargo.toml --bin gifp_quality_lab -- run --manifest bench/corpus-manifest.json --output tmp/quality-lab/latest.json",
+    "quality:lab:harness": "cargo test --manifest-path src-tauri/Cargo.toml quality_lab::tests::manual_full_quality_lab -- --ignored --exact --nocapture --test-threads=1",
+    "quality:verify": "node scripts/verify-quality-report.mjs",
+    "quality:verify:first-tier": "node scripts/verify-quality-report.mjs --require-first-tier-quality",
+    "quality:blind:aggregate": "cargo run --manifest-path src-tauri/Cargo.toml --bin gifp_blind_aggregate --",
+    "quality:blind:package": "node scripts/package-blind-review.mjs",
+    "verify": "npm run build && npm test && npm run test:platform-evidence && npm run test:release-compliance && npm run test:ffmpeg-public-sources && npm run test:ffmpeg-public-reproducibility && cargo check --manifest-path src-tauri/Cargo.toml && cargo test --manifest-path src-tauri/Cargo.toml",
+    "verify:release": "npm run verify && cargo fmt --manifest-path src-tauri/Cargo.toml -- --check && cargo clippy --manifest-path src-tauri/Cargo.toml --all-targets -- -D warnings && npm run package:exe",
     "preview": "vite preview",
+    "ffmpeg:public:fetch": "powershell -ExecutionPolicy Bypass -File scripts/ffmpeg-public/fetch-sources.ps1",
+    "ffmpeg:public:verify-sources": "node scripts/ffmpeg-public/verify-source-cache.mjs --lock compliance/ffmpeg-public/sources.lock.json --cache tmp/ffmpeg-public-sources",
+    "ffmpeg:public:verify-reproducibility": "node scripts/ffmpeg-public/verify-reproducible-build.mjs",
+    "ffmpeg:public:build": "powershell -ExecutionPolicy Bypass -File scripts/ffmpeg-public/build-public-runtime.ps1",
     "tauri": "tauri",
     "tauri:dev": "tauri dev",
     "tauri:build": "tauri build",
-    "package:exe": "powershell -ExecutionPolicy Bypass -File scripts/package-portable.ps1"
+    "package:exe": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/package-portable.ps1"
   },
   "dependencies": {
+    "@fontsource-variable/nunito": "^5.2.7",
+    "@phosphor-icons/react": "^2.1.10",
     "@tauri-apps/api": "^2.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^2.0.0",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "@vitejs/plugin-react": "^4.3.4",
+    "jsdom": "^29.1.1",
     "typescript": "^5.7.2",
-    "vite": "^6.0.0"
+    "vite": "^6.0.0",
+    "vitest": "^4.1.10"
   }
 }

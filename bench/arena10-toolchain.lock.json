@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "lock_id": "gifp-arena10-generator-ffmpeg-9.0",
+  "purpose": "Immutable generator identity for gifp-arena10-v1 fixtures.",
+  "captured_from": {
+    "path": "compliance/ffmpeg-windows-x64-gpl-shared.json",
+    "sha256": "7d76a6215c0384a498732518fabe05a4f0beb70c35a00c660d17780fd79da672"
+  },
+  "runtime": {
+    "provider": "Gyan.dev FFmpeg Builds",
+    "version_marker": "9.0-full_build-www.gyan.dev",
+    "platform": "windows-x86_64",
+    "ffmpeg_sha256": "a5a39c26af5925b33d277e12fa338d68380d94a06c3b0b5184018226bf89e2f1",
+    "ffprobe_sha256": "35dab4c6bee96f80632d0759922d1b21e61a71fcad4fe1f2eb49a86bb2680fc5"
+  }
+}

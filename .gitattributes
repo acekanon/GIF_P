@@ -1,0 +1,7 @@
+*.json text eol=lf
+compliance/license-texts/*.txt text eol=lf
+compliance/license-text-overlays.json text eol=lf
+compliance/ffmpeg-public/*.json text eol=lf
+compliance/ffmpeg-public/reviews/*.json text eol=lf
+compliance/ffmpeg-windows-x64-lgpl-shared-public.json text eol=lf
+scripts/ffmpeg-public/* text eol=lf

@@ -1,0 +1,231 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gifp.local/schema/corpus-manifest-v1.json",
+  "title": "GIFP Quality Lab corpus manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "corpus_id",
+    "fixture_root",
+    "canonical_fixture_identity",
+    "coverage",
+    "fixtures",
+    "profiles"
+  ],
+  "properties": {
+    "$schema": { "type": "string" },
+    "schema_version": { "const": 1 },
+    "corpus_id": { "$ref": "#/$defs/id" },
+    "description": { "type": "string" },
+    "fixture_root": { "type": "string", "minLength": 1 },
+    "canonical_fixture_identity": { "$ref": "#/$defs/canonicalFixtureIdentity" },
+    "coverage": { "$ref": "#/$defs/coverage" },
+    "performance_budget": { "$ref": "#/$defs/performanceBudget" },
+    "fixtures": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/fixture" }
+    },
+    "profiles": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/profile" }
+    }
+  },
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9_-]*$"
+    },
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "minimum_total",
+        "minimum_per_category",
+        "required_categories",
+        "required_tags"
+      ],
+      "properties": {
+        "minimum_total": { "type": "integer", "minimum": 1 },
+        "minimum_per_category": { "type": "integer", "minimum": 1 },
+        "required_categories": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "required_tags": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "canonicalFixtureIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contract_id",
+        "status",
+        "generator_ffmpeg_sha256",
+        "generator_ffprobe_sha256",
+        "reviewed_runtime_manifest_path",
+        "reviewed_runtime_manifest_sha256"
+      ],
+      "properties": {
+        "contract_id": { "const": "gifp.canonical_fixture_identity.v1" },
+        "status": { "enum": ["complete", "incomplete"] },
+        "generator_ffmpeg_sha256": { "$ref": "#/$defs/sha256" },
+        "generator_ffprobe_sha256": { "$ref": "#/$defs/sha256" },
+        "reviewed_runtime_manifest_path": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?![A-Za-z]:)(?![/\\\\])(?!.*(?:^|[/\\\\])\\.\\.(?:[/\\\\]|$)).+$"
+        },
+        "reviewed_runtime_manifest_sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "performanceBudget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "profile_scope",
+        "required_build_profile",
+        "minimum_memory_coverage",
+        "p95_encode_wall_elapsed_ms",
+        "max_encode_wall_elapsed_ms",
+        "p95_peak_tree_rss_bytes",
+        "max_peak_tree_rss_bytes"
+      ],
+      "properties": {
+        "profile_scope": { "const": "stable_profiles" },
+        "required_build_profile": { "const": "release" },
+        "minimum_memory_coverage": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "p95_encode_wall_elapsed_ms": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max_encode_wall_elapsed_ms": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "p95_peak_tree_rss_bytes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max_peak_tree_rss_bytes": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "fixture": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "category",
+        "file",
+        "expected_source_sha256",
+        "duration_seconds",
+        "generator"
+      ],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "category": { "type": "string", "minLength": 1 },
+        "file": { "type": "string", "pattern": "^[^./\\\\][^\\\\]*\\.mkv$" },
+        "expected_source_sha256": {
+          "oneOf": [
+            { "$ref": "#/$defs/sha256" },
+            { "type": "null" }
+          ]
+        },
+        "duration_seconds": {
+          "type": "number",
+          "minimum": 0.1,
+          "maximum": 30
+        },
+        "tags": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "generator": { "$ref": "#/$defs/generator" }
+      }
+    },
+    "generator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "input"],
+      "properties": {
+        "kind": { "enum": ["lavfi", "external"] },
+        "input": { "type": "string", "minLength": 1 },
+        "source_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "authorization": { "type": "string", "minLength": 1 },
+        "video_filter": { "type": "string" },
+        "pixel_format": { "type": "string", "minLength": 1, "default": "yuv444p" }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "kind": { "const": "external" } } },
+          "then": { "required": ["source_sha256", "authorization"] }
+        }
+      ]
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "generation_mode",
+        "encoder",
+        "width",
+        "fps",
+        "colors",
+        "dither",
+        "optimize_level",
+        "lossy",
+        "bayer_scale",
+        "alpha_threshold",
+        "filter_style",
+        "perceptual_focus"
+      ],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "generation_mode": { "enum": ["fast_gif", "best_gif", "target_size"] },
+        "match_target_profile_id": { "$ref": "#/$defs/id" },
+        "target_constraint": { "enum": ["hard_cap", "symmetric_match"] },
+        "target_size_scale": {
+          "type": "number",
+          "minimum": 0.25,
+          "maximum": 4.0
+        },
+        "encoder": { "type": "string", "minLength": 1 },
+        "width": { "type": "integer", "minimum": 32, "maximum": 3840 },
+        "fps": { "type": "integer", "minimum": 1, "maximum": 60 },
+        "colors": { "type": "integer", "minimum": 2, "maximum": 256 },
+        "dither": { "type": "string", "minLength": 1 },
+        "optimize_level": { "type": "integer", "minimum": 0, "maximum": 255 },
+        "lossy": { "type": "integer", "minimum": 0, "maximum": 255 },
+        "bayer_scale": { "type": "integer", "minimum": 0, "maximum": 255 },
+        "alpha_threshold": { "type": "integer", "minimum": 0, "maximum": 255 },
+        "filter_style": { "type": "string", "minLength": 1 },
+        "perceptual_focus": { "type": "string", "minLength": 1 },
+        "allow_experimental": { "type": "boolean", "default": false }
+      }
+    }
+  }
+}

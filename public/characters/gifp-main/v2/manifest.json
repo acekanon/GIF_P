@@ -1,0 +1,550 @@
+{
+  "schemaVersion": 2,
+  "characterId": "gifp-main",
+  "variantId": "school-film-scenes-v2",
+  "frame": {
+    "width": 360,
+    "height": 360
+  },
+  "anchor": {
+    "x": 180,
+    "y": 348,
+    "type": "bottom-center"
+  },
+  "background": "transparent",
+  "poster": "poster.png",
+  "clips": {
+    "idle": {
+      "strip": "strips/idle.png",
+      "preview": "previews/idle-v2-preview.gif",
+      "frameCount": 12,
+      "fps": 6,
+      "playback": "loop",
+      "reducedFrame": 0
+    },
+    "loading": {
+      "strip": "strips/loading.png",
+      "preview": "previews/loading-v2-preview.gif",
+      "frameCount": 8,
+      "fps": 10,
+      "playback": "loop",
+      "reducedFrame": 0
+    },
+    "working": {
+      "strip": "strips/working.png",
+      "preview": "previews/working-v2-preview.gif",
+      "frameCount": 8,
+      "fps": 10,
+      "playback": "loop",
+      "reducedFrame": 0
+    },
+    "complete": {
+      "strip": "strips/complete.png",
+      "preview": "previews/complete-v2-preview.gif",
+      "frameCount": 8,
+      "fps": 10,
+      "playback": "once-hold",
+      "reducedFrame": 3
+    },
+    "error": {
+      "strip": "strips/error.png",
+      "preview": "previews/error-v2-preview.gif",
+      "frameCount": 8,
+      "fps": 8,
+      "playback": "loop",
+      "reducedFrame": 0
+    }
+  },
+  "phaseMap": {
+    "welcome": "idle",
+    "ready": "idle",
+    "recording": "loading",
+    "working": "working",
+    "complete": "complete",
+    "error": "error"
+  },
+  "provenance": {
+    "poster": {
+      "source": "tmp/gifp-main-v2-scenes/raw/idle-original.gif",
+      "sourceSha256": "6d0fdf4031478b266e88609cd6b6bebf22151724f14ca7d98004e3df9607853e",
+      "sourceFrameIndex": 0,
+      "derivedFrom": "idle frame 0 after blue-key removal and normalization",
+      "runtimeIdlePixelMatch": true
+    },
+    "idle": {
+      "source": "tmp/gifp-main-v2-scenes/raw/idle-original.gif",
+      "sourceSha256": "6d0fdf4031478b266e88609cd6b6bebf22151724f14ca7d98004e3df9607853e",
+      "sourceFrameCount": 27,
+      "sourceDurationMs": 70,
+      "selectedFrames": [
+        0,
+        2,
+        5,
+        7,
+        9,
+        12,
+        14,
+        17,
+        19,
+        21,
+        24,
+        26
+      ],
+      "normalizationScale": 0.76298,
+      "keying": [
+        {
+          "keyRgb": [
+            77.0,
+            153.0,
+            188.0
+          ],
+          "transparentPixels": 66737,
+          "semiTransparentPixels": 3029,
+          "shadowPixelsProtected": 2052
+        },
+        {
+          "keyRgb": [
+            77.0,
+            153.0,
+            188.0
+          ],
+          "transparentPixels": 66697,
+          "semiTransparentPixels": 2929,
+          "shadowPixelsProtected": 1995
+        },
+        {
+          "keyRgb": [
+            77.0,
+            153.0,
+            188.0
+          ],
+          "transparentPixels": 66467,
+          "semiTransparentPixels": 2745,
+          "shadowPixelsProtected": 1998
+        },
+        {
+          "keyRgb": [
+            77.0,
+            153.0,
+            188.0
+          ],
+          "transparentPixels": 66867,
+          "semiTransparentPixels": 2745,
+          "shadowPixelsProtected": 2001
+        },
+        {
+          "keyRgb": [
+            77.0,
+            153.0,
+            188.0
+          ],
+          "transparentPixels": 66888,
+          "semiTransparentPixels": 2916,
+          "shadowPixelsProtected": 2097
+        },
+        {
+          "keyRgb": [
+            77.0,
+            153.0,
+            188.0
+          ],
+          "transparentPixels": 66081,
+          "semiTransparentPixels": 3093,
+          "shadowPixelsProtected": 2178
+        },
+        {
+          "keyRgb": [
+            77.0,
+            153.0,
+            188.0
+          ],
+          "transparentPixels": 66571,
+          "semiTransparentPixels": 2584,
+          "shadowPixelsProtected": 1890
+        },
+        {
+          "keyRgb": [
+            77.0,
+            153.0,
+            188.0
+          ],
+          "transparentPixels": 67708,
+          "semiTransparentPixels": 2658,
+          "shadowPixelsProtected": 1937
+        },
+        {
+          "keyRgb": [
+            77.0,
+            153.0,
+            188.0
+          ],
+          "transparentPixels": 66641,
+          "semiTransparentPixels": 2726,
+          "shadowPixelsProtected": 2021
+        },
+        {
+          "keyRgb": [
+            77.0,
+            153.0,
+            188.0
+          ],
+          "transparentPixels": 66217,
+          "semiTransparentPixels": 2748,
+          "shadowPixelsProtected": 2037
+        },
+        {
+          "keyRgb": [
+            77.0,
+            153.0,
+            188.0
+          ],
+          "transparentPixels": 66321,
+          "semiTransparentPixels": 2567,
+          "shadowPixelsProtected": 2021
+        },
+        {
+          "keyRgb": [
+            77.0,
+            153.0,
+            188.0
+          ],
+          "transparentPixels": 65924,
+          "semiTransparentPixels": 2952,
+          "shadowPixelsProtected": 2014
+        }
+      ]
+    },
+    "loading": {
+      "source": "tmp/gifp-main-v2-scenes/raw/loading-scene-v2-chroma.png",
+      "sourceSha256": "0261b6d4238869bc9892344d59a356c4cf846bf1d1efa8b7d838a71d59e492e1",
+      "normalizationScale": 0.258373,
+      "keying": {
+        "keyRgb": [
+          244.0,
+          4.0,
+          236.0
+        ],
+        "transparentPixels": 1180882,
+        "semiTransparentPixels": 13420,
+        "visibleMagentaLikePixels": 0
+      },
+      "syntheticSequence": [
+        0,
+        1,
+        2,
+        3,
+        2,
+        1,
+        0,
+        1
+      ],
+      "transforms": [
+        {
+          "state": 0,
+          "dx": 0.0,
+          "dy": 0.0,
+          "angle": 0.0,
+          "scale": 1.0
+        },
+        {
+          "state": 1,
+          "dx": 1.0,
+          "dy": -3.0,
+          "angle": -0.6,
+          "scale": 1.004
+        },
+        {
+          "state": 2,
+          "dx": 2.0,
+          "dy": -7.0,
+          "angle": -1.2,
+          "scale": 1.008
+        },
+        {
+          "state": 3,
+          "dx": 3.0,
+          "dy": -11.0,
+          "angle": -0.5,
+          "scale": 1.012
+        },
+        {
+          "state": 2,
+          "dx": 2.0,
+          "dy": -7.0,
+          "angle": -1.2,
+          "scale": 1.008
+        },
+        {
+          "state": 1,
+          "dx": 1.0,
+          "dy": -3.0,
+          "angle": -0.6,
+          "scale": 1.004
+        },
+        {
+          "state": 0,
+          "dx": 0.0,
+          "dy": 0.0,
+          "angle": 0.0,
+          "scale": 1.0
+        },
+        {
+          "state": 1,
+          "dx": 1.0,
+          "dy": -3.0,
+          "angle": -0.6,
+          "scale": 1.004
+        }
+      ]
+    },
+    "working": {
+      "source": "tmp/gifp-main-v2-scenes/raw/working-scene-v2-chroma.png",
+      "sourceSha256": "ae14814ec914d8b543878f97b337f54e51d37acb63d8ae820658e880727e11c4",
+      "normalizationScale": 0.258373,
+      "keying": {
+        "keyRgb": [
+          249.0,
+          4.0,
+          247.0
+        ],
+        "transparentPixels": 969009,
+        "semiTransparentPixels": 12968,
+        "visibleMagentaLikePixels": 0
+      },
+      "syntheticSequence": [
+        0,
+        1,
+        2,
+        3,
+        2,
+        1,
+        0,
+        1
+      ],
+      "transforms": [
+        {
+          "state": 0,
+          "dx": 0.0,
+          "dy": 0.0,
+          "angle": 0.0,
+          "scale": 1.0
+        },
+        {
+          "state": 1,
+          "dx": 2.0,
+          "dy": -4.0,
+          "angle": -0.7,
+          "scale": 1.004
+        },
+        {
+          "state": 2,
+          "dx": 4.0,
+          "dy": -8.0,
+          "angle": -1.4,
+          "scale": 1.008
+        },
+        {
+          "state": 3,
+          "dx": 6.0,
+          "dy": -12.0,
+          "angle": -0.5,
+          "scale": 1.012
+        },
+        {
+          "state": 2,
+          "dx": 4.0,
+          "dy": -8.0,
+          "angle": -1.4,
+          "scale": 1.008
+        },
+        {
+          "state": 1,
+          "dx": 2.0,
+          "dy": -4.0,
+          "angle": -0.7,
+          "scale": 1.004
+        },
+        {
+          "state": 0,
+          "dx": 0.0,
+          "dy": 0.0,
+          "angle": 0.0,
+          "scale": 1.0
+        },
+        {
+          "state": 1,
+          "dx": 2.0,
+          "dy": -4.0,
+          "angle": -0.7,
+          "scale": 1.004
+        }
+      ]
+    },
+    "complete": {
+      "source": "tmp/gifp-main-v2-scenes/raw/complete-scene-chroma.png",
+      "sourceSha256": "5654ff743bb982a66c8ab5f2884b24c533c6cfa63086fec36b91f81d6ad2b76a",
+      "normalizationScale": 0.258373,
+      "keying": {
+        "keyRgb": [
+          246.0,
+          3.0,
+          231.0
+        ],
+        "transparentPixels": 1148487,
+        "semiTransparentPixels": 11416,
+        "visibleMagentaLikePixels": 0
+      },
+      "syntheticSequence": [
+        0,
+        1,
+        2,
+        3,
+        2,
+        1,
+        0,
+        1
+      ],
+      "transforms": [
+        {
+          "state": 0,
+          "dx": 0.0,
+          "dy": 0.0,
+          "angle": 0.0,
+          "scale": 1.0
+        },
+        {
+          "state": 1,
+          "dx": 0.0,
+          "dy": -5.0,
+          "angle": 0.7,
+          "scale": 1.008
+        },
+        {
+          "state": 2,
+          "dx": 0.0,
+          "dy": -11.0,
+          "angle": 1.4,
+          "scale": 1.016
+        },
+        {
+          "state": 3,
+          "dx": 0.0,
+          "dy": -18.0,
+          "angle": 0.2,
+          "scale": 1.024
+        },
+        {
+          "state": 2,
+          "dx": 0.0,
+          "dy": -11.0,
+          "angle": 1.4,
+          "scale": 1.016
+        },
+        {
+          "state": 1,
+          "dx": 0.0,
+          "dy": -5.0,
+          "angle": 0.7,
+          "scale": 1.008
+        },
+        {
+          "state": 0,
+          "dx": 0.0,
+          "dy": 0.0,
+          "angle": 0.0,
+          "scale": 1.0
+        },
+        {
+          "state": 1,
+          "dx": 0.0,
+          "dy": -5.0,
+          "angle": 0.7,
+          "scale": 1.008
+        }
+      ]
+    },
+    "error": {
+      "source": "tmp/gifp-main-v2-scenes/raw/error-scene-chroma.png",
+      "sourceSha256": "c7087d666783d999613780a9d4471e094a4d53a7979fd55f3e1e4e6bfaf80258",
+      "normalizationScale": 0.258373,
+      "keying": {
+        "keyRgb": [
+          250.0,
+          4.0,
+          246.0
+        ],
+        "transparentPixels": 1024204,
+        "semiTransparentPixels": 15422,
+        "visibleMagentaLikePixels": 0
+      },
+      "syntheticSequence": [
+        0,
+        1,
+        2,
+        3,
+        2,
+        1,
+        0,
+        1
+      ],
+      "transforms": [
+        {
+          "state": 0,
+          "dx": 0.0,
+          "dy": 0.0,
+          "angle": 0.0,
+          "scale": 1.0
+        },
+        {
+          "state": 1,
+          "dx": -1.6,
+          "dy": -2.0,
+          "angle": -0.9,
+          "scale": 1.0
+        },
+        {
+          "state": 2,
+          "dx": -3.2,
+          "dy": -4.5,
+          "angle": -1.8,
+          "scale": 0.996
+        },
+        {
+          "state": 3,
+          "dx": -4.6,
+          "dy": -7.0,
+          "angle": -2.7,
+          "scale": 0.992
+        },
+        {
+          "state": 2,
+          "dx": -3.2,
+          "dy": -4.5,
+          "angle": -1.8,
+          "scale": 0.996
+        },
+        {
+          "state": 1,
+          "dx": -1.6,
+          "dy": -2.0,
+          "angle": -0.9,
+          "scale": 1.0
+        },
+        {
+          "state": 0,
+          "dx": 0.0,
+          "dy": 0.0,
+          "angle": 0.0,
+          "scale": 1.0
+        },
+        {
+          "state": 1,
+          "dx": -1.6,
+          "dy": -2.0,
+          "angle": -0.9,
+          "scale": 1.0
+        }
+      ]
+    }
+  }
+}
