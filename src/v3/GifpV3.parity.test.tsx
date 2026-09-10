@@ -486,6 +486,8 @@ describe("GIFP 2.3 feature parity", () => {
     const user = userEvent.setup();
     mocks.selectVideos.mockResolvedValue(["C:/media/index-compression.mp4"]);
     mocks.convertAnimation.mockResolvedValueOnce({ ...exportResult("C:/exports/index.gif", 800, 10),
+      advanced_compression_report: { algorithm_version: "1", status: "optimized", before_bytes: 1100, after_bytes: 1000, adopted: true, verified: true, reference_kind: "gif_only", elapsed_ms: 10, estimated_peak_bytes: 20000,
+        stages: [{ method: "lzw_cost_search", status: "adopted", before_bytes: 1100, candidate_bytes: 1000, writer_control_bytes: 1080, algorithm_saved_bytes: 80, adopted: true, verified: true, compression_probes: 3, changed_pixels: 20, elapsed_ms: 10 }] },
       gif_cleanup_report: { status: "optimized", before_bytes: 1200, after_bytes: 1000, verified: true, merged_frames: 3, removed_palette_entries: 220, merge_requested: true, palette_requested: true, elapsed_ms: 5, reason: null },
       index_compression_report: { gentle: true, algorithm: "gifp.index_reuse.v1", status: "optimized", before_bytes: 1000, after_bytes: 800, verified: true, threshold: 4, max_channel_error: 4, worst_frame_rmse: 1.1, candidates_tested: 3, elapsed_ms: 10, reason: null } });
     render(<GifpV3 />);
@@ -497,12 +499,18 @@ describe("GIFP 2.3 feature parity", () => {
     expect(toggle).toBeEnabled(); expect(toggle).not.toBeChecked();
     await user.click(within(dialog).getByRole("switch", { name: "合并重复帧" }));
     await user.click(within(dialog).getByRole("switch", { name: "调色表整理" }));
+    await user.click(within(dialog).getByRole("switch", { name: "跨帧稳定优化" }));
+    await user.click(within(dialog).getByRole("switch", { name: "LZW 成本搜索" }));
     await user.click(toggle);
     await user.click(within(dialog).getByRole("switch", { name: "温和模式" }));
     await user.click(within(dialog).getByRole("button", { name: "开始生成" }));
     await waitFor(() => expect(mocks.convertAnimation).toHaveBeenCalledTimes(1));
-    expect(mocks.convertAnimation.mock.calls[0][0]).toMatchObject({index_compression:true,index_compression_gentle:true,gif_merge_frames:true,gif_compact_palette:true});
-    await screen.findByText("索引压缩（温和）已采用 · 减少 20.0%（有损）");
+    expect(mocks.convertAnimation.mock.calls[0][0]).toMatchObject({index_compression:true,index_compression_gentle:true,gif_merge_frames:true,gif_compact_palette:true,temporal_stability:true,lzw_search:true});
+    await screen.findByText("新压缩阶段已采用 · 减少 9.1%（有损）；索引压缩（温和）已采用 · 减少 20.0%（有损）");
+    await user.click(within(dialog).getByText("新算法候选与画质参考"));
+    const compressionReport = within(dialog).getByRole("region", { name: "新压缩算法报告" });
+    expect(within(compressionReport).getByText("画质参考：编码后的 GIF；未验证相对源画面的画质")).toBeVisible();
+    expect(within(compressionReport).getByText("算法增量节省 80 B")).toBeVisible();
     expect(screen.getByText("无损整理已采用 · 合并 3 帧 · 减少 16.7%")).toBeVisible();
     await user.click(screen.getByRole("button", { name: "调整设置" }));
     dialog = await screen.findByRole("dialog", { name: "快速生成" });
@@ -511,7 +519,7 @@ describe("GIFP 2.3 feature parity", () => {
     await user.click(within(dialog).getByRole("button", { name: "开始生成" }));
     await waitFor(() => expect(mocks.convertAnimation).toHaveBeenCalledTimes(2));
     expect(mocks.convertAnimation.mock.calls[1][0]).toMatchObject({ output_format: "webp" });
-    for (const field of ["index_compression","index_compression_gentle","gif_merge_frames","gif_compact_palette"]) expect(mocks.convertAnimation.mock.calls[1][0][field]).toBeUndefined();
+    for (const field of ["index_compression","index_compression_gentle","gif_merge_frames","gif_compact_palette","temporal_stability","lzw_search"]) expect(mocks.convertAnimation.mock.calls[1][0][field]).toBeUndefined();
   });
 
   it("keeps lossless postprocessing opt-in and sends it only for GIF", async () => {

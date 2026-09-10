@@ -114,6 +114,8 @@ export type FrameTimingMode = "compact" | "preserve";
 
 export interface GifRequest {
   smart_lossless?: boolean;
+  temporal_stability?: boolean;
+  lzw_search?: boolean;
   smaller_gif?: boolean;
   index_compression?: boolean;
   index_compression_gentle?: boolean;
@@ -846,7 +848,38 @@ export interface PipelineProfile {
   };
 }
 
+export interface AdvancedCompressionStageReport {
+  method: "temporal_stability" | "lzw_cost_search";
+  status: "adopted" | "not_selected" | "no_gain" | "rejected" | "skipped" | "budget_exhausted";
+  before_bytes: number;
+  candidate_bytes?: number | null;
+  writer_control_bytes?: number | null;
+  algorithm_saved_bytes: number;
+  adopted: boolean;
+  verified: boolean;
+  compression_probes: number;
+  changed_pixels: number;
+  elapsed_ms: number;
+  reason?: string | null;
+  metrics?: unknown;
+}
+
+export interface AdvancedCompressionExecutionReport {
+  algorithm_version: string;
+  status: "optimized" | "retained";
+  before_bytes: number;
+  after_bytes: number;
+  adopted: boolean;
+  verified: boolean;
+  reference_kind: "prequantized_source" | "gif_only" | "unavailable";
+  elapsed_ms: number;
+  estimated_peak_bytes: number;
+  reason?: string | null;
+  stages: AdvancedCompressionStageReport[];
+}
+
 export interface GifResult {
+  advanced_compression_report?: AdvancedCompressionExecutionReport | null;
   structure_optimization_report?: {
     status: string;
     before_bytes: number;

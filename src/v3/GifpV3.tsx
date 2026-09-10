@@ -86,6 +86,7 @@ import { IslandDrawer } from "./IslandDrawer";
 import { IslandRadioGroup } from "./IslandRadioGroup";
 import { QuickGenerationWizard } from "./QuickGenerationWizard";
 import { GifCompressionOptions } from "./GifCompressionOptions";
+import { AdvancedCompressionReport, advancedCompressionSummary } from "./AdvancedCompressionReport";
 import { CommittedNumberInput } from "./CommittedNumberInput";
 import { exportHeartbeatForElapsed } from "./exportHeartbeat";
 import {
@@ -873,6 +874,17 @@ function losslessStageNotes(result?: GifResult): string | undefined {
   return notes.join("；") || undefined;
 }
 
+function lossyStageNotes(result?: GifResult): string | undefined {
+  const notes: string[] = [];
+  const advanced = advancedCompressionSummary(result?.advanced_compression_report);
+  if (advanced) notes.push(advanced);
+  const index = result?.index_compression_report;
+  if (index) notes.push(index.verified
+    ? `索引压缩${index.gentle ? "（温和）" : ""}已采用 · 减少 ${((1 - index.after_bytes / Math.max(1, index.before_bytes)) * 100).toFixed(1)}%（有损）`
+    : "索引压缩未采用");
+  return notes.join("；") || undefined;
+}
+
 export default function GifpV3({ onOpenStudio }: { onOpenStudio?: () => void } = {}) {
   const tauri = isTauriRuntime();
   const [initialSessionRead] = useState(() => readSessionDraft(localStorage));
@@ -963,6 +975,8 @@ export default function GifpV3({ onOpenStudio }: { onOpenStudio?: () => void } =
   const [qualityScoringEnabled, setQualityScoringEnabled] = useState(true);
   const [indexCompression, setIndexCompression] = useState(false);
   const [smartLossless, setSmartLossless] = useState(false);
+  const [temporalStability, setTemporalStability] = useState(false);
+  const [lzwSearch, setLzwSearch] = useState(false);
   const [gentleIndex, setGentleIndex] = useState(false);
   const [mergeGifFrames, setMergeGifFrames] = useState(false);
   const [compactGifPalette, setCompactGifPalette] = useState(false);
@@ -1144,17 +1158,19 @@ export default function GifpV3({ onOpenStudio }: { onOpenStudio?: () => void } =
   const outputBackendReady = outputFormat !== "live_photo" || livePhotoBackendReady;
   const optimizerReady = backendCapabilities.some((backend) => backend.id === "gif.optimizer.external" && backend.status.state === "available");
   const compressionTools = <GifCompressionOptions
-    value={{ smartLossless, smallerGif, indexCompression, gentleIndex, mergeFrames: mergeGifFrames, compactPalette: compactGifPalette }}
+    value={{ smartLossless, temporalStability, lzwSearch, smallerGif, indexCompression, gentleIndex, mergeFrames: mergeGifFrames, compactPalette: compactGifPalette }}
     optimizerReady={optimizerReady} disabled={busy}
     onChange={(key, checked) => {
       if (key === "smartLossless") setSmartLossless(checked);
+      else if (key === "temporalStability") setTemporalStability(checked);
+      else if (key === "lzwSearch") setLzwSearch(checked);
       else if (key === "smallerGif") setSmallerGif(checked);
       else if (key === "indexCompression") setIndexCompression(checked);
       else if (key === "gentleIndex") setGentleIndex(checked);
       else if (key === "mergeFrames") setMergeGifFrames(checked);
       else setCompactGifPalette(checked);
     }}
-    onReset={() => { setSmartLossless(false); setSmallerGif(false); setIndexCompression(false); setGentleIndex(false); setMergeGifFrames(false); setCompactGifPalette(false); }}
+    onReset={() => { setSmartLossless(false); setTemporalStability(false); setLzwSearch(false); setSmallerGif(false); setIndexCompression(false); setGentleIndex(false); setMergeGifFrames(false); setCompactGifPalette(false); }}
   />;
   const postprocessControl = outputFormat === "gif" ? compressionTools : null;
   const doneCount = mediaAssets.filter((asset) => asset.status === "完成" || asset.status === "失败").length;
@@ -2422,6 +2438,8 @@ export default function GifpV3({ onOpenStudio }: { onOpenStudio?: () => void } =
     const directorPlan = volumeDirectorActive ? volumeDirectorPlan : null;
     return buildGifRequest({
       smartLossless,
+      temporalStability,
+      lzwSearch,
       smallerGif: smallerGif && optimizerReady,
       indexCompression,
       gentleIndex,
@@ -4229,11 +4247,8 @@ export default function GifpV3({ onOpenStudio }: { onOpenStudio?: () => void } =
         hasResult={Boolean(presentedExport) && active?.status === "完成"}
         resultSizeBytes={presentedExport?.result?.size_bytes}
         cleanupNote={losslessStageNotes(presentedExport?.result)}
-        compressionNote={presentedExport?.result?.index_compression_report
-          ? presentedExport.result.index_compression_report.verified
-            ? `索引压缩${presentedExport.result.index_compression_report.gentle ? "（温和）" : ""}已采用 · 减少 ${((1 - presentedExport.result.index_compression_report.after_bytes / Math.max(1, presentedExport.result.index_compression_report.before_bytes)) * 100).toFixed(1)}%（有损）`
-            : "索引压缩未采用"
-          : undefined}
+        compressionNote={lossyStageNotes(presentedExport?.result)}
+        advancedCompressionReport={presentedExport?.result?.advanced_compression_report}
         memeOverlayActive={memeOverlay?.sourceAssetId === active?.id}
         qualityReport={presentedExport?.result?.quality_report}
         qualityScoringEnabled={qualityScoringEnabled}
@@ -5429,6 +5444,7 @@ function ResultReport({
           {livePhoto.validation_message && <small className="result-report__live-message">{livePhoto.validation_message}</small>}
         </section>
       )}
+      <AdvancedCompressionReport report={result.advanced_compression_report} />
       {result.fallback_reason && <p className="result-report__fallback"><strong>降级原因</strong><span>{result.fallback_reason}</span></p>}
       {warnings.length > 0 && <div className="result-report__warnings"><strong>警告</strong><ul>{warnings.map((warning) => <li key={warning}>{warning}</li>)}</ul></div>}
     </section>

@@ -33,7 +33,7 @@ fn error(value: impl ToString) -> AppError {
     AppError::EncodeFailed(value.to_string())
 }
 
-fn indexed(
+pub(super) fn indexed(
     source: &Plan,
     background: u8,
     control: &SearchControl<'_>,
@@ -108,7 +108,7 @@ fn indexed(
     Ok(result)
 }
 
-fn write_candidate(
+pub(super) fn write_candidate(
     plan: &IndexedGifPlan,
     repeat: gif::Repeat,
     path: &Path,
@@ -173,7 +173,7 @@ fn verification_size(plan: &Plan) -> Result<(usize, usize, usize), AppError> {
 }
 
 /// A bounded subprocess, with no in-memory RGBA accumulation or pipe deadlock.
-fn decode(
+pub(super) fn decode(
     ffmpeg: &Path,
     input: &Path,
     output: &Path,
@@ -270,7 +270,7 @@ fn timeline(
     Ok(timeline)
 }
 
-fn publish_candidate(
+pub(super) fn publish_candidate(
     candidate: &Path,
     source: &Path,
     control: &SearchControl<'_>,

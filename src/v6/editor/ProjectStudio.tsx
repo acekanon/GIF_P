@@ -4,7 +4,9 @@ import { cancelConversionTask, generateMediaThumbnails, inspectMedia, openDirect
 import { addAsset, addClip, addMediaLayer, addTextLayer, clipDurationUs, commitHistory, createHistory, createProject, deleteFrame, duplicateClip, duplicateFrame, frameBoundaryUs, frameIndexAt, freezeFrame, isolateFrame, mediaSourceTimeAt, moveClip, moveLayer, projectDurationUs, redoHistory, relinkAsset, removeClip, removeLayer, setClipRate, sourceTimeAt, splitAtPlayhead, stepFrame, timelineEntries, toggleClipReverse, transformAt, trimClip, undoHistory, updateClip, updateLayer, updateProject, upsertKeyframe, type LayerTimingPolicy } from "./model";
 import { migrateLegacySession, parseProject, readProjectAutosave, serializeProject, writeProjectAutosave, type SessionMigration } from "./persistence";
 import { SESSION_DRAFT_KEY } from "../../v3/sessionPersistence";
+import { AdvancedCompressionReport } from "../../v3/AdvancedCompressionReport";
 import { hasProjectNative, openEditProject, projectMediaUrl, renderEditProject, saveEditProject } from "./native";
+import { PRODUCT_VERSION } from "../../version";
 import type { EditProject, LayerTransform, ProjectAsset, ProjectClip, ProjectLayer, ProjectRenderResult } from "./types";
 import "./studio.css";
 
@@ -353,9 +355,9 @@ export function ProjectStudio({ onClose }: { onClose?: () => void }) {
   };
   const trimHandle = (clip: ProjectClip, side: "start" | "end") => <span className="studio-clip-grip" title={side === "start" ? "拖动修剪起点（逐帧吸附）" : "拖动修剪终点（逐帧吸附）"} onClick={event => event.stopPropagation()} onPointerDown={event => beginTrim(event, clip, side)} onPointerMove={moveTrim} onPointerUp={finishTrim} onPointerCancel={() => { trimOrigin.current = null; setTrimPreview(null); }} />;
 
-  return <section className={`project-studio theme-${theme}`} aria-label="GIFP 6.0 剪辑工作台">
+  return <section className={`project-studio theme-${theme}`} aria-label={`GIFP ${PRODUCT_VERSION} 剪辑工作台`}>
     <header className="studio-header">
-      <div className="studio-brand"><span className="studio-logo"><FilmStrip size={26} weight="duotone" /></span><div><b>GIFP <span>STUDIO / 6.0</span></b><small>把灵感，剪成循环。</small></div></div>
+      <div className="studio-brand"><span className="studio-logo"><FilmStrip size={26} weight="duotone" /></span><div><b>GIFP <span>STUDIO / {PRODUCT_VERSION}</span></b><small>把灵感，剪成循环。</small></div></div>
       <input className="studio-project-name" aria-label="工程名称" value={project.name} onChange={event => operate(() => commit(updateProject(project, { name: event.target.value }), "已重命名工程"))} />
       <div className="studio-header-actions">
         <Tool label="打开工程" shortcut="Control+O" onClick={() => void loadProject()} disabled={!!busy}><FolderOpen size={18} /><span>打开</span></Tool>
@@ -430,6 +432,14 @@ export function ProjectStudio({ onClose }: { onClose?: () => void }) {
             <div className="studio-ratio-presets">{[[480, 480, "1:1"], [480, 640, "3:4"], [640, 360, "16:9"]].map(([width, height, label]) => <button key={label} onClick={() => canvasPatch({ width: Number(width), height: Number(height) })}>{label}</button>)}</div>
             <label className="studio-check"><input type="checkbox" checked={project.output.loop} onChange={event => operate(() => commit(updateProject(project, { output: { ...project.output, loop: event.target.checked } }), "已修改循环播放"))} />循环播放</label>
             <div className="studio-compression-card"><span><Check size={17} weight="bold" />智能无损压缩</span><p>真实编码后比较体积，通过画面一致性验证才采用更小的结果。</p><label className="studio-check"><input type="checkbox" checked={project.output.smartLossless} onChange={event => operate(() => commit(updateProject(project, { output: { ...project.output, smartLossless: event.target.checked } }), "已修改智能压缩"))} />启用结构优化</label></div>
+            <div className="studio-compression-card studio-compression-card--lossy" role="group" aria-label="低误差有损压缩">
+              <span>低误差有损压缩</span>
+              <p>允许小幅颜色变化。实际比较字节数并检查画质，没有合格收益就保留原结果；可能增加导出时间。</p>
+              <label className="studio-check"><input type="checkbox" role="switch" checked={Boolean(project.output.temporalStability)} onChange={event => operate(() => commit(updateProject(project, { output: { ...project.output, temporalStability: event.target.checked } }), "已修改跨帧稳定优化"))} />跨帧稳定优化</label>
+              <p>减少相近画面间的颜色抖动，尝试复用稳定颜色。</p>
+              <label className="studio-check"><input type="checkbox" role="switch" checked={Boolean(project.output.lzwSearch)} onChange={event => operate(() => commit(updateProject(project, { output: { ...project.output, lzwSearch: event.target.checked } }), "已修改 LZW 成本搜索"))} />LZW 成本搜索</label>
+              <p>在小幅颜色误差内，搜索真正压缩后更小的索引组合。</p>
+            </div>
             <Field label="文件上限（0 为不限）" value={project.output.maxBytes ? project.output.maxBytes / 1048576 : 0} min={0} max={100} step={.1} suffix="MB" onChange={value => operate(() => commit(updateProject(project, { output: { ...project.output, maxBytes: value ? Math.round(value * 1048576) : null } }), "已修改文件上限"))} />
             <p className="studio-hint">保留画幅和动作约束；无法满足上限时会明确报错。</p>
             {native && <button className="studio-wide-button" title={outputDir} onClick={() => void selectOutputDir().then(path => { if (path) setOutputDir(path); }).catch(caught => setError(errorText(caught)))}><FolderOpen size={16} />{outputDir ? "更改导出目录" : "选择导出目录"}</button>}
@@ -437,6 +447,7 @@ export function ProjectStudio({ onClose }: { onClose?: () => void }) {
             <div className="studio-inspector-tip"><Scissors size={19} /><b>想精修某一帧？</b><p>底部开启「单帧模式」，可独立、删除、复制、定格当前帧，并添加仅此帧文字。</p></div>
           </>}
           {renderResult && currentResult && <div className="studio-render-report"><b>{renderResult.preview ? "预览结果" : "导出结果"} · {bytes(renderResult.bytes)}</b><span>{renderResult.width} × {renderResult.height} · {sec(renderResult.durationUs)}s</span>{renderResult.result?.structure_optimization_report && <p>{renderResult.result.structure_optimization_report.adopted ? `结构优化已采用 · 节省 ${bytes(Math.max(0, renderResult.result.structure_optimization_report.before_bytes - renderResult.result.structure_optimization_report.after_bytes))}` : "保留原编码结果"} · {renderResult.result.structure_optimization_report.verified ? "画面一致性已验证" : renderResult.result.structure_optimization_report.reason || "本次未采用结构优化"}</p>}{renderResult.result?.warnings?.map((warning, index) => <p key={index}>{warning}</p>)}</div>}
+          {renderResult && currentResult && <AdvancedCompressionReport report={renderResult.result?.advanced_compression_report} />}
           {selectedLayer && <div className="studio-layer-toggles"><label className="studio-check"><input type="checkbox" checked={selectedLayer.visible} onChange={event => layerPatch({ visible: event.target.checked })} />显示图层</label><label className="studio-check"><input type="checkbox" checked={selectedLayer.locked} onChange={event => operate(() => commit(updateLayer(project, selectedLayer.id, { locked: event.target.checked }), "已修改图层锁定"))} />锁定图层</label></div>}
           <p className="studio-hint">快捷键：Ctrl+O 打开；Ctrl+S 保存；Ctrl+Shift+S 另存为；Ctrl+Shift+Enter 渲染预览（单帧模式渲染当前帧）；Ctrl+Enter 导出。数字属性先按 Enter 确认，再使用快捷键。</p>
         </div>

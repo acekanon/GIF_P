@@ -123,6 +123,8 @@
 .studio-compression-card { padding: 11px; border: 1px solid color-mix(in srgb, var(--studio-mint) 80%, var(--studio-line)); background: color-mix(in srgb, var(--studio-mint) 14%, var(--studio-paper)); border-radius: 9px; }
 .studio-compression-card > span { display: flex; align-items: center; gap: 6px; color: var(--studio-green); font-size: 11px; font-weight: 900; }
 .studio-compression-card p { font-size: 9px; line-height: 1.7; color: var(--studio-muted); margin: 8px 0 !important; }
+.studio-compression-card--lossy { border-color: var(--studio-line); background: var(--studio-paper); }
+.studio-compression-card--lossy > span { color: var(--studio-ink); }
 .studio-inspector-tip { margin-top: 3px; padding: 11px; border: 1px dashed var(--studio-line); border-radius: 9px; font-size: 10px; }
 .studio-inspector-tip > svg { vertical-align: middle; margin-right: 6px; color: var(--studio-green); }
 .studio-inspector-tip p { color: var(--studio-muted); font-size: 9px; line-height: 1.7; margin-top: 7px !important; }

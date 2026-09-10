@@ -12,7 +12,8 @@ import {
 } from "@phosphor-icons/react";
 import { useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import type { GifEncoder, GifGenerationMode, OutputFormat, OutputQualityReport } from "../tauri";
+import type { AdvancedCompressionExecutionReport, GifEncoder, GifGenerationMode, OutputFormat, OutputQualityReport } from "../tauri";
+import { AdvancedCompressionReport } from "./AdvancedCompressionReport";
 import { AnimatedSelect } from "./AnimatedSelect";
 import { CommittedNumberInput } from "./CommittedNumberInput";
 import {
@@ -213,6 +214,7 @@ export function QuickGenerationWizard({
   memeOverlayActive = false,
   resultSizeBytes,
   compressionNote,
+  advancedCompressionReport,
   cleanupNote,
   onClose,
   onFormat,
@@ -272,6 +274,7 @@ export function QuickGenerationWizard({
   memeOverlayActive?: boolean;
   resultSizeBytes?: number;
   compressionNote?: string;
+  advancedCompressionReport?: AdvancedCompressionExecutionReport | null;
   cleanupNote?: string;
   onClose: () => void;
   onFormat: (value: DeliveryFormatPreference) => void;
@@ -490,6 +493,7 @@ export function QuickGenerationWizard({
               {completed ? <><CheckCircle weight="fill" aria-hidden="true" /><strong>已生成</strong></> : <><MagicWand weight="fill" aria-hidden="true" /><strong>{status}</strong></>}
               {completed && cleanupNote && <p className="quick-compression-result">{cleanupNote}</p>}
               {completed && compressionNote && <p className="quick-compression-result">{compressionNote}</p>}
+              {completed && advancedCompressionReport && <details className="quick-advanced-compression-report"><summary>新算法候选与画质参考</summary><AdvancedCompressionReport report={advancedCompressionReport} /></details>}
               {completed && resultSizeBytes != null && <span className="quick-result-size">{resultSizeBytes >= 1024 * 1024 ? `${(resultSizeBytes / 1024 / 1024).toFixed(2)} MB` : `${(resultSizeBytes / 1024).toFixed(1)} KB`}{bulkDelivery ? " · 主预览 GIF" : ` · ${selectedFormatName}`}</span>}
               {completed && qualityScoring && <div className="quick-wizard__scoring">
                 <span>{qualityCancelPending ? "正在停止评分 · 成品可用" : "评分中 · 成品可用"}</span>

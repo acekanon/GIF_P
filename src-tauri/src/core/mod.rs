@@ -1,4 +1,5 @@
 mod backend_registry;
+pub(crate) mod compression_quality;
 pub(crate) mod compression_search;
 mod content_probe;
 mod contracts;

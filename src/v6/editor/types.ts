@@ -85,7 +85,14 @@ export interface EditProject {
   layers: ProjectLayer[];
   /** Older projects omit this and keep absolute layer times while editing. */
   editing?: { layerTiming: "absolute" | "ripple" };
-  output: { loop: boolean; maxBytes: number | null; smartLossless: boolean };
+  output: {
+    loop: boolean;
+    maxBytes: number | null;
+    smartLossless: boolean;
+    /** Optional in older files; omitted means the lossy route is disabled. */
+    temporalStability?: boolean;
+    lzwSearch?: boolean;
+  };
 }
 export interface ProjectRenderRequest {
   project: EditProject;

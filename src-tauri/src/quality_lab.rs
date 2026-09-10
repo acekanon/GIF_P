@@ -6118,6 +6118,7 @@ mod tests {
     ) -> GifResult {
         GifResult {
             gif_cleanup_report: None,
+            advanced_compression_report: None,
             structure_optimization_report: None,
             index_compression_report: None,
             postprocess_report: None,

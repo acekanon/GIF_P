@@ -24,10 +24,25 @@ it("keeps unavailable switches inert and resets only the compression group", () 
   expect(screen.getByRole("status")).toHaveTextContent("已启用 0 项");
   for (const input of screen.getAllByRole("switch")) expect(input).not.toBeChecked();
 });
+it("keeps new lossy routes independently opt-in and resets them without enabling lossless controls", () => {
+  render(<Harness />);
+  for (const name of ["跨帧稳定优化", "LZW 成本搜索"]) {
+    expect(screen.getByRole("switch", { name })).not.toBeChecked();
+    fireEvent.click(screen.getByRole("switch", { name }));
+  }
+  expect(screen.getByRole("status")).toHaveTextContent("已启用 2 项");
+  expect(screen.getByRole("switch", { name: "智能无损优化" })).not.toBeChecked();
+  expect(screen.getByRole("switch", { name: "索引压缩" })).not.toBeChecked();
+  expect(screen.getAllByText("内置 · 低误差有损")).toHaveLength(2);
+  fireEvent.click(screen.getByRole("button", { name: "恢复默认" }));
+  for (const input of screen.getAllByRole("switch")) expect(input).not.toBeChecked();
+});
 it("serializes only active GIF controls and leaves dimensions and cadence intact", () => {
   const base={inputPath:"C:/input.mp4",outputDir:"C:/output",presetId:"custom" as const,playbackSpeed:1,loopOutput:true,crop:{left:0,top:0,right:0,bottom:0},startSeconds:0,endSeconds:5,deletedFrames:[],overrides:{width:854,fps:12},mergeGifFrames:true,compactGifPalette:true,gentleIndex:true,indexCompression:true};
   expect(buildGifRequest({...base,smartLossless:true})).toMatchObject({width:854,fps:12,smart_lossless:true,gif_merge_frames:true,gif_compact_palette:true,index_compression:true,index_compression_gentle:true});
+  expect(buildGifRequest({...base,temporalStability:true,lzwSearch:true})).toMatchObject({width:854,fps:12,temporal_stability:true,lzw_search:true});
+  for (const field of ["temporal_stability", "lzw_search"]) expect(buildGifRequest(base)).not.toHaveProperty(field);
   expect(buildGifRequest({...base,indexCompression:false})).not.toHaveProperty("index_compression_gentle");
-  const webp=buildGifRequest({...base,smartLossless:true,outputFormat:"webp"});
-  for (const field of ["smart_lossless","gif_merge_frames","gif_compact_palette","index_compression","index_compression_gentle"]) expect(webp).not.toHaveProperty(field);
+  const webp=buildGifRequest({...base,smartLossless:true,temporalStability:true,lzwSearch:true,outputFormat:"webp"});
+  for (const field of ["smart_lossless","temporal_stability","lzw_search","gif_merge_frames","gif_compact_palette","index_compression","index_compression_gentle"]) expect(webp).not.toHaveProperty(field);
 });

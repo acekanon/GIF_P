@@ -1,8 +1,8 @@
 {
   "name": "gifp",
-  "version": "6.0.1",
+  "version": "6.1.0",
   "author": "acekanon",
-  "description": "GIFP 6.0.1 - free animation conversion and delivery software",
+  "description": "GIFP 6.1.0 - free animation conversion and delivery software",
   "license": "LicenseRef-GIFP-Freeware-1.0",
   "private": true,
   "type": "module",

@@ -111,6 +111,71 @@ fn project_contract_roundtrips_duration_and_rejects_invalid_data() {
 }
 
 #[test]
+fn project_new_compression_options_are_compatible_and_reach_encoder_requests() {
+    let mut project = fixture_project(Path::new("source.mkv"));
+    assert!(!project.output.temporal_stability);
+    assert!(!project.output.lzw_search);
+    project.output.temporal_stability = true;
+    project.output.lzw_search = true;
+    let request = gif_request(
+        &project,
+        &project.canvas,
+        Path::new("timeline.mkv"),
+        Path::new("output"),
+        400000,
+        256,
+    )
+    .unwrap();
+    assert!(request.temporal_stability && request.lzw_search);
+    let value = serde_json::to_value(&project).unwrap();
+    assert_eq!(value["output"]["temporalStability"], true);
+    assert_eq!(value["output"]["lzwSearch"], true);
+    let mut invalid = value;
+    invalid["output"]["lzwSearch"] = serde_json::json!("true");
+    assert!(serde_json::from_value::<EditProject>(invalid).is_err());
+}
+
+#[test]
+#[ignore = "real composed project export through both new compression routes"]
+fn native_project_new_compression_routes_use_composited_source() {
+    let (ffmpeg, _) = test_runtime().expect("FFmpeg runtime");
+    let temp = OwnedTempDir::create("gifp-project-advanced-compression").unwrap();
+    let source = source_fixture(&ffmpeg, temp.path());
+    let mut project = fixture_project(&source);
+    project.output.smart_lossless = false;
+    project.output.temporal_stability = true;
+    project.output.lzw_search = true;
+    let output = temp.path().join("export");
+    let id = format!("advanced-project-{}", unique_output_token());
+    let scope = ConversionTaskScope::register(Some(&id)).unwrap();
+    scope.activate();
+    let result = render_edit_project_active(ProjectRenderRequest {
+        project,
+        output_dir: output.to_string_lossy().into_owned(),
+        task_id: id,
+        preview: false,
+        preview_frame_us: None,
+    })
+    .expect("actual project export");
+    let report = result
+        .result
+        .advanced_compression_report
+        .as_ref()
+        .expect("project report");
+    assert_eq!(report.reference_kind, "prequantized_source", "{report:?}");
+    assert_eq!(report.stages.len(), 2);
+    assert_eq!(
+        (result.width, result.height, result.duration_us),
+        (96, 64, 400000)
+    );
+    assert_eq!(
+        fs::metadata(&result.output_path).unwrap().len(),
+        result.bytes
+    );
+    println!("project: {}", serde_json::to_string(report).unwrap());
+}
+
+#[test]
 fn project_frame_boundaries_do_not_accumulate_rounding() {
     for fps in [1, 12, 24, 25, 30, 59, 60] {
         for frame in 0..10_000_u64 {

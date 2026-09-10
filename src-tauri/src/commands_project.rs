@@ -172,6 +172,10 @@ struct ProjectOutput {
     loop_output: bool,
     max_bytes: Option<u64>,
     smart_lossless: bool,
+    #[serde(default)]
+    temporal_stability: bool,
+    #[serde(default)]
+    lzw_search: bool,
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -1555,6 +1559,8 @@ fn gif_request(
         "deleted_frames": [], "deleted_ranges": [], "playback_speed": 1.0,
         "frame_timing_mode": "compact", "output_format": "gif", "generation_mode": "fast_gif",
         "smart_lossless": project.output.smart_lossless,
+        "temporal_stability": project.output.temporal_stability,
+        "lzw_search": project.output.lzw_search,
         "gif_merge_frames": false, "gif_compact_palette": false
     })).map_err(|error| AppError::Internal(format!("构建工程编码请求: {error}")))
 }

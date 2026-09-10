@@ -39,6 +39,33 @@ const legacySession = () => {
 };
 
 describe("ProjectStudio", () => {
+  it("saves and exports opt-in lossy compression choices with independent undo and legacy defaults", async () => {
+    const project = createStudioDemo(); delete project.output.temporalStability; delete project.output.lzwSearch;
+    nativeFixture(project);
+    expect(screen.getByRole("switch", { name: "跨帧稳定优化" })).not.toBeChecked();
+    expect(screen.getByRole("switch", { name: "LZW 成本搜索" })).not.toBeChecked();
+    fireEvent.click(screen.getByRole("switch", { name: "跨帧稳定优化" }));
+    fireEvent.click(screen.getByRole("switch", { name: "LZW 成本搜索" }));
+    fireEvent.click(screen.getByRole("button", { name: "撤销（Ctrl+Z）" }));
+    expect(screen.getByRole("switch", { name: "跨帧稳定优化" })).toBeChecked();
+    expect(screen.getByRole("switch", { name: "LZW 成本搜索" })).not.toBeChecked();
+    fireEvent.click(screen.getByRole("button", { name: "重做（Ctrl+Shift+Z）" }));
+    await act(async () => fireEvent.click(screen.getByRole("button", { name: "保存工程" })));
+    const output = { ...project.output, temporalStability: true, lzwSearch: true };
+    expect(mocks.save.mock.calls[0][0].output).toEqual(output);
+    mocks.outputDir.mockResolvedValue("D:/compression-export");
+    mocks.render.mockImplementation(async request => ({ ...renderedFixture(request.project), preview: false, result: { advanced_compression_report: {
+      algorithm_version: "1", status: "optimized", before_bytes: 10000, after_bytes: 8000, adopted: true, verified: true,
+      reference_kind: "prequantized_source", elapsed_ms: 10, estimated_peak_bytes: 20000,
+      stages: [{ method: "temporal_stability", status: "adopted", before_bytes: 10000, candidate_bytes: 8000, writer_control_bytes: 9000, algorithm_saved_bytes: 1000, adopted: true, verified: true, compression_probes: 2, changed_pixels: 12, elapsed_ms: 10 }],
+    } } }));
+    await act(async () => fireEvent.click(screen.getByRole("button", { name: "导出 GIF" })));
+    expect(mocks.render.mock.calls[0][0]).toMatchObject({ project: { output }, outputDir: "D:/compression-export", preview: false });
+    expect(screen.getByLabelText("启用结构优化")).not.toBeChecked();
+    const report = screen.getByRole("region", { name: "新压缩算法报告" });
+    expect(within(report).getByText(/新压缩阶段已采用 · 减少 20.0%（有损）/)).toBeVisible();
+    expect(within(report).getByText("画质参考：量化前画面")).toBeVisible();
+  });
   it("restricts an animated sticker to the displayed frame without restarting its source clock", async () => {
     mocks.native = true;
     const project = createStudioDemo();

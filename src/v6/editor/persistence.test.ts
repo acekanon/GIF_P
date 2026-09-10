@@ -23,6 +23,22 @@ function legacy(): SessionDraftData {
 }
 
 describe("durable v6 engineering projects", () => {
+  it("persists new compression choices and keeps omitted legacy routes disabled", () => {
+    const project = fixture();
+    expect(project.output).toMatchObject({ temporalStability: false, lzwSearch: false });
+    project.output.temporalStability = true; project.output.lzwSearch = true;
+    expect(parseProject(serializeProject(project)).output).toEqual(project.output);
+    const saved = storage(); writeProjectAutosave(saved, project, 1);
+    expect(readProjectAutosave(saved)).toMatchObject({ status: "ready", project: { output: { temporalStability: true, lzwSearch: true } } });
+    delete project.output.temporalStability; delete project.output.lzwSearch;
+    expect(parseProject(serializeProject(project)).output).toEqual({ loop: true, maxBytes: null, smartLossless: false });
+  });
+  it("rejects nonboolean compression opt-ins instead of coercing old project data", () => {
+    const project = fixture();
+    for (const key of ["temporalStability", "lzwSearch"]) for (const value of [null, "false", 1, {}, []]) {
+      expect(() => parseProject(JSON.stringify({ ...project, output: { ...project.output, [key]: value } }))).toThrow(`output.${key}`);
+    }
+  });
   it("round-trips tracks, individual-frame layer timing and keyframes", () => {
     const project = fixture(); expect(parseProject(serializeProject(project))).toEqual(project);
   });

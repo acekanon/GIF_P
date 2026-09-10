@@ -803,6 +803,8 @@ export function outputFrameIndicesForDeletedRanges(
 
 export type BuildGifRequestInput = {
   smartLossless?: boolean;
+  temporalStability?: boolean;
+  lzwSearch?: boolean;
   smallerGif?: boolean;
   indexCompression?: boolean;
   gentleIndex?: boolean;
@@ -851,6 +853,8 @@ export function buildGifRequest(input: BuildGifRequestInput): GifRequest {
   return {
     ...(input.smallerGif && (input.outputFormat ?? "gif") === "gif" ? { smaller_gif: true } : {}),
     ...(input.smartLossless && (input.outputFormat ?? "gif") === "gif" ? { smart_lossless: true } : {}),
+    ...(input.temporalStability && (input.outputFormat ?? "gif") === "gif" ? { temporal_stability: true } : {}),
+    ...(input.lzwSearch && (input.outputFormat ?? "gif") === "gif" ? { lzw_search: true } : {}),
     ...(input.indexCompression && (input.outputFormat ?? "gif") === "gif" ? { index_compression: true } : {}),
     ...(input.indexCompression && input.gentleIndex && (input.outputFormat ?? "gif") === "gif" ? { index_compression_gentle: true } : {}),
     ...(input.mergeGifFrames && (input.outputFormat ?? "gif") === "gif" ? { gif_merge_frames: true } : {}),

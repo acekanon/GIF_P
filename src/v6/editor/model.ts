@@ -49,8 +49,9 @@ export function assertProject(value: unknown): asserts value is EditProject {
   record(value.canvas, "canvas", ["width", "height", "fps", "background"]);
   integer(value.canvas.width, "canvas.width", 96, 1920); integer(value.canvas.height, "canvas.height", 16, 1920);
   integer(value.canvas.fps, "canvas.fps", 1, 60); color(value.canvas.background, "canvas.background");
-  record(value.output, "output", ["loop", "maxBytes", "smartLossless"]);
+  record(value.output, "output", ["loop", "maxBytes", "smartLossless", "temporalStability", "lzwSearch"]);
   bool(value.output.loop, "output.loop"); bool(value.output.smartLossless, "output.smartLossless");
+  for (const key of ["temporalStability", "lzwSearch"]) if (key in value.output) bool(value.output[key], `output.${key}`);
   if (value.output.maxBytes !== null) integer(value.output.maxBytes, "output.maxBytes", 1024, 512 * 1024 * 1024);
   if (value.editing !== undefined) {
     record(value.editing, "editing", ["layerTiming"]);
@@ -130,7 +131,7 @@ export function assertProject(value: unknown): asserts value is EditProject {
 export function createProject(name = "未命名工程"): EditProject {
   const project: EditProject = { schemaVersion: 1, id: newProjectId("project"), name, revision: 0,
     canvas: { width: 480, height: 480, fps: 15, background: "#000000" }, assets: [], clips: [], layers: [],
-    editing: { layerTiming: "ripple" }, output: { loop: true, maxBytes: null, smartLossless: false } };
+    editing: { layerTiming: "ripple" }, output: { loop: true, maxBytes: null, smartLossless: false, temporalStability: false, lzwSearch: false } };
   assertProject(project); return project;
 }
 function changed(project: EditProject, next: EditProject): EditProject {

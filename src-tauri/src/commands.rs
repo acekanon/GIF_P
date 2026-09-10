@@ -60,6 +60,9 @@ use std::{
 use sysinfo::{Pid, ProcessRefreshKind, ProcessesToUpdate, System};
 
 #[cfg(test)]
+#[path = "commands_advanced_integration_tests.rs"]
+mod advanced_integration_tests;
+#[cfg(test)]
 #[path = "commands_p2_tests.rs"]
 mod p2_tests;
 
@@ -75,11 +78,18 @@ use gif_cleanup::GifCleanupReport;
 #[path = "commands_structure.rs"]
 mod structure_optimization;
 use structure_optimization::GifStructureReport;
+#[path = "commands_advanced_compression.rs"]
+mod advanced_compression;
+use advanced_compression::AdvancedCompressionReport;
 #[path = "commands_project.rs"]
 pub(crate) mod project;
 
 #[derive(Clone, Debug, Deserialize)]
 pub struct GifRequest {
+    #[serde(default)]
+    pub temporal_stability: bool,
+    #[serde(default)]
+    pub lzw_search: bool,
     #[serde(default)]
     pub smart_lossless: bool,
     #[serde(default)]
@@ -1269,6 +1279,7 @@ struct PerceptualPaletteBuildContext<'a> {
 
 #[derive(Clone, Debug, Serialize)]
 pub struct GifResult {
+    pub advanced_compression_report: Option<AdvancedCompressionReport>,
     pub structure_optimization_report: Option<GifStructureReport>,
     pub gif_cleanup_report: Option<GifCleanupReport>,
     pub index_compression_report: Option<IndexCompressionReport>,
@@ -4678,7 +4689,9 @@ fn convert_animation_unprofiled(mut request: GifRequest) -> Result<GifResult, Ap
         )));
     }
     let output_format = AnimationFormat::parse(&request.output_format)?;
-    if (request.smart_lossless
+    if (request.temporal_stability
+        || request.lzw_search
+        || request.smart_lossless
         || request.index_compression
         || request.index_compression_gentle
         || request.gif_merge_frames
@@ -5011,6 +5024,10 @@ fn convert_animation_unprofiled(mut request: GifRequest) -> Result<GifResult, Ap
     let ffmpeg_backend_version = discovered_ffmpeg_version.or_else(|| ffmpeg_version(&ffmpeg));
     let mut backend_version = ffmpeg_backend_version.clone();
     let mut encoder_used = legacy_encoder.to_string();
+    // Track the actual prequantization filter chain through every fallback.
+    // Route names and the originally requested encoder are not sufficient.
+    let mut reference_filter_encoder = legacy_encoder;
+    let mut reference_is_segmented = !baseline_segment_cuts.is_empty();
     let baseline_palette_strategy = if baseline_segment_cuts.is_empty() {
         plan.stats_mode.as_ffmpeg_value().to_string()
     } else {
@@ -5105,6 +5122,8 @@ fn convert_animation_unprofiled(mut request: GifRequest) -> Result<GifResult, Ap
                     .to_string();
                     backend_version = Some(env!("CARGO_PKG_VERSION").to_string());
                     encoder_used = route_metadata.encoder_used.to_string();
+                    reference_filter_encoder = perceptual_encoder;
+                    reference_is_segmented = route_metadata.segment_encoded;
                     palette_strategy = route_metadata.palette_strategy.to_string();
                     indexed_gif_writer_report = Some(report);
                     perceptual_outcome = Some(single_encode_outcome(&output, &effective_request));
@@ -5135,6 +5154,8 @@ fn convert_animation_unprofiled(mut request: GifRequest) -> Result<GifResult, Ap
             ) {
                 Ok(()) => {
                     backend_id = "rust.perceptual".to_string();
+                    reference_filter_encoder = perceptual_encoder;
+                    reference_is_segmented = !active_segment_cuts.is_empty();
                     backend_version = Some(env!("CARGO_PKG_VERSION").to_string());
                     if uses_oklab_palette {
                         encoder_used = "rust_perceptual_oklab_ffmpeg".to_string();
@@ -5188,6 +5209,7 @@ fn convert_animation_unprofiled(mut request: GifRequest) -> Result<GifResult, Ap
                                     backend_version = Some(env!("CARGO_PKG_VERSION").to_string());
                                     encoder_used =
                                         "rust_perceptual_motion_neutral_bayer".to_string();
+                                    reference_filter_encoder = "ffmpeg_fast";
                                     palette_strategy = format!(
                                         "perceptual_vfr+ffmpeg_{}+motion_neutral_bayer",
                                         plan.stats_mode.as_ffmpeg_value()
@@ -5276,6 +5298,9 @@ fn convert_animation_unprofiled(mut request: GifRequest) -> Result<GifResult, Ap
     };
 
     if smooth_gradient_quality_floor_selected {
+        reference_filter_encoder = legacy_encoder;
+        reference_is_segmented =
+            !smooth_gradient_opaque_route_selected && !baseline_segment_cuts.is_empty();
         encoder_used = if smooth_gradient_opaque_route_selected {
             if smooth_gradient_frame_palette_selected {
                 "ffmpeg_best_smooth_gradient_frame_palette"
@@ -5302,6 +5327,8 @@ fn convert_animation_unprofiled(mut request: GifRequest) -> Result<GifResult, Ap
             backend_id = "rust.perceptual".to_string();
             backend_version = Some(env!("CARGO_PKG_VERSION").to_string());
         }
+        reference_filter_encoder = perceptual_filter_encoder(&effective_request, legacy_encoder);
+        reference_is_segmented = false;
         if let Some(report) = outcome.target_optimizer_report.as_ref() {
             if let Some(route) = report
                 .route_observations
@@ -5382,6 +5409,9 @@ fn convert_animation_unprofiled(mut request: GifRequest) -> Result<GifResult, Ap
                         backend_id = "rust.perceptual".to_string();
                         backend_version = Some(env!("CARGO_PKG_VERSION").to_string());
                         encoder_used = "rust_perceptual_oklab_ffmpeg_opaque_palette".to_string();
+                        reference_filter_encoder =
+                            perceptual_filter_encoder(&effective_request, legacy_encoder);
+                        reference_is_segmented = false;
                         palette_strategy =
                             "perceptual_vfr+oklab_global+ffmpeg+opaque_256_no_transdiff"
                                 .to_string();
@@ -5464,6 +5494,8 @@ fn convert_animation_unprofiled(mut request: GifRequest) -> Result<GifResult, Ap
                     backend_id = "ffmpeg.animation".to_string();
                     backend_version = ffmpeg_backend_version.clone();
                     encoder_used = "ffmpeg_best_guard_baseline".to_string();
+                    reference_filter_encoder = "ffmpeg_fast";
+                    reference_is_segmented = false;
                     palette_strategy = format!(
                         "best_guard_{}_{}",
                         baseline_plan.stats_mode.as_ffmpeg_value(),
@@ -5629,6 +5661,55 @@ fn convert_animation_unprofiled(mut request: GifRequest) -> Result<GifResult, Ap
         .then(|| ffmpeg_backend_version.clone())
         .flatten();
 
+    // Run before any frame coalescing: source frames must correspond by ordinal,
+    // not by guessing original samples from centisecond GIF delays.
+    let advanced_compression_report = if request.temporal_stability || request.lzw_search {
+        let mut reference_request = effective_request.clone();
+        reference_request.width = outcome.width;
+        reference_request.fps = outcome.fps;
+        reference_request.colors = outcome.colors;
+        let reference = (!reference_is_segmented).then_some(advanced_compression::ReferenceSpec {
+            input,
+            request: &reference_request,
+            encoder: reference_filter_encoder,
+        });
+        let report = advanced_compression::optional(
+            &ffmpeg,
+            &outcome.output_path,
+            request.target_size_bytes,
+            request.temporal_stability,
+            request.lzw_search,
+            reference,
+        )?;
+        if report.adopted && report.verified {
+            let inspection = verify_delivery_output(&outcome.output_path, AnimationFormat::Gif)?;
+            outcome.size_bytes = report.after_bytes;
+            outcome.width = inspection.width;
+            output_frame_count = inspection.frame_count;
+            effective_output_fps = (inspection.duration > f64::EPSILON)
+                .then_some(inspection.frame_count as f64 / inspection.duration);
+            output_inspection = Some(inspection);
+            target_deviation_percent = request
+                .target_size_bytes
+                .map(|target| (outcome.size_bytes as f64 / target.max(1) as f64 - 1.0) * 100.0);
+            if request.target_size_bytes.is_some() {
+                outcome.target_fit = Some(TargetFit::Under);
+            }
+            perceptual_report = None;
+            palette_report = None;
+            region_dither_report = None;
+            indexed_gif_writer_report = None;
+            motion_delivery_selection_report = None;
+            palette_reservation_selection_report = None;
+            outcome.target_optimizer_report = None;
+            encoder_used.push_str("+source_checked_compression");
+            palette_strategy.push_str("+low_error_search");
+        }
+        Some(report)
+    } else {
+        None
+    };
+
     let gif_cleanup_report = if request.gif_merge_frames || request.gif_compact_palette {
         let report = gif_cleanup::optional(
             &ffmpeg,
@@ -5701,7 +5782,29 @@ fn convert_animation_unprofiled(mut request: GifRequest) -> Result<GifResult, Ap
         None
     };
 
-    let index_compression_report = if request.index_compression {
+    let index_compression_report = if request.index_compression
+        && advanced_compression_report
+            .as_ref()
+            .is_some_and(|report| report.adopted)
+    {
+        // A second lossy stage would invalidate the new route's frozen quality
+        // envelope. Keep the user's legacy option as fallback when new search
+        // cannot adopt, but never stack it after an accepted new candidate.
+        Some(IndexCompressionReport {
+            gentle: request.index_compression_gentle,
+            algorithm: "index_reuse_v1",
+            status: "retained".into(),
+            before_bytes: outcome.size_bytes,
+            after_bytes: outcome.size_bytes,
+            verified: false,
+            threshold: 0,
+            max_channel_error: 0,
+            worst_frame_rmse: 0.0,
+            candidates_tested: 0,
+            elapsed_ms: 0,
+            reason: Some("已采用通过统一质量检查的新路线，未叠加旧有损索引压缩".into()),
+        })
+    } else if request.index_compression {
         let report = index_compression::optional(
             &ffmpeg,
             &outcome.output_path,
@@ -5783,6 +5886,7 @@ fn convert_animation_unprofiled(mut request: GifRequest) -> Result<GifResult, Ap
     }
 
     Ok(GifResult {
+        advanced_compression_report,
         gif_cleanup_report,
         structure_optimization_report,
         index_compression_report,
@@ -5993,6 +6097,7 @@ fn convert_live_photo_animation(
 
     Ok(GifResult {
         gif_cleanup_report: None,
+        advanced_compression_report: None,
         structure_optimization_report: None,
         index_compression_report: None,
         postprocess_report: None,
@@ -6285,6 +6390,7 @@ fn convert_modern_animation(
 
     Ok(GifResult {
         gif_cleanup_report: None,
+        advanced_compression_report: None,
         structure_optimization_report: None,
         index_compression_report: None,
         postprocess_report: None,
@@ -7432,6 +7538,7 @@ fn merge_gif_inner(request: MergeGifRequest) -> Result<GifResult, AppError> {
 
     Ok(GifResult {
         gif_cleanup_report: None,
+        advanced_compression_report: None,
         structure_optimization_report: None,
         index_compression_report: None,
         postprocess_report: None,
@@ -17534,8 +17641,10 @@ mod tests {
         values.iter().sum::<f64>() / values.len() as f64
     }
 
-    fn request_with_speed(playback_speed: f64) -> GifRequest {
+    pub(super) fn request_with_speed(playback_speed: f64) -> GifRequest {
         GifRequest {
+            temporal_stability: false,
+            lzw_search: false,
             smaller_gif: false,
             index_compression: false,
             index_compression_gentle: false,

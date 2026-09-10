@@ -1,0 +1,9 @@
+.advanced-compression-report { min-width: 0; margin-top: 8px; padding: 10px; border: 1px solid var(--line-soft, #dfcbb5); border-radius: 8px; background: var(--paper-strong, #fffdf5); color: var(--ink, #55493f); overflow-wrap: anywhere; }
+.advanced-compression-report > strong { display: block; font-size: 11px; }
+.advanced-compression-report p { margin: 6px 0; font-size: 10px; line-height: 1.6; color: var(--ink-soft, #88796c); }
+.advanced-compression-report ul { display: grid; gap: 10px; margin: 10px 0 0; padding: 0; list-style: none; }
+.advanced-compression-report li { display: flex; flex-direction: column; gap: 4px; padding-left: 8px; border-left: 2px solid var(--line-soft, #dfcbb5); }
+.advanced-compression-report li b, .advanced-compression-report li span, .advanced-compression-report li small { font-size: 10px; line-height: 1.5; }
+.advanced-compression-report li small { color: var(--ink-soft, #88796c); }
+.quick-advanced-compression-report { width: 100%; text-align: left; }
+.quick-advanced-compression-report > summary { font-size: 12px; color: var(--ink-soft, #88796c); cursor: pointer; }

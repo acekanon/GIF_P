@@ -1,4 +1,4 @@
-# GIFP 6.0.1 third-party notices
+# GIFP 6.1.0 third-party notices
 
 GIFP is freeware by acekanon. That price and product license do not replace the
 licenses of bundled open-source components.
